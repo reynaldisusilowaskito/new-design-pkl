@@ -46,7 +46,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       },
       divider : '#eaeaea',
       background: {
-        paper: '#dde5ef',
+        paper: '#006462',
       },
       grey: {
         A100: '#eef2f9',
@@ -63,7 +63,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       },
       divider : '#3b3d4d',
       background: {
-        paper: '#191725',
+        paper: '#003937',
       },
       grey: {
         A100: '#3b3d4d',
@@ -91,16 +91,16 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       fontSize,
     },
     fontFamily: [
-      'Lato',
+      'Roboto',
       '-apple-system',
       'BlinkMacSystemFont',
-      '"Segoe UI"',
-      '"Helvetica Neue"',
+      'Segoe UI',
+      'Helvetica Neue',
       'Arial',
       'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
+      'Apple Color Emoji',
+      'Segoe UI Emoji',
+      'Segoe UI Symbol',
     ].join(','),
   },
 });

@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Box, AppBar, useScrollTrigger, Slide, Typography, Toolbar } from '@mui/material'
+import { Box, AppBar, useScrollTrigger, Slide, Toolbar } from '@mui/material'
 import Link from 'next/link'
 import { orderBy } from 'lodash'
 import { useRouter } from 'next/router'
@@ -57,36 +57,33 @@ export const Logo = React.memo(() => {
         filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
       }}
     >
-      <img src={`/images/logo/logo-surabaya.png`} height={40} />
-      {!downSm && (
-        <Typography
-          marginLeft={1.5}
-          fontWeight={600}
-          fontSize={fontSize - 3 + accessibility.fontSize}
-          textTransform="uppercase"
-          sx={{
-            color: 'text.primary',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {`Pemerintah Kota Surabaya`}
-        </Typography>
-      )}
+      <img src={`/images/logo/logo-navbar.svg`} height={40} />
     </Box>
   )
 })
 
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.grey.A100,
-  background:
-    theme.palette.mode == 'dark'
-      ? theme.palette.background.paper
-      : `linear-gradient(0deg, ${theme.palette.background.paper} 0%, ${theme.palette.grey.A100} 65%)`,
-  minHeight: heightHeader,
+  background: theme.palette.mode === 'dark'
+    ? 'rgba(30,40,40,0.35)'
+    : 'rgba(30, 60, 60, 0.35)',
+  minHeight: 48,
   display: 'flex',
   justifyContent: 'center',
+  borderRadius: '999px',
+  border: '1px solid #fff',
+  margin: '0 auto',
+  width: '90%',
+  left: 0,
+  right: 0,
+  position: 'sticky',
+  top: 30,
+  zIndex: 1100,
+  boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
+  backdropFilter: 'blur(4px)',
   [theme.breakpoints.down('sm')]: {
-    minHeight: 70,
+    minHeight: 40,
+    width: 'calc(100% - 8px)',
+    margin: '6px auto 0 auto',
   },
 }))
 
@@ -156,21 +153,31 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            paddingLeft={downMd ? 2 : 8}
-            paddingRight={4}
+            paddingLeft={downMd ? 2 : 6}
+            paddingRight={2}
             sx={{
               opacity,
+              borderRadius: '999px',
+              width: '100%',
+              minHeight: 40,
+              background: 'none',
             }}
           >
-            <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 160 }}>
               <Logo />
             </Box>
             {!downSm ? (
               <StyledToolbar
                 className={accessibility.css.negative ? 'negative' : ''}
                 sx={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  minHeight: 40,
                   '& a': {
-                    fontSize: fontSize - 2 + accessibility.fontSize,
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    letterSpacing: 0.5,
+                    margin: '0 14px',
                   },
                 }}
               >
@@ -180,12 +187,15 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
                     href={v.url}
                     onClick={(e) => handleClickMenu(e, i)}
                     className={selected == i ? 'active' : ''}
-                    >
-                      <span onMouseEnter={(e) => textToSpeech(e, true)}>{v.title}</span>
-                      <ExpandMoreIcon fontSize="medium" />
+                    style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+                  >
+                    <span onMouseEnter={(e) => textToSpeech(e, true)}>{v.title}</span>
+                    <ExpandMoreIcon fontSize="medium" />
                   </Link>
                 ))}
-                <ButtonMode />
+                <Box sx={{ marginLeft: 2 }}>
+                  <ButtonMode />
+                </Box>
               </StyledToolbar>
             ) : (
               <ButtonMode />
