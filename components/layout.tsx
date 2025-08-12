@@ -14,8 +14,10 @@ const Layout: React.FunctionComponent<Props> = ({ children, paddingY, maxWidth }
   return (
     <Container
       maxWidth={maxWidth}
+      disableGutters
       sx={{
-        paddingY,
+        py: 0,
+        backgroundColor: 'transparent',
         position: 'relative',
         zIndex: 1,
       }}

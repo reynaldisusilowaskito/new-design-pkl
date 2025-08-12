@@ -7,14 +7,11 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 // import { Menu as MenuType } from 'components/header';
 import Layout from 'components/layout'
 import Title from 'components/title'
-import HomeSection1 from 'components/home.section1'
-import HomeSection2 from 'components/home.section2'
-import HomeSection3 from 'components/home.section3'
-import HomeSection4 from 'components/home.section4'
+import HomeSection1 from 'components/home.hero.section'
+import HomeSection2 from 'components/home.about.section'
+import HomeSection3 from 'components/home.news.section'
+import HomeSection4 from 'components/home.agenda.section'
 import HomeSection5 from 'components/home.section5'
-import Element1 from 'public/images/icon/element_1.svg'
-import Element2 from 'public/images/icon/element_2.svg'
-import Element4 from 'public/images/icon/element_4.svg'
 import { getNews } from 'utils/services/news'
 // import { getAgenda } from 'utils/services/agenda'
 import { getServices } from 'utils/services/service'
@@ -36,9 +33,9 @@ interface Props { }
 const BoxStyled1 = styled(Box)(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  backgroundColor: theme.palette.grey.A100,
-  background: `linear-gradient(0deg, ${theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.common.white
-    } 85%, ${theme.palette.grey.A100} 100%)`,
+  backgroundColor: theme.palette.background.paper,
+  // background: `linear-gradient(0deg, ${theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.common.white
+  //   } 85%, ${theme.palette.grey.A100} 100%)`,
   '& .wrapper-svg1, & .wrapper-svg2': {
     position: 'absolute',
     zIndex: 0,
@@ -120,19 +117,15 @@ const Home: NextPage<Props> = () => {
         <meta name="description" content="Pemerintah Kota Surabaya" />
         <script async type="text/javascript" src="https://widget.kominfo.go.id/gpr-widget-kominfo.min.js"></script>
       </Head>
-      <HomeSection1 />
-      <Layout paddingY={0}>
+      <Box sx={{ m: 0, p: 0 }}>
+        <HomeSection1 />
+      </Box>
+      <Box sx={{ position: 'relative', bottom: 132, zIndex: 1, height: '76vh' }}>
         <HomeSection2 />
-      </Layout>
+      </Box>
       <BoxStyled1>
         <Layout paddingY={0}>
           <>
-            <Box className="wrapper-svg1">
-              <Element1 />
-            </Box>
-            <Box className="wrapper-svg2">
-              <Element4 />
-            </Box>
             <HomeSection3 />
           </>
         </Layout>
@@ -140,19 +133,13 @@ const Home: NextPage<Props> = () => {
           <Layout>
             <>
               <HomeSection4 />
-              <Title text="Pelayanan Pemerintah Kota Surabaya" paddingY={0} />
+              {/* <Title text="Pelayanan Pemerintah Kota Surabaya" paddingY={0} /> */}
             </>
           </Layout>
         </Box>
         <Box className="box-inner">
           <Layout paddingY={0}>
             <>
-              <Box className="wrapper-svg4">
-                <Element2 />
-              </Box>
-              <Box className="wrapper-svg5">
-                <Element4 />
-              </Box>
               <HomeSection5 />
             </>
           </Layout>

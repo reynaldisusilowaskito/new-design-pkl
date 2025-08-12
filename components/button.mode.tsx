@@ -32,10 +32,14 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     width: circle,
     height: circle,
     backgroundColor: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
+    boxSizing: 'border-box',
   },
   '& .MuiSwitch-track': {
     borderRadius: circle,
     backgroundColor: theme.palette.secondary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
+    boxSizing: 'border-box',
   },
   '&.negative': {
     '& .MuiSwitch-switchBase': {

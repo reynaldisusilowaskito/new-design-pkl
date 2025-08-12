@@ -32,7 +32,7 @@ const StyledInput = styled(Input)(({ theme }) => ({
     top: '50%',
     '& svg': {
       '& path': {
-        fill: `${theme.palette.secondary.main} !important`,
+        fill: `${theme.palette.common.white} !important`,
       },
     },
   },
@@ -47,7 +47,7 @@ const StyledInput = styled(Input)(({ theme }) => ({
   },
   '& input': {
     color: theme.palette.common.white,
-    fontWeight: 700,
+    fontWeight: 200,
     padding: 0,
     '&::placeholder': {
       color: theme.palette.common.white,
@@ -59,7 +59,7 @@ const StyledInput = styled(Input)(({ theme }) => ({
 const Search: React.FunctionComponent<Props> = ({ isFooter }: Props) => {
   const router = useRouter()
   const accessibility = React.useContext(AccessibilityContext)
-  const [text, setText] = React.useState('Pencarian')
+  const [text, setText] = React.useState('Apa yang sedang anda cari?')
   const iconSearch = React.useMemo(() => {
     return (
       <Box
@@ -112,7 +112,7 @@ const Search: React.FunctionComponent<Props> = ({ isFooter }: Props) => {
           fullWidth
           className={accessibility.css.negative ? 'negative' : ''}
           autoComplete="off"
-          placeholder="Pencarian"
+          placeholder="Apa yang sedang anda cari?"
           startAdornment={iconSearch}
           inputProps={{
             size: 9,

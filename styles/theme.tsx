@@ -9,8 +9,8 @@ export const boxShadow = `0 0 20px 20px rgba(0, 0, 0, 0.07)`;
 export const boxShadow2 = `0 0 20px 20px ${grey[300]}`;
 
 const theme = createTheme();
-const lightColor1 = '#004ae1';
-export const yellowColor = '#fdd300';
+const lightColor1 = '#D2B690';
+export const yellowColor = '#006462';
 
 export const iconSurabaya = (sizeIcon: number) => ({
   backgroundColor: lightColor1,
@@ -26,7 +26,7 @@ export const iconSurabaya = (sizeIcon: number) => ({
     width: sizeIcon,
     height: sizeIcon,
     '& svg path': {
-      fill: theme.palette.common.white,
+      fill: theme.palette.common.black,
     },
   }, 
 });
@@ -42,7 +42,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
         main: yellowColor,
       },
       text: {
-        primary: '#474747',
+        primary: '#ffffffff',
       },
       divider : '#eaeaea',
       background: {
@@ -64,6 +64,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       divider : '#3b3d4d',
       background: {
         paper: '#003937',
+        // backgroundImage: 'url(/images/bg-landing-sby.svg)',
       },
       grey: {
         A100: '#3b3d4d',

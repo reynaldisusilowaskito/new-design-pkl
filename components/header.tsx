@@ -75,7 +75,7 @@ const AppBarStyled = styled(AppBar)(({ theme }) => ({
   width: '90%',
   left: 0,
   right: 0,
-  position: 'sticky',
+  position: 'fixed',
   top: 30,
   zIndex: 1100,
   boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
