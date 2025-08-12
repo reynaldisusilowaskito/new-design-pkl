@@ -187,3 +187,4 @@ NewsItem.defaultProps = {
 }
 
 export default memo(NewsItem)
+

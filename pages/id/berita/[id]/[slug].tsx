@@ -1,12 +1,15 @@
 import React from 'react'
-import type { NextPage } from 'next'
+import type { NextPage, GetServerSideProps } from 'next'
 import Head from 'next/head'
+import { Box } from '@mui/material'
+import { useRouter } from 'next/router'
 // import { uniq } from 'lodash'
 import { parse } from 'node-html-parser'
 import { StatusCodes } from 'http-status-codes'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import replaceAllInserter from 'string.prototype.replaceall'
-import Detail from 'components/detail'
+import BeritaDetail from 'components/news.detail.redesign'
+import BeritaLainnya from 'components/news.others.redesign'
 import { getDetail } from 'utils/services/news'
 import { getOrganization } from 'utils/services/organization'
 import schema from 'types/schemas'
@@ -16,6 +19,7 @@ interface Props {
 }
 
 const NewsDetail: NextPage<Props> = ({ detail }: Props) => {
+  const router = useRouter()
   const [news, setNews] = React.useState<schema['schemas']['Article'][]>([])
   const [loading, setLoading] = React.useState(true)
   const data = React.useMemo(() => {
@@ -75,55 +79,88 @@ const NewsDetail: NextPage<Props> = ({ detail }: Props) => {
     }
     setLoading(false)
   }
+  
   React.useEffect(() => {
     getData()
   }, [])
+
+  const handleLihatSemua = () => {
+    router.push('/id/berita');
+  };
+
   return (
     <React.Fragment>
       <Head>
-        <title>Pemerintah Kota Surabaya</title>
-        <meta name="description" content="Pemerintah Kota Surabaya" />
+        <title>{data.title || 'Detail Berita'} - Pemerintah Kota Surabaya</title>
+        <meta name="description" content={data.title || "Pemerintah Kota Surabaya"} />
       </Head>
-      <Detail
-        news={data}
-        contents={contents}
-        others={news}
-        pageTitle="Berita"
-        route="berita"
-        loadingDetail={false}
-        loading={loading}
-      />
+      
+      {/* Main Content */}
+      <Box sx={{ background: '#FFFFFF', minHeight: '100vh' }}>
+        {/* Berita Detail */}
+        <BeritaDetail 
+          news={data}
+          contents={contents}
+        />
+        
+        {/* Berita Lainnya */}
+        <BeritaLainnya 
+          items={news || []}
+          onLihatSemua={handleLihatSemua}
+        />
+      </Box>
     </React.Fragment>
   )
 }
 
-export const getServerSideProps = async ({ query }) => {
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(['contents'], async () => await getOrganization())
-  const { slug } = query
-  const detail = await getDetail(slug, 'berita')
-  let content = ''
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  try {
+    const queryClient = new QueryClient()
+    await queryClient.prefetchQuery(['contents'], async () => await getOrganization())
+    const { slug } = query
+    
+    if (!slug || typeof slug !== 'string') {
+      return {
+        redirect: {
+          destination: '/id/berita',
+          permanent: false,
+        },
+      }
+    }
+    
+    const detail = await getDetail(slug, 'berita')
+    let content = ''
 
-  if (!detail) {
+    if (!detail) {
+      return {
+        redirect: {
+          destination: '/id/berita',
+          permanent: false,
+        },
+      }
+    }
+
+    detail.details?.map((item) => {
+      content += item.content
+    })
+    
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        detail: {
+          ...detail,
+          content,
+        },
+      },
+    }
+  } catch (error) {
+    console.error('Error in getServerSideProps:', error)
     return {
       redirect: {
-        destination: '/',
+        destination: '/id/berita',
         permanent: false,
       },
     }
-  }
-
-  detail.details?.map((item) => {
-    content += item.content
-  })
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      detail: {
-        ...detail,
-        content,
-      },
-    },
   }
 }
 
