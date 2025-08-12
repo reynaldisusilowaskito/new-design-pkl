@@ -7,6 +7,7 @@ import replaceAllInserter from 'string.prototype.replaceall'
 import Layout from 'components/layout'
 import PagesTitle from 'components/pages.title'
 import Article from 'components/article'
+import SekilasSurabaya from 'components/sekilas.surabaya'
 import { getDetail } from 'utils/services/news'
 import { getOrganization } from 'utils/services/organization'
 import schema from 'types/schemas'
@@ -40,6 +41,24 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
     }
     return dataContents
   }, [content])
+
+  // Check if this is the "Sekilas Tentang Surabaya" page
+  const isSekilasPage = detail.title?.toLowerCase().includes('sekilas') || 
+                       detail.title?.toLowerCase().includes('tentang surabaya')
+
+  if (isSekilasPage) {
+    return (
+      <React.Fragment>
+        <Head>
+          <title>Sekilas Tentang Surabaya - Pemerintah Kota Surabaya</title>
+          <meta name="description" content="Sekilas tentang Kota Surabaya dengan narasumber yang terpercaya" />
+        </Head>
+        <SekilasSurabaya detail={detail} />
+      </React.Fragment>
+    )
+  }
+
+  // Default layout for other pages
   return (
     <React.Fragment>
       <Head>
