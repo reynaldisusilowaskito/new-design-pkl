@@ -46,15 +46,6 @@ export default function MyApp(props: MyAppProps) {
   const [load, setLoad] = React.useState(true)
 
   const theme = createTheme(getDesign(mode, accessibility.css.negative))
-
-  // Accessibility: toggle body classes for underline, grayscale, negative
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      document.body.classList.toggle('underline', accessibility.css.underline)
-      document.body.classList.toggle('grayscale', accessibility.css.grayscale)
-      document.body.classList.toggle('negative', accessibility.css.negative)
-    }
-  }, [accessibility.css.underline, accessibility.css.grayscale, accessibility.css.negative])
   const down400 = useMediaQuery(theme.breakpoints.down(theme.breakpoints.values.sm - 200))
   const downSm = useMediaQuery(theme.breakpoints.down('sm'))
   const downMd = useMediaQuery(theme.breakpoints.down('md'))
