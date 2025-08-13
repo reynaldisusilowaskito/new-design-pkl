@@ -56,6 +56,7 @@ function findMenu(array: schema['schemas']['Menu'][], title: string) {
   return object
 }
 
+
 const HomeSection2: React.FunctionComponent<Props> = () => {
   const { downSm } = React.useContext(BreakpointsContext)
   const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
@@ -66,20 +67,148 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
     return menu.length > 0 ? (result ? orderBy(result['child'], ['order', 'asc']) : []) : []
   }, [menu])
 
-  if (whatsInSurabaya?.length < 1) return <></>
+  // Placeholder data untuk deskripsi dan icon
+  const tentangSurabaya = {
+    title: 'TENTANG SURABAYA',
+    desc: 'Surabaya adalah ibu kota Provinsi Jawa Timur yang menjadi pusat pemerintahan dan perekonomian dari Provinsi Jawa Timur. Kota ini terbagi menjadi 31 kecamatan dan 154 kelurahan. Kota ini, yang dikenal dengan nilai kepahlawanan, memiliki sejarah panjang yang terkait dengan peristiwa heroik seperti peristiwa pertempuran 10 November 1945. Sebagai pelabuhan penting sejak zaman Majapahit hingga masa kolonial Belanda, Surabaya terus memainkan peran vital dalam perdagangan dan sejarah Indonesia.',
+    icon: (
+      <Box sx={{ display: 'flex', gap: 0.2, mb: 1 }}>
+        <Box sx={{ width: 32, height: 32, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/icon/icon_batik_coklat.svg" alt="Batik Icon" style={{ width: 24, height: 24 }} />
+        </Box>
+        <Box sx={{ width: 32, height: 32, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/icon/icon_batik_hijau.svg" alt="Batik Icon" style={{ width: 24, height: 24 }} />
+        </Box>
+      </Box>
+    ),
+  }
+
+  const apaDiSurabaya = [
+    { icon: <Box sx={{ width: 40, height: 40, bgcolor: '#B2DFDB', borderRadius: '10px', mb: 1 }} />, label: 'Bisnis dan Investasi' },
+    { icon: <Box sx={{ width: 40, height: 40, bgcolor: '#B2DFDB', borderRadius: '10px', mb: 1 }} />, label: 'Transportasi' },
+    { icon: <Box sx={{ width: 40, height: 40, bgcolor: '#B2DFDB', borderRadius: '10px', mb: 1 }} />, label: 'Wisata' },
+  ]
+
   return (
-    <Grid container spacing={0} alignItems="stretch" overflow={downSm ? 'hidden' : 'visible'}>
-      <Grid item xs={12} sm={4}>
-        <BoxStyled height={downSm ? 'auto' : '100%'}>
-          <Typography onMouseEnter={(e) => textToSpeech(e, true)}>
-            Ada apa di <span>Surabaya ?</span>
-          </Typography>
-        </BoxStyled>
+    <Box sx={{ bgcolor: '#fff', borderRadius: 6, px: downSm ? 2 : 30, py: downSm ? 2 : 10, boxShadow: 2, width:'97%', mx: 'auto', my: 4 }} >
+      <Grid container spacing={downSm ? 2 : 4} alignItems="stretch">
+        {/* Kiri: Kartu Gambar */}
+        <Grid item xs={12} md={4}>
+          <Box sx={{
+            bgcolor: (theme) => theme.palette.background.paper,
+            borderRadius: 5,
+            overflow: 'hidden',
+            height: downSm ? 260 : 520,
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            position: 'relative',
+            p: 0,
+          }}>
+            {/* Gambar utama */}
+            <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <img src="/images/photos/img_alun-alun.svg" alt="Alun Alun Surabaya" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.85)' }} />
+            </Box>
+          </Box>
+        </Grid>
+
+        {/* Kanan: Atas dan Bawah */}
+        <Grid item xs={12} md={8}>
+          <Grid container direction="column" spacing={downSm ? 2 : 3}>
+            {/* Atas: Tentang Surabaya */}
+            <Grid item>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2 }}>
+              {/* Teks Vertikal */}
+              <Box sx={{
+                bgcolor: (theme) => theme.palette.background.paper,
+                borderRadius: 5,
+                px: 2,
+                minWidth: 40,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                writingMode: 'vertical-rl',
+                textOrientation: 'mixed',
+                color: '#fff',
+                fontWeight: 700,
+                fontSize: 16,
+                letterSpacing: 1,
+                textAlign: 'center',
+              }}>
+                {tentangSurabaya.title}
+              </Box>
+              {/* Box Deskripsi */}
+              <Box sx={{
+                flex: 1,
+                border: '2px solid #176B87',
+                borderRadius: 5,
+                px: 3,
+                py: 2,
+                bgcolor: '#F8F8F8',
+                minHeight: 120,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+                {tentangSurabaya.icon}
+                <Typography variant="body2" sx={{ color: '#222', fontSize: 15, lineHeight: 1.6 }}>
+                  {tentangSurabaya.desc}
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+            {/* Bawah: Ada Apa di Surabaya */}
+            <Grid item>
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2 }}>
+                {/* Box utama 3 kolom */}
+                <Box sx={{
+                  flex: 1,
+                  bgcolor: (theme) => theme.palette.background.paper,
+                  borderRadius: 5,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'stretch',
+                  px: 2,
+                  py: downSm ? 2 : 3,
+                  minHeight: 120,
+                }}>
+                  {apaDiSurabaya.map((item, idx) => (
+                    <Box key={idx} sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', borderRight: idx < 2 ? '1px solid #fff3' : 'none', px: 1 }}>
+                      {item.icon}
+                      <Typography variant="subtitle1" sx={{ fontWeight: 400, fontSize: 16, textAlign: 'center' }}>{item.label}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+                {/* Teks Vertikal */}
+                <Box sx={{
+                  bgcolor: '#fff',
+                  border: '2px solid #176B87',
+                  borderRadius: 5,
+                  px: 2,
+                  py: 4,
+                  minWidth: 40,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed',
+                  color: '#176B87',
+                  fontWeight: 700,
+                  fontSize: 16,
+                  letterSpacing: 1,
+                  textAlign: 'center',
+                }}>
+                  ADA APA DI SURABAYA
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={8}>
-        <CarouselSmall data={whatsInSurabaya} />
-      </Grid>
-    </Grid>
+    </Box>
   )
 }
 

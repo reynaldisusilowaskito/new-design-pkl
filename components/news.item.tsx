@@ -100,98 +100,73 @@ const NewsItem: React.FunctionComponent<Props> = ({
   return (
     <BoxStyled>
       <Link href={`/id/${route}/${data.id ? data.id : '0'}/${data.slug}`}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item sm={gridImage}>
+        <Box position="relative" className="content-img">
+          <img
+            src={imagePath(data.id || 0, data.feature_image_url || '', isWebdisplay)}
+            style={{ width: '100%', aspectRatio: '3/2', objectFit: 'cover', display: 'block', borderRadius: 16 }}
+          />
+          {/* Overlay info berita */}
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              p: 2.5,
+              background: 'linear-gradient(0deg, rgba(0,0,0,0.65) 70%, rgba(0,0,0,0.15) 100%, rgba(0,0,0,0) 100%)',
+              color: '#fff',
+              borderBottomLeftRadius: 16,
+              borderBottomRightRadius: 16,
+              zIndex: 2,
+            }}
+          >
+            <Typography1Styled
+              fontSize={fontSizeTitle + accessibility.fontSize}
+              marginBottom={1.2}
+              className="title"
+              sx={{ color: '#fff', textShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+              onMouseEnter={() => textToSpeech(data.title, false)}
+            >
+              {truncateText(data.title, truncateTitle)}
+            </Typography1Styled>
+            <Typography
+              fontSize={fontSizeDate + accessibility.fontSize}
+              marginBottom={0.5}
+              className="date"
+              sx={{ color: '#fff', opacity: 0.85 }}
+              onMouseEnter={(e) => textToSpeech(e, true)}
+            >
+              {`${whatDayId(new Date(data.publish_date))} | ${timeAgo.format(new Date(data.publish_date))}`}
+            </Typography>
+            {description && withDescription && (
+              <Typography
+                className="description"
+                sx={{
+                  fontSize: fontSizeDef + accessibility.fontSize,
+                  color: '#fff',
+                  opacity: 0.9,
+                  mt: 0.5,
+                  textShadow: '0 2px 8px rgba(0,0,0,0.18)'
+                }}
+              >
+                {description}
+              </Typography>
+            )}
+          </Box>
+          {withPlay && (
             <Box
-              position="relative"
-              className="content-img"
+              className="wrapper-svg"
               sx={{
-                '& .wrapper-svg': {
-                  width: sizePlay,
-                  height: sizePlay,
+                '& svg': {
+                  width: `${sizePlay}px`,
+                  height: `${sizePlay}px`,
                 },
               }}
             >
-              <img
-                src={imagePath(data.id || 0, data.feature_image_url || '', isWebdisplay)}
-              />
-              {withPlay && (
-                <Box
-                  className="wrapper-svg"
-                  sx={{
-                    '& svg': {
-                      width: `${sizePlay}px`,
-                      height: `${sizePlay}px`,
-                    },
-                  }}
-                >
-                  <PlayIcon />
-                </Box>
-              )}
+              <PlayIcon />
             </Box>
-          </Grid>
-          <Grid item sm={gridContent}>
-            <Box className="inner" display="flex" alignItems="flex-start">
-              {withIconSurabaya && (
-                <Box>
-                  <Box
-                    className="icon-surabaya"
-                    sx={{
-                      bgcolor: accessibility.css.negative ? `${yellowColor} !important` : null,
-                    }}
-                  >
-                    <Box
-                      className="wrapper-svg"
-                      sx={{
-                        '& svg': {
-                          width: `${sizeIcon}px`,
-                          height: `${sizeIcon}px`,
-                          '& path': accessibility.css.negative
-                            ? {
-                              fill: 'black !important',
-                            }
-                            : null,
-                        },
-                      }}
-                    >
-                      <SurabayaIcon />
-                    </Box>
-                  </Box>
-                </Box>
-              )}
-              <Box flexGrow="1">
-                <Typography1Styled
-                  fontSize={fontSizeTitle + accessibility.fontSize}
-                  marginBottom={marginTop}
-                  className="title"
-                  onMouseEnter={() => textToSpeech(data.title, false)}
-                >
-                  {truncateText(data.title, truncateTitle)}
-                </Typography1Styled>
-                {description && withDescription && (
-                  <Typography
-                    className="description"
-                    sx={{
-                      fontSize: fontSizeDef + accessibility.fontSize,
-                    }}
-                  >
-                    {description}
-                  </Typography>
-                )}
-                <Typography
-                  fontSize={fontSizeDate + accessibility.fontSize}
-                  marginTop={marginTop}
-                  className="date"
-                  onMouseEnter={(e) => textToSpeech(e, true)}
-                >
-                  {`${whatDayId(new Date(data.publish_date))} | ${timeAgo.format(
-                    new Date(data.publish_date)
-                  )}`}
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
+          )}
+        </Box>
       </Link>
     </BoxStyled>
   )

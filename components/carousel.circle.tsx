@@ -1,142 +1,89 @@
-import React, { memo } from 'react'
-import { Box, Skeleton } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { mainCircle, mainCircleXl, mainCircleSm, mainCircle500 } from 'components/carousel.main'
-import { SliderType } from 'components/home.section1'
+
+"use client";
+
+import React, { memo } from 'react';
+import { Box, Skeleton } from '@mui/material';
+import { SliderType } from 'components/home.section1';
 
 interface Props {
   data: SliderType[]
-  control: string
-  current: number
   loading: boolean
-  goToSlide: (id: number) => any
 }
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  '& .carousel': {
-    position: 'relative',
-    width: mainCircle,
-    height: mainCircle,
-    borderRadius: '50%',
-    transition: '0.5s',
-    transformOrigin: 'center center',
-  },
-  '& .item-carousel': {
-    position: 'absolute',
-    borderRadius: '50%',
-    width: mainCircle / 2,
-    height: mainCircle / 2,
-    bottom: 0,
-    transition: '0.5s',
-    overflow: 'hidden',
-    '& img': {
-      height: '100%',
-      width: '100%',
-      objectFit: 'cover',
-    },
-    '&:nth-of-type(1)': {
-      left: '50%',
-      top: 0,
-    },
-    '&:nth-of-type(2)': {
-      left: '100%',
-      top: '50%',
-    },
-    '&:nth-of-type(3)': {
-      left: '50%',
-      top: '100%',
-    },
-    '&:nth-of-type(4)': {
-      left: '0',
-      top: '50%',
-    },
-  },
-  [theme.breakpoints.up('xl')]: {
-    '& .carousel': {
-      width: mainCircleXl,
-      height: mainCircleXl,
-    },
-    '& .item-carousel': {
-      width: mainCircleXl / 2,
-      height: mainCircleXl / 2,
-    },
-  },
-  [theme.breakpoints.down('sm')]: {
-    '& .carousel': {
-      width: mainCircleSm,
-      height: mainCircleSm,
-    },
-    '& .item-carousel': {
-      width: mainCircleSm / 2,
-      height: mainCircleSm / 2,
-    },
-  },
-  [theme.breakpoints.down(theme.breakpoints.values.sm - 100)]: {
-    // 500
-    '& .carousel': {
-      width: mainCircle500,
-      height: mainCircle500,
-    },
-    '& .item-carousel': {
-      width: mainCircle500 / 2,
-      height: mainCircle500 / 2,
-    },
-  },
-}))
 
-const CarouselCircle: React.FunctionComponent<Props> = ({
-  data,
-  control,
-  current,
-  loading,
-  goToSlide,
-}: Props) => {
-  const [carouselDeg, setCarouselDeg] = React.useState(0)
-  const [itemDeg, setItemDeg] = React.useState(0)
-  const next = React.useCallback(() => {
-    setCarouselDeg(carouselDeg - 90)
-    setItemDeg(itemDeg + 90)
-  }, [carouselDeg, itemDeg])
-  const prev = React.useCallback(() => {
-    setCarouselDeg(carouselDeg + 90)
-    setItemDeg(itemDeg - 90)
-  }, [carouselDeg, itemDeg])
-  React.useEffect(() => {
-    if (control == 'right') {
-      prev()
-    } else {
-      next()
-    }
-  }, [control, current])
+
+const CarouselMain: React.FunctionComponent<Props> = ({ data, loading }: Props) => {
+  // Ambil 4 gambar, fallback skeleton jika loading
+  const images = loading
+    ? Array(4).fill(null)
+    : data.slice(0, 4).map(v => `https://surabaya.go.id/uploads/${v.feature_image}`);
+
+  // Transformasi dan hover sesuai contoh
+  const transforms = [
+    'rotate(-15deg) translateY(90px) translateX(50px)',
+    'rotate(-4deg) translateY(50px) translateX(0px)',
+    'rotate(6deg) translateY(55px) translateX(-30px)',
+    'rotate(15deg) translateY(95px) translateX(-50px)'
+  ];
+  const hoverTransforms = [
+    'rotate(0deg) scale(1.3) translateY(10px) translateX(18px)',
+    'rotate(0deg) scale(1.3) translateY(8px) translateX(-18px)',
+    'rotate(0deg) scale(1.3) translateY(8px) translateX(-18px)',
+    'rotate(0deg) scale(1.3) translateY(10px) translateX(-18px)'
+  ];
+
   return (
-    <StyledBox>
-      <Box
-        className="carousel"
-        sx={{
-          transform: `rotate(${carouselDeg}deg)`,
-        }}
-      >
-        {[...new Array(4)].map((_v, i) => (
-          <Box
-            key={i}
-            className={`item-carousel`}
-            sx={{
-              transform: `translate(-50%, -50%) rotate(${itemDeg}deg)`,
-            }}
-            onClick={() => (loading ? null : goToSlide(data[i].id))}
-          >
-            {loading ? (
-              <Skeleton variant="rectangular" width="100%" height="100%" />
-            ) : (
-              <img src={`https://surabaya.go.id/uploads/${data[i]?.feature_image}`} />
-            )}
-          </Box>
-        ))}
-      </Box>
-    </StyledBox>
-  )
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 0,
+        mt: 2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        position: 'relative',
+        zIndex: 2,
+        width: '100%',
+        minHeight: 320,
+      }}
+    >
+      {images.map((img, idx) => (
+        <Box
+          key={idx}
+          sx={{
+            position: 'relative',
+            zIndex: 2 + idx,
+            mx: idx === 1 || idx === 2 ? -3 : -1,
+            transform: transforms[idx],
+            boxShadow: '0 8px 24px 0 rgba(0,0,0,0.18)',
+            borderRadius: '18px',
+            overflow: 'hidden',
+            width: 230,
+            height: 290,
+            background: '#fff',
+            border: '8px solid #fff',
+            transition: 'transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s cubic-bezier(0.4,0,0.2,1), z-index 0s',
+            '&:hover': {
+              transform: hoverTransforms[idx],
+              boxShadow: '0 16px 32px 0 rgba(0,0,0,0.22)',
+              zIndex: 10,
+            }
+          }}
+        >
+          {loading ? (
+            <Skeleton variant="rectangular" width="100%" height="100%" />
+          ) : (
+            <img
+              src={img}
+              alt={`foto${idx + 1}`}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          )}
+        </Box>
+      ))}
+    </Box>
+  );
 }
 
-CarouselCircle.defaultProps = {}
+CarouselMain.defaultProps = {}
 
-export default memo(CarouselCircle)
+export default memo(CarouselMain)

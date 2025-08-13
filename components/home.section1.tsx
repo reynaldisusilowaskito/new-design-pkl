@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import useTextToSpeech from 'hooks/useTextToSpeech'
 import { Box, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { styled } from '@mui/material/styles'
@@ -7,9 +8,6 @@ import CarouselMain from 'components/carousel.main'
 import Layout from 'components/layout'
 import Search from 'components/search'
 import { fontSize } from 'styles/theme'
-import Element1 from 'public/images/icon/element_1.svg'
-import Element2 from 'public/images/icon/element_2.svg'
-import Element3 from 'public/images/icon/element_3.svg'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import { AccessibilityContext } from 'contexts/accessibility'
 import schema from 'types/schemas'
@@ -35,46 +33,17 @@ export interface SliderType {
 interface Props {}
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  minHeight: `calc(100vh - ${heightHeader}px)`,
-  backgroundColor:
-    theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.grey[200],
+  minHeight: '102vh',
+  backgroundColor: theme.palette.background.paper,
+  backgroundImage: 'url(/images/bg-landing-sby.svg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
+  bottom: 158,
   overflow: 'hidden',
-  '& .wrapper-svg1, & .wrapper-svg1 div, & .wrapper-svg3, & .wrapper-svg3 div': {
-    position: 'absolute',
-    height: '92%',
-    width: '100%',
-    zIndex: 0,
-    '& svg': {
-      height: '100%',
-    },
-  },
-  '& .wrapper-svg1, & .wrapper-svg1 div': {
-    left: 0,
-    bottom: 10,
-    '& svg': {
-      transform: 'translateX(-50%)',
-      '& circle': {
-        fill: `${theme.palette.primary.main} !important`,
-      },
-    },
-  },
-  '& .wrapper-svg3, & .wrapper-svg3 div': {
-    left: 0,
-    top: 0,
-    textAlign: 'right',
-    '& svg': {
-      transform: 'translate(20%, -68%)',
-      '& circle': {
-        stroke: `${theme.palette.primary.main} !important`,
-      },
-    },
-    [theme.breakpoints.down('xl')]: {
-      height: '75%',
-    },
-  },
   '& .typo1': {
     fontSize: fontSize + 70,
     textTransform: 'uppercase',
@@ -120,50 +89,55 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const HomeSection1: React.FunctionComponent<Props> = () => {
   const { downSm, downXl } = React.useContext(BreakpointsContext)
   const accessibility = React.useContext(AccessibilityContext)
+  const { textToSpeech } = useTextToSpeech()
   const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
   const data = React.useMemo(() => contents?.sliders || [], [contents])
 
   return (
     <StyledBox>
-      <Box className="wrapper-svg1">
-        <Element2 />
-      </Box>
-      <Box className="wrapper-svg3">
-        <Element1 />
-      </Box>
-      <Layout maxWidth={downXl ? 'lg' : 'xl'}>
+      <Box sx={{ mt: 0, p: 0, width: '100%' }}>
         <Box
           display="flex"
+          flexDirection="column"
           alignItems="center"
-          justifyContent={downSm ? 'center' : 'space-between'}
-          flexWrap="wrap"
+          justifyContent="center"
+          minHeight="80vh"
+          pt={0}
         >
-          {!!data && <CarouselMain data={data} loading={false} />}
-          <Box flexGrow="1" paddingLeft={downSm ? 0 : 3} paddingTop={downSm ? 5 : 0}>
-            <Typography className={`typo1 ${accessibility.css.negative ? 'negative' : ''}`}>
-              {`Surabaya`}
-            </Typography>
-            <Box className="wrapper-svg2">
-              <Element3 />
+          <Box width="100%" maxWidth={700} textAlign="center" mb={downSm ? 4 : 1}>
+             <img
+        src="/images/icon/icon-text-surabaya.svg"
+        alt="Surabaya"
+        style={{ width: 400, marginBottom: 16, marginTop: 200 }}
+      />
+            <Box className="wrapper-svg2" sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
             </Box>
             <Typography
               textTransform="uppercase"
-              textAlign="right"
+              textAlign="center"
               fontSize={downSm ? fontSize - 1 : fontSize}
-              fontWeight={900}
+              fontWeight={500}
               letterSpacing={downSm ? 1 : 4}
               lineHeight={1.2}
+              mb={3}
+              tabIndex={0}
+              onMouseEnter={e => textToSpeech(e, true)}
+              onFocus={e => textToSpeech(e, true)}
+              style={{ cursor: accessibility.speech ? 'pointer' : undefined }}
             >
-              {`Transformasi Surabaya Menuju Kota Dunia`}
+              {`Gotong royong menuju kota dunia yang maju, `}
               <br />
-              {`Yang Maju, Humanis dan Berkelanjutan`}
+              {`humanis, dan berkelanjutan`}
             </Typography>
-            <Box display="flex" justifyContent={downSm ? 'center' : 'flex-end'} marginTop={3}>
+            <Box display="flex" justifyContent="center" marginTop={5}>
               <Search />
             </Box>
           </Box>
+          <Box width="100%" display="flex" justifyContent="center" alignItems="flex-end" mt={downSm ? 2 : 6}>
+            {!!data && <CarouselMain data={data} loading={false} />}
+          </Box>
         </Box>
-      </Layout>
+      </Box>
     </StyledBox>
   )
 }
