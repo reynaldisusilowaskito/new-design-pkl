@@ -3,7 +3,7 @@ import { Box, Skeleton } from '@mui/material'
 import Slider from 'react-slick'
 import { styled } from '@mui/material/styles'
 import CarouselItem from 'components/carousel.item'
-import { SliderType } from 'components/home.section1'
+import { SliderType } from 'components/home.hero.section'
 import CarouselCircle from 'components/carousel.circle'
 import _ from 'lodash'
 
