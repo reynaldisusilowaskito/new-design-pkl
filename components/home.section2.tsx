@@ -84,13 +84,34 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
   }
 
   const apaDiSurabaya = [
-    { icon: <Box sx={{ width: 40, height: 40, bgcolor: '#B2DFDB', borderRadius: '10px', mb: 1 }} />, label: 'Bisnis dan Investasi' },
-    { icon: <Box sx={{ width: 40, height: 40, bgcolor: '#B2DFDB', borderRadius: '10px', mb: 1 }} />, label: 'Transportasi' },
-    { icon: <Box sx={{ width: 40, height: 40, bgcolor: '#B2DFDB', borderRadius: '10px', mb: 1 }} />, label: 'Wisata' },
+    { 
+      icon: (
+        <Box sx={{ width: 40, height: 40, borderRadius: '10px', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/icon/Logo-Bisnis_Investasi.svg" alt="Bisnis dan Investasi" style={{ width: 50, height: 50 }} />
+        </Box>
+      ), 
+      label: 'Bisnis dan Investasi' 
+    },
+    { 
+      icon: (
+        <Box sx={{ width: 40, height: 40, borderRadius: '10px', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/icon/Logo-Transportasi.svg" alt="Transportasi" style={{ width: 50, height: 50 }} />
+        </Box>
+      ), 
+      label: 'Transportasi' 
+    },
+    { 
+      icon: (
+        <Box sx={{ width: 40, height: 40, borderRadius: '10px', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/icon/Logo-Wisata.svg" alt="Wisata" style={{ width: 50, height: 50 }} />
+        </Box>
+      ), 
+      label: 'Wisata' 
+    },
   ]
 
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: 6, px: downSm ? 2 : 30, py: downSm ? 2 : 10, boxShadow: 2, width:'97%', mx: 'auto', my: 4 }} >
+    <Box sx={{ bgcolor: '#fff', borderRadius: 6, px: downSm ? 2 : 30, py: downSm ? 2 : 10, boxShadow: 2, width:'97%', mx: 'auto', my: 0 }} >
       <Grid container spacing={downSm ? 2 : 4} alignItems="stretch">
         {/* Kiri: Kartu Gambar */}
         <Grid item xs={12} md={4}>

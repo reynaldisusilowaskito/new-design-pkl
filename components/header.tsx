@@ -55,50 +55,67 @@ export const Logo = React.memo(() => {
       sx={{
         cursor: 'pointer',
         filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
+        padding: '4px 8px',
+        borderRadius: '8px',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          transform: 'scale(1.05)',
+        },
       }}
     >
-      <img src={`/images/logo/logo-navbar.svg`} height={40} />
+      <img 
+        src={`/images/logo/logo-navbar.svg`} 
+        height={36} 
+        style={{
+          filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+        }}
+      />
     </Box>
   )
 })
 
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
-  background: theme.palette.mode === 'dark'
-    ? 'rgba(30,40,40,0.35)'
-    : 'rgba(30, 60, 60, 0.35)',
-  minHeight: 48,
-  display: 'flex',
-  justifyContent: 'center',
+  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  backdropFilter: 'blur(10px)',
   borderRadius: '999px',
-  border: '1px solid #fff',
-  margin: '0 auto',
-  width: '90%',
-  left: 0,
-  right: 0,
-  position: 'sticky',
-  top: 30,
-  zIndex: 1100,
-  boxShadow: '0 2px 12px 0 rgba(0,0,0,0.04)',
-  backdropFilter: 'blur(4px)',
-  [theme.breakpoints.down('sm')]: {
-    minHeight: 40,
-    width: 'calc(100% - 8px)',
-    margin: '6px auto 0 auto',
-  },
+  margin: theme.spacing(4, 'auto'), // Auto margin untuk center horizontal
+  width: '90%', // Lebar 80%
+  left: '50%', // Posisi dari kiri 50%
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+  top: theme.spacing(3), // Ubah nilai ini untuk menurunkan navbar
 }))
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   '& a': {
     margin: theme.spacing(0, 1.5),
     textDecoration: 'none',
-    color: theme.palette.text.primary,
+    color: 'rgba(255, 255, 255, 0.85)',
     fontWeight: 600,
     textTransform: 'uppercase',
-    padding: theme.spacing(0.5),
+    padding: theme.spacing(0.5, 1),
     display: 'flex',
     alignItems: 'center',
+    borderRadius: '8px',
+    transition: 'all 0.2s ease-in-out',
+    position: 'relative',
+    '&:hover': {
+      color: 'rgba(255, 255, 255, 1)',
+      transform: 'translateY(-1px)',
+    },
     '&.active': {
-      color: theme.palette.primary.main,
+      color: 'rgba(255, 255, 255, 1)',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: '-2px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '60%',
+        height: '2px',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        borderRadius: '1px',
+      },
     },
     [theme.breakpoints.down(theme.breakpoints.values.sm + 424)]: {
       // 1024
@@ -112,7 +129,10 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
   '&.negative': {
     '& a.active': {
-      color: theme.palette.common.white,
+      color: 'rgba(255, 255, 255, 1)',
+      '&::after': {
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      },
     },
   },
 }))
@@ -147,20 +167,24 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
           elevation={0}
           sx={{
             filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1100,
           }}
         >
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            paddingLeft={downMd ? 2 : 6}
-            paddingRight={2}
+            paddingLeft={downMd ? 2 : 3}
+            paddingRight={downMd ? 2 : 3}
             sx={{
               opacity,
-              borderRadius: '999px',
               width: '100%',
-              minHeight: 40,
-              background: 'none',
+              minHeight: 60,
+              background: 'transparent',
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 160 }}>
@@ -172,12 +196,12 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
                 sx={{
                   flex: 1,
                   justifyContent: 'center',
-                  minHeight: 40,
+                  minHeight: 60,
                   '& a': {
-                    fontSize: '12px',
-                    fontWeight: 700,
+                    fontSize: '13px',
+                    fontWeight: 600,
                     letterSpacing: 0.5,
-                    margin: '0 14px',
+                    margin: '0 8px',
                   },
                 }}
               >

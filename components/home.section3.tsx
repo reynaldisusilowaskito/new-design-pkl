@@ -44,6 +44,9 @@ export interface NewsType {
 interface Props { }
 
 const BoxStyled = styled(Box)(({ theme }) => ({
+  width: '80%',
+  maxWidth: '80%',
+  margin: '0 auto',
   '& .MuiGrid-container': {
     position: 'relative',
     zIndex: 1,
@@ -107,9 +110,9 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
   return (
     <>
       {data?.data && (
-        <BoxStyled sx={{ position: 'relative', borderRadius: 0, p: downSm ? 2 : 4, overflow: 'hidden' }}>
+        <BoxStyled sx={{ position: 'relative', borderRadius: 0, p: downSm ? 4 : 7, overflow: 'hidden' }}>
           {/* Top Bar */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, mt: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <img
                 src="/images/icon/icon_batik_coklat_kiri.svg"
