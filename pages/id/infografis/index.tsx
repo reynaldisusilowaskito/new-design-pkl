@@ -85,7 +85,7 @@ const Infografis: NextPage<Props> = () => {
             <Box
               sx={{
                 display: 'inline-block',
-                backgroundColor: 'primary.main',
+                backgroundColor: 'secondary.main',
                 color: 'common.white',
                 borderRadius: 8,
                 px: 2,

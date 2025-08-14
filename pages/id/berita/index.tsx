@@ -19,7 +19,7 @@ interface Props {}
 const BoxStyled = styled(Box)(({ theme }) => ({
   '& .main-slider': {
     '& .main': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.common.white,
       borderRadius: theme.spacing(2.5),
       marginBottom: theme.spacing(5),
       overflow: 'hidden',
@@ -67,10 +67,11 @@ const BoxStyled = styled(Box)(({ theme }) => ({
     },
     '& .thumb': {
       position: 'relative',
-      backgroundColor: theme.palette.text.primary === 'dark' ? theme.palette.grey.A100 : theme.palette.background.paper,
+      // Keep subtle white card but reduce apparent border thickness
+      backgroundColor: theme.palette.common.white,
       color: theme.palette.text.secondary,
-      borderRadius: theme.spacing(2.5),
-      padding: theme.spacing(7, 5),
+      borderRadius: theme.spacing(2),
+      padding: theme.spacing(2),
       '& .slick-slider': {
         maxWidth: 920,
         margin: '0 auto',
@@ -192,7 +193,7 @@ const News: NextPage<Props> = () => {
             <Box
               sx={{
                 display: 'inline-block',
-                backgroundColor: 'primary.main',
+                backgroundColor: 'secondary.main',
                 color: 'common.white',
                 borderRadius: 8,
                 px: 2,

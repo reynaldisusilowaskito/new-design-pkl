@@ -13,7 +13,7 @@ const lightColor1 = '#D2B690';
 export const yellowColor = '#006462';
 
 export const iconSurabaya = (sizeIcon: number) => ({
-  backgroundColor: lightColor1,
+  backgroundColor: yellowColor,
   width: sizeIcon + 16,
   height: sizeIcon + 16,
   display: 'flex',
@@ -26,7 +26,7 @@ export const iconSurabaya = (sizeIcon: number) => ({
     width: sizeIcon,
     height: sizeIcon,
     '& svg path': {
-      fill: theme.palette.common.black,
+      fill: theme.palette.common.white,
     },
   }, 
 });

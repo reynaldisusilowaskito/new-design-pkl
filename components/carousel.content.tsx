@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import Slider from 'react-slick'
 import { fontSize } from 'styles/theme'
-import { StyledBox } from 'styles/carousel'
+import { StyledBox } from 'styles/carousel.berita'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import CarouselNewsItem from 'components/carousel.news.item'
 import { Arrow } from 'components/carousel.small'
@@ -68,11 +68,11 @@ const CarouselContent: React.FunctionComponent<Props> = ({
     autoplay: false,
     draggable: false,
   }
-  const handleNextPrev = React.useCallback((isNext: boolean) => {
+  const handleNextPrevThumb = React.useCallback((isNext: boolean) => {
     if (isNext) {
-      slider.current.slickNext()
+      sliderThumb.current?.slickNext()
     } else {
-      slider.current.slickPrev()
+      sliderThumb.current?.slickPrev()
     }
   }, [])
   return (
@@ -80,11 +80,6 @@ const CarouselContent: React.FunctionComponent<Props> = ({
       <StyledBox
         className="content main"
       >
-        <Arrow
-          size={(fontSize + (downLg ? 18 : 25)).toString()}
-          className="slick-arrow prev"
-          onClick={() => handleNextPrev(false)}
-        />
         <Slider ref={slider} {...settings}>
           {data?.map((v, i) => (
             <CarouselNewsItem
@@ -102,11 +97,6 @@ const CarouselContent: React.FunctionComponent<Props> = ({
             />
           ))}
         </Slider>
-        <Arrow
-          size={(fontSize + (downLg ? 18 : 25)).toString()}
-          className="slick-arrow next"
-          onClick={() => handleNextPrev(true)}
-        />
       </StyledBox>
       {withThumbnail && (
         <StyledBox
@@ -114,11 +104,16 @@ const CarouselContent: React.FunctionComponent<Props> = ({
           sx={{
             background: '#fff',
             borderRadius: 4,
-            border: '2px solid #c8a97e',
+            // Use default thin border from StyledBox styles; avoid extra thick outline
             boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             mt: 2,
           }}
         >
+          <Arrow
+            size={(fontSize + (downLg ? 18 : 25)).toString()}
+            className="slick-arrow prev"
+            onClick={() => handleNextPrevThumb(false)}
+          />
           <Slider ref={sliderThumb} {...settingsThumb}>
             {data?.map((v, i) => (
               <CarouselNewsItem
@@ -133,6 +128,11 @@ const CarouselContent: React.FunctionComponent<Props> = ({
               />
             ))}
           </Slider>
+          <Arrow
+            size={(fontSize + (downLg ? 18 : 25)).toString()}
+            className="slick-arrow next"
+            onClick={() => handleNextPrevThumb(true)}
+          />
         </StyledBox>
       )}
     </>
