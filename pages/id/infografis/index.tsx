@@ -6,15 +6,10 @@ import { useRouter } from 'next/router'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { StatusCodes } from 'http-status-codes'
 import Layout from 'components/layout'
-import Title from 'components/title'
 import MediaHeader from 'components/media.header'
 import Pagination from 'components/pagination'
-import NewsItem from 'components/news.item'
+import InfografisList from 'components/infografis.list'
 import { BoxStyled } from 'pages/id/videos/index'
-import { fontSizeTitle } from 'components/news.list'
-import Element1 from 'public/images/icon/element_1.svg'
-import Element3 from 'public/images/icon/element_3.svg'
-import Element4 from 'public/images/icon/element_4.svg'
 import { AccessibilityContext } from 'contexts/accessibility'
 import { getOrganization } from 'utils/services/organization'
 import schema from 'types/schemas'
@@ -72,23 +67,40 @@ const Infografis: NextPage<Props> = () => {
         <title>Pemerintah Kota Surabaya</title>
         <meta name="description" content="Pemerintah Kota Surabaya" />
       </Head>
-      <BoxStyled overflow="hidden" className={accessibility.css.negative ? 'negative' : ''}>
+      <BoxStyled
+        overflow="hidden"
+        className={accessibility.css.negative ? 'negative' : ''}
+        sx={{
+          position: 'relative',
+          backgroundImage: 'url(/images/bg-batik.svg)',
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'contain',
+          minHeight: '100vh',
+          maxHeight: '400vh',
+          bottom: 130,
+        }}
+      >
         <Layout paddingY={2}>
           <>
-            <Box className="wrapper-svg-element1 infografis">
-              <Element1 />
+            <Box
+              sx={{
+                display: 'inline-block',
+                backgroundColor: 'primary.main',
+                color: 'common.white',
+                borderRadius: 8,
+                px: 2,
+                py: 1,
+                fontWeight: 650,
+                fontSize: { xs: 22, sm: 18 },
+                letterSpacing: 1,
+                boxShadow: 1,
+                mb: 4,
+                mt: { xs: 6, sm: 8, md: 10 }, // padding atas lebih banyak
+              }}
+            >
+              INFOGRAFIS
             </Box>
-            <Box className="wrapper-svg-element4 infografis">
-              <Element4 />
-            </Box>
-            <Title text="Infografis" />
             <Box position="relative">
-              <Box className="wrapper-svg-element3a">
-                <Element3 />
-              </Box>
-              <Box className="wrapper-svg-element3b">
-                <Element3 />
-              </Box>
               <MediaHeader
                 text="Infografis mengenai Kota Surabaya"
                 description="Pemerintah Kota Surabaya"
@@ -114,35 +126,39 @@ const Infografis: NextPage<Props> = () => {
                     {infografis &&
                       infografis.length > 0 &&
                       infografis.map((v, i) => (
-                        <Grid
-                          key={i}
-                          item
-                          sm={4}
-                          className={`grid-content`}
-                          sx={{
-                            '& .MuiGrid-container': {
-                              '& .MuiGrid-item': {
-                                '& .inner': {
-                                  '& .title': {
-                                    fontSize: fontSizeTitle - 5 + accessibility.fontSize,
-                                  },
-                                },
-                              },
-                            },
-                          }}
-                        >
-                          <NewsItem
-                            data={v}
-                            gridSpacing={2}
-                            withDescription={false}
-                            gridImage={12}
-                            gridContent={12}
-                            truncateTitle={30}
-                            withIconSurabaya={true}
-                            withPlay={false}
-                            route="infografis"
-                          />
-                        </Grid>
+                          <Grid
+                            key={i}
+                            item
+                            sm={4}
+                            xs={12}
+                            className="grid-content"
+                          >
+                            <Box
+                              sx={{
+                                border: '2px solid #D2B690',
+                                borderRadius: 4,
+                                boxShadow: '0 2px 8px rgba(0,0,0,0)',
+                                background: '#fff',
+                                overflow: 'hidden',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                              }}
+                            >
+                              <InfografisList
+                                data={v}
+                                gridSpacing={2}
+                                withDescription={false}
+                                gridImage={12}
+                                gridContent={12}
+                                truncateTitle={30}
+                                withIconSurabaya={true}
+                                withPlay={false}
+                                route="infografis"
+                              />
+                            </Box>
+                          </Grid>
                       ))}
                   </>
                 )}

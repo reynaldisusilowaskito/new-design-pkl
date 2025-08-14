@@ -42,7 +42,8 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
         main: yellowColor,
       },
       text: {
-        primary: '#ffffffff',
+        primary: '#ffffff',
+        secondary: '#454444ff',
       },
       divider : '#eaeaea',
       background: {
@@ -67,7 +68,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
         // backgroundImage: 'url(/images/bg-landing-sby.svg)',
       },
       grey: {
-        A100: '#3b3d4d',
+        A100: '#003937',
       },
       common: negative ? {
         white: yellowColor,

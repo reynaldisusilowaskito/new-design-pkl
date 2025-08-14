@@ -13,19 +13,26 @@ interface Props {
 };
 
 const BoxStyled = styled(Box)(({ theme }) => ({
-  minHeight: 300,
+  minHeight: 240,
   padding: theme.spacing(3, 10),
-  background: theme.palette.primary.main,
+  backgroundColor: 'transparent',
+  backgroundImage: "url('/images/Bg-Title-Card.svg')",
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
+  alignItems: 'flex-start', 
   justifyContent: 'center',
+  borderRadius: 8,
+  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
   '& .MuiTypography-root': {
     color: theme.palette.common.white,
   },
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(3),
     minHeight: 'auto',
+    backgroundSize: 'contain',
   },
 }));
 

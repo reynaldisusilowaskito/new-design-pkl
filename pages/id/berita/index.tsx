@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { StatusCodes } from 'http-status-codes'
 import Layout from 'components/layout'
 import CarouselContent from 'components/carousel.content'
-import Title from 'components/title'
 import NewsList, { fontSizeBigger, fontSizeTitle } from 'components/news.list'
 import Pagination from 'components/pagination'
 import { BreakpointsContext } from 'contexts/breakpoints'
@@ -68,25 +67,15 @@ const BoxStyled = styled(Box)(({ theme }) => ({
     },
     '& .thumb': {
       position: 'relative',
-      backgroundColor:
-        theme.palette.mode == 'dark' ? theme.palette.grey.A100 : theme.palette.background.paper,
+      backgroundColor: theme.palette.text.primary === 'dark' ? theme.palette.grey.A100 : theme.palette.background.paper,
+      color: theme.palette.text.secondary,
       borderRadius: theme.spacing(2.5),
       padding: theme.spacing(7, 5),
       '& .slick-slider': {
         maxWidth: 920,
         margin: '0 auto',
       },
-      '& .wrapper-svg-section3': {
-        position: 'absolute',
-        top: theme.spacing(3),
-        right: `calc(100% + ${theme.spacing(4)})`,
-        '& svg': {
-          width: 50,
-          '& circle': {
-            fill: theme.palette.secondary.main,
-          },
-        },
-      },
+      // aksen circle kuning dihapus
     },
   },
   [theme.breakpoints.down('sm')]: {
@@ -184,19 +173,39 @@ const News: NextPage<Props> = () => {
         <meta name="description" content="Pemerintah Kota Surabaya" />
       </Head>
       <BoxStyled
-        sx={
-          current != 1 && {
+        sx={{
+          backgroundImage: 'url(/images/bg-batik.svg)',
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'contain',
+          minHeight: '100vh',
+          ...(current != 1 && {
             '& .news-item-container': {
               '& .news-item:first-of-type': {
                 marginTop: `0 !important`,
               },
             },
-          }
-        }
+          })
+        }}
       >
         <Layout paddingY={2}>
           <>
-            <Title text="Berita" />
+            <Box
+              sx={{
+                display: 'inline-block',
+                backgroundColor: 'primary.main',
+                color: 'common.white',
+                borderRadius: 8,
+                px: 2,
+                py: 1,
+                fontWeight: 650,
+                fontSize: { xs: 22, sm: 18 },
+                letterSpacing: 1,
+                boxShadow: 1,
+                mb: 4,
+              }}
+            >
+              BERITA
+            </Box>
             {loading ? (
               <>
                 {[...new Array(6)].map((_v, i) => (

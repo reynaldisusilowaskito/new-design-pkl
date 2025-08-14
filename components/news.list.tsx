@@ -3,8 +3,6 @@ import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { fontSize, borderRadius } from 'styles/theme'
 import NewsItem from 'components/news.item'
-import Element1 from 'public/images/icon/element_1.svg'
-import Element3 from 'public/images/icon/element_3.svg'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import schema from 'types/schemas'
 
@@ -19,15 +17,21 @@ export const fontSizeBigger = fontSize + 14 // fontsize for slider title
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
   '& .news-item': {
+    backgroundColor: theme.palette.mode === 'dark' ?  theme.palette.background.paper : theme.palette.background.paper,
+    borderRadius: theme.spacing(borderRadius * 4),
     '& a': {
       display: 'block',
       padding: theme.spacing(5),
       borderRadius: theme.spacing(borderRadius),
       overflow: 'hidden',
       transition: `all 0.2s ease-in-out`,
+  color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
       '&:hover': {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
+        '& .inner .MuiBox-root p.title, & .inner .MuiBox-root p.description, & .inner .MuiBox-root p.date': {
+          color: theme.palette.text.primary,
+        },
       },
       '& .inner .MuiBox-root': {
         display: 'flex',
@@ -35,37 +39,23 @@ const BoxStyled = styled(Box)(({ theme }) => ({
         '& p': {
           '&.title': {
             margin: theme.spacing(0),
+            color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
+            fontWeight: 700,
           },
           '&.description': {
             order: 2,
+            color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
           },
           '&.date': {
             order: 1,
             margin: theme.spacing(0, 0, 2),
+            color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
+          },
+          '&': {
+            color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
           },
         },
       },
-    },
-  },
-  '& .wrapper-svg-section1': {
-    position: 'absolute',
-    bottom: 0,
-    right: `100%`,
-    transform: 'translateX(30%)',
-    zIndex: -1,
-    '& svg': {
-      width: theme.spacing(100),
-      '& circle': {
-        stroke: `${theme.palette.secondary.main} !important`,
-      },
-    },
-  },
-  '& .wrapper-svg-section3': {
-    position: 'absolute',
-    top: '20%',
-    left: `calc(100% + ${theme.spacing(4)})`,
-    '& svg': {
-      width: 50,
     },
   },
   [theme.breakpoints.down('sm')]: {
@@ -84,12 +74,6 @@ const NewsList: React.FunctionComponent<Props> = ({ data, route }: Props) => {
   const { downSm } = React.useContext(BreakpointsContext)
   return (
     <BoxStyled>
-      <Box className="wrapper-svg-section1">
-        <Element1 />
-      </Box>
-      <Box className="wrapper-svg-section3">
-        <Element3 />
-      </Box>
       <Box className="news-item-container">
         {data.map((v, i) => (
           <Box marginTop={downSm ? 2 : 5} key={i} className="news-item">

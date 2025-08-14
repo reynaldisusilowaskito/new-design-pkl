@@ -1,233 +1,196 @@
-import React, { memo } from 'react'
-import { Box, Grid, Container, Typography } from '@mui/material'
-import Link from 'next/link'
+import React, { memo, useContext } from 'react'
+import { Box, Typography, Stack, Container, IconButton, TextField } from '@mui/material'
+import { Search } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
-import { useQuery } from '@tanstack/react-query'
-import { fontSize } from 'styles/theme'
-import { Logo } from 'components/header'
-import Search from 'components/search'
-import LogoCc from 'public/images/logo_cc.svg'
-import { BreakpointsContext } from 'contexts/breakpoints'
 import { AccessibilityContext } from 'contexts/accessibility'
-import useTextToSpeech from 'hooks/useTextToSpeech'
-import schema from 'types/schemas'
 
 interface Props {
   load: boolean
 }
 
-const heightCopy = fontSize + 16
-const StyledContainer = styled(Container)(({ theme }) => ({
+const StyledFooter = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-  padding: theme.spacing(7, 0),
-  overflow: 'hidden',
-  '& .contact': {
-    borderBottom: `2px solid ${theme.palette.primary.main}`,
-    '& .MuiGrid-container': {
-      '& .MuiGrid-item': {
-        '& svg': {
-          '& path': {
-            fill: theme.palette.primary.main,
-          },
-        },
-        '&:nth-of-type(2)': {
-          '& svg': {
-            '& path': {
-              '&:nth-of-type(2)': {
-                stroke: theme.palette.primary.main,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  '& .social-media': {
-    '& a': {
-      display: 'block',
-      margin: theme.spacing(0, 2.5),
-      '&:first-of-type': {
-        marginLeft: 0,
-      },
-      '& svg': {
-        '& path': {
-          fill: theme.palette.primary.main,
-        },
-      },
-    },
-  },
-  '& .copy': {
-    '& .wrapper-svg': {
-      height: heightCopy,
-      overflow: 'hidden',
-      marginRight: theme.spacing(1),
-      '& svg': {
-        '& path': {
-          fill: theme.palette.text.primary,
-        },
-      },
-    },
-  },
+  color: theme.palette.text.primary,
+  paddingTop: theme.spacing(8),
+  paddingBottom: theme.spacing(4),  
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  backgroundImage: "url('/images/footer/bg-batik.svg')",
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  transition: 'background 0.3s, color 0.3s',
   '&.negative': {
-    '& .contact': {
-      borderBottom: `2px solid ${theme.palette.common.white}`,
-      '& .MuiGrid-container': {
-        '& .MuiGrid-item': {
-          '& svg': {
-            '& path': {
-              fill: theme.palette.common.white,
-            },
-          },
-          '&:nth-of-type(2)': {
-            '& svg': {
-              '& path': {
-                '&:nth-of-type(2)': {
-                  stroke: theme.palette.common.white,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    '& .social-media': {
-      '& a': {
-        '& svg': {
-          '& path': {
-            fill: theme.palette.common.white,
-          },
-        },
-      },
+    backgroundColor: theme.palette.primary.main, // hijau
+    '& .MuiTypography-root, & .MuiSvgIcon-root, & .footer-icon, & input, & .MuiInputBase-input': {
+      color: '#FFD600', // font tetap kuning
+      filter: 'brightness(1.2) sepia(1) hue-rotate(10deg) saturate(8)',
     },
   },
 }))
 
 const Footer: React.FunctionComponent<Props> = ({ load }: Props) => {
-  const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
-  const footerData = React.useMemo(() => contents?.footer || [], [contents])
-  const socialMedia = React.useMemo(() => contents?.social_media || [], [contents])
-  const { downSm } = React.useContext(BreakpointsContext)
-  const accessibility = React.useContext(AccessibilityContext)
-  const { textToSpeech } = useTextToSpeech()
+  const socialMedia = [
+    { icon: '/images/footer/icon-fb.svg', url: 'https://facebook.com', label: 'Facebook' },
+    { icon: '/images/footer/icon-x.svg', url: 'https://twitter.com', label: 'Twitter/X' },
+    { icon: '/images/footer/icon-ig.svg', url: 'https://instagram.com', label: 'Instagram' },
+    { icon: '/images/footer/icon-yt.svg', url: 'https://youtube.com', label: 'YouTube' },
+    { icon: '/images/footer/icon-tt.svg', url: 'https://tiktok.com', label: 'TikTok' },
+  ]
+  const accessibility = useContext(AccessibilityContext)
   return (
-    <StyledContainer
-      maxWidth={false}
-      className={accessibility.css.negative ? 'negative' : ''}
+    <StyledFooter
       sx={{
         display: load ? 'none' : 'block',
         filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
+        fontSize: 16 + accessibility.fontSize,
       }}
+      className={accessibility.css.negative ? 'negative' : ''}
     >
-      <Container maxWidth="lg">
-        <Box display="flex" justifyContent="center">
-          <Logo />
-        </Box>
-        <Box className="contact">
-          <Grid container spacing={2} paddingY={5} paddingX={3}>
-            {footerData.map((value, i) => (
-              <Grid
-                key={i}
-                item
-                xs={12}
-                sm={4}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                }}
-              >
-                <Box
-                  className="wrapper-svg"
-                  sx={{
-                    '& svg, & img': {
-                      height: fontSize + 30,
-                    },
-                  }}
-                >
-                  <img src={`https://surabaya.go.id/uploads/images/surabaya/${value.icon}`} />
-                </Box>
-                <Typography
-                  onMouseEnter={(e) => textToSpeech(e, true)}
-                  fontSize={fontSize - 2 + accessibility.fontSize}
-                  textAlign="center"
-                  marginTop={1}
-                  marginBottom={downSm ? 2 : 1}
-                  sx={{
-                    whiteSpace: 'pre-line',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {value.description}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Grid container spacing={3} marginTop={4} alignItems="center">
-          <Grid
-            item
-            className="social-media"
-            xs={12}
-            sm={6}
-            sx={{
-              display: 'flex',
-              justifyContent: downSm ? 'center' : 'flex-start',
-            }}
-          >
-            {socialMedia.map((value, i) => (
-              <Link key={i} href={value.url} target="_blank">
-                <Box
-                  className="wrapper-svg"
-                  sx={{
-                    '& svg, & img': {
-                      height: fontSize + 16,
-                    },
-                  }}
-                >
-                  <img src={`https://surabaya.go.id/uploads/images/surabaya/${value.icon}`} />
-                </Box>
-              </Link>
-            ))}
-          </Grid>
-          <Grid
-            item
-            sm={6}
-            sx={{
-              display: downSm ? 'none' : 'flex',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <Search isFooter={true} />
-          </Grid>
-        </Grid>
+      <Container maxWidth="xl">
         <Box
           display="flex"
-          alignItems="center"
+          flexDirection={{ xs: 'column', md: 'row' }}
           justifyContent="center"
-          className="copy"
-          marginTop={4}
-          marginBottom={downSm ? 5 : 0}
+          alignItems="flex-start"
+          gap={{ xs: 4, md: 18 }}
+          pb={2}
         >
-          <Box
-            className="wrapper-svg"
-            sx={{
-              '& svg': {
-                height: heightCopy,
-              },
-            }}
-          >
-            <LogoCc />
+          {/* Kiri */}
+          <Box flex={1} minWidth={220} maxWidth={340}>
+            <Stack spacing={3.5} alignItems="flex-start">
+              <Box display="flex" alignItems="center" gap={1}>
+                <Box
+                  component="img"
+                  src="/images/footer/logo-footer.svg"
+                  alt="Logo Surabaya"
+                  sx={{ height: 40 }}
+                  className="footer-logo"
+                />
+              </Box>
+              <Typography variant="caption" sx={{ opacity: 0.85, fontSize: 14 + accessibility.fontSize, lineHeight: 1.2 }}>
+                Dikelola oleh Bidang Informasi dan <br /> Komunikasi Publik serta Statistik Dinas <br /> Komunikasi dan Informatika Kota <br />Surabaya
+              </Typography>
+              <Stack direction="row" spacing={2}>
+                {socialMedia.map((item, i) => (
+                  <IconButton color="inherit" href={item.url} target="_blank" aria-label={item.label} sx={{ p: 0 }} key={i}>
+                    <Box component="img" src={item.icon} alt={item.label} sx={{ width: 28, height: 28 }} className="footer-icon" />
+                  </IconButton>
+                ))}
+              </Stack>
+            </Stack>
           </Box>
-          <Typography fontSize={fontSize + 2}>
-            {`${new Date().getFullYear()} Pemerintah Kota Surabaya`}
-          </Typography>
+          {/* Tengah */}
+          <Box flex={1} minWidth={220} maxWidth={340}>
+            <Stack spacing={4} alignItems="flex-start">
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <Box
+                  component="img"
+                  src="/images/footer/icon-phone.svg"
+                  alt="Telepon"
+                  sx={{ width: 38, height: 38 }}
+                  className="footer-icon"
+                />
+                <Box>
+                  <Typography variant="body2" sx={{ fontSize: 14 + accessibility.fontSize }}>
+                    (031) 5321444<br />
+                    (031) 99277339
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <Box
+                  component="img"
+                  src="/images/footer/icon-msg.svg"
+                  alt="Email"
+                  sx={{ width: 38, height: 46 }}
+                  className="footer-icon"
+                />
+                <Box>
+                  <Typography variant="body2" sx={{ fontSize: 14 + accessibility.fontSize }}>
+                    dinkominfo@surabaya.go.id,<br />
+                    mediacenter@surabaya.go.id
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" alignItems="flex-start" spacing={2}>
+                <Box
+                  component="img"
+                  src="/images/footer/icon-loc.svg"
+                  alt="Lokasi"
+                  sx={{ width: 38, height: 46 }}
+                  className="footer-icon"
+                />
+                  <Typography variant="body2" sx={{ fontSize: 14 + accessibility.fontSize }}>
+                  Jl. Jimerto No. 25-27, Ketabang, Kec.<br />
+                  Genteng, Kota SBY, Jawa Timur 60272
+                </Typography>
+              </Stack>
+            </Stack>
+          </Box>
+          {/* Kanan */}
+          <Box
+            flex={1}
+            minWidth={180}
+            maxWidth={260}
+            display="flex"
+            flexDirection="column"
+            alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+            justifyContent="center"
+            sx={{ height: '100%' }}
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+              justifyContent="center"
+              sx={{ height: '100%' }}
+            >
+              <Box
+                component="form"
+                sx={{
+                  bgcolor: '#D2B690',
+                  borderRadius: 10,
+                  px: 2,
+                  py: 0.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: { xs: '100%', md: 260 },
+                  mb: 2, 
+                }}
+              >
+                <Search sx={{ color: '#fff', mr: 1 }} />
+                <TextField
+                  variant="standard"
+                  placeholder="Pencarian"
+                  InputProps={{
+                    disableUnderline: true,
+                    style: { color: accessibility.css.negative ? '#FFD600' : '#fff', fontSize: 16 + accessibility.fontSize },
+                  }}
+                  sx={{ flex: 1 }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                sx={{ width: { xs: '100%', md: 260 } }}
+              >
+                <Box
+                  component="img"
+                  src="/images/footer/icon-cc.svg"
+                  alt="Copyright"
+                  sx={{ width: 24, height: 24, mr: 1 }}
+                  className="footer-icon"
+                />
+                <Typography variant="body2" color={accessibility.css.negative ? '#FFD600' : '#fff'} sx={{ fontSize: 14 + accessibility.fontSize }}>
+                  {`${new Date().getFullYear()} Pemerintah Kota Surabaya`}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Container>
-    </StyledContainer>
+    </StyledFooter>
   )
 }
-
-Footer.defaultProps = {}
 
 export default memo(Footer)

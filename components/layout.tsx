@@ -19,7 +19,7 @@ const Layout: React.FunctionComponent<Props> = ({ children, paddingY, maxWidth }
         py: 0,
         backgroundColor: 'transparent',
         position: 'relative',
-        zIndex: 1,
+        zIndex: 1,  
       }}
     >
       {children}

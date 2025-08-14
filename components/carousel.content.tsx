@@ -1,12 +1,10 @@
 import React, { memo } from 'react'
-import { Box } from '@mui/material'
 import Slider from 'react-slick'
 import { fontSize } from 'styles/theme'
 import { StyledBox } from 'styles/carousel'
 import { BreakpointsContext } from 'contexts/breakpoints'
-import NewsItem from 'components/news.item'
+import CarouselNewsItem from 'components/carousel.news.item'
 import { Arrow } from 'components/carousel.small'
-import Element3 from 'public/images/icon/element_3.svg'
 import schema from 'types/schemas'
 
 interface Props {
@@ -21,7 +19,7 @@ interface Props {
   truncateDescription?: number
   withThumbnail?: boolean
   route: string
-}
+} 
 
 const defGridSpacing = 1
 const defTruncateTitle = 35
@@ -79,7 +77,9 @@ const CarouselContent: React.FunctionComponent<Props> = ({
   }, [])
   return (
     <>
-      <StyledBox className="content main">
+      <StyledBox
+        className="content main"
+      >
         <Arrow
           size={(fontSize + (downLg ? 18 : 25)).toString()}
           className="slick-arrow prev"
@@ -87,7 +87,7 @@ const CarouselContent: React.FunctionComponent<Props> = ({
         />
         <Slider ref={slider} {...settings}>
           {data?.map((v, i) => (
-            <NewsItem
+            <CarouselNewsItem
               key={i}
               data={v}
               gridSpacing={gridSpacing}
@@ -109,13 +109,19 @@ const CarouselContent: React.FunctionComponent<Props> = ({
         />
       </StyledBox>
       {withThumbnail && (
-        <StyledBox className="content thumb">
-          <Box className="wrapper-svg-section3">
-            <Element3 />
-          </Box>
+        <StyledBox
+          className="content thumb"
+          sx={{
+            background: '#fff',
+            borderRadius: 4,
+            border: '2px solid #c8a97e',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+            mt: 2,
+          }}
+        >
           <Slider ref={sliderThumb} {...settingsThumb}>
             {data?.map((v, i) => (
-              <NewsItem
+              <CarouselNewsItem
                 key={i}
                 data={v}
                 gridSpacing={defGridSpacing}
