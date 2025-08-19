@@ -44,7 +44,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
     textDecoration: 'none',
     color: theme.palette.text.primary,
     backgroundColor:
-      theme.palette.mode == 'dark' ? theme.palette.grey.A100 : theme.palette.common.white,
+    theme.palette.mode == 'dark' ? theme.palette.grey.A100 : theme.palette.common.white,
     height: '100%',
     '& .content-img': {
       '& img': {

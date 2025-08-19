@@ -211,7 +211,7 @@ const News: NextPage<Props> = () => {
                 boxShadow: 1,
                 mb: 4,
                 // Compensate for the upward background shift
-                mt: { xs: 6, sm: 8, md: 10 },
+                mt: { xs: 6, sm: 8, md: 20 },
               }}
             >
               BERITA
