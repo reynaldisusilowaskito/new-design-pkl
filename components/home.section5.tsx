@@ -39,42 +39,41 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
   return (
     <BoxStyled className={accessibility.css.negative ? 'negative' : ''}>
       {!loading && (
-        <Box sx={{
-          width: '100%',
-          px: { xs: 1, md: 4 },
-          py: { xs: 2, md: 4 },
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
+        <Box sx={(theme) => ({
+             bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
+             borderRadius: 6,
+             px: downSm ? 2 : 30,
+             py: downSm ? 2 : 10,
+             boxShadow: 2,
+             width: '97%',
+             mx: 'auto',
+             my: 0,
+           })}>
           {/* Section Title */}
           <Box sx={{
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 1.5,
-            mb: 4,
+            gap: 1,
+            mb: 5,
             width: '100%',
           }}>
-            <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 28, height: 28, marginRight: 8, display: 'block' }} />
-            <span style={{ fontSize: 22, fontWeight: 700, color: '#fff', letterSpacing: 1, lineHeight: 1 }}>
-              PELAYANAN PEMERINTAH KOTA SURABAYA
-            </span>
+            <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
+           <Box component="span" sx={(theme) => ({ color: theme.palette.text.tertiary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+                                       PELAYANAN PEMERINTAH KOTA SURABAYA
+                                     </Box>
           </Box>
           <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: {
-                xs: 'repeat(3, 1fr)',
-                sm: 'repeat(4, 1fr)',
-                md: 'repeat(5, 1fr)',
+                xs: 'repeat(2, 1fr)',
+                sm: 'repeat(3, 1fr)',
+                md: 'repeat(4, 1fr)',
+                lg: 'repeat(5, 1fr)',
               },
-              gap: { xs: 2, sm: 3, md: 4 },
+              gap: { xs: 3, sm: 4, md: 2 },
               width: '100%',
-              maxWidth: 950,
-              mx: 'auto',
               justifyItems: 'center',
-              alignItems: 'start',
+              alignItems: 'center',
             }}
           >
             {data?.length > 0 && data.map((v, i) => (
@@ -87,48 +86,51 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     width: '100%',
-                    maxWidth: 150,
+                    maxWidth: 180,
                     mx: 'auto',
                     cursor: 'pointer',
                     outline: 'none',
-                    transition: 'transform 0.15s',
+                    transition: 'all 0.3s ease',
+                    p: 2,
+                    borderRadius: 2,
                     '&:hover': {
-                      transform: 'translateY(-4px) scale(1.04)',
+                      transform: 'translateY(-8px)',
+                      boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                      bgcolor: '#f8f9fa',
                     },
                   }}
                   onMouseEnter={(e) => textToSpeech(e, true)}
                 >
                   <Box
                     sx={{
-                      width: 76,
-                      height: 76,
+                      width: { xs: 80, md: 90 },
+                      height: { xs: 80, md: 90 },
                       borderRadius: '50%',
                       bgcolor: '#9C7B43',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      mb: 1.5,
+                      mb: 2,
+                      boxShadow: '0 4px 15px rgba(156, 123, 67, 0.3)',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                      },
                     }}
                   >
-                    {v.icon && (
-                      <img
-                        src={v.icon}
-                        alt={v.title}
-                        style={{ width: 44, height: 44, objectFit: 'contain', display: 'block' }}
-                      />
-                    )}
                   </Box>
                   <Box
                     sx={{
-                      color: '#176B87',
+                      color: '#2E8B8B',
                       fontWeight: 600,
-                      fontSize: 15,
+                      fontSize: { xs: 13 + accessibility.fontSize * 2, md: 14 + accessibility.fontSize * 2 },
                       textAlign: 'center',
-                      minHeight: 38,
-                      lineHeight: 1.2,
+                      minHeight: 44,
+                      lineHeight: 1.3,
                       textTransform: 'none',
                       letterSpacing: 0,
                       wordBreak: 'break-word',
+                      px: 0.5,
                     }}
                   >
                     {v.title}

@@ -125,16 +125,14 @@ export default function MyApp(props: MyAppProps) {
                     display={load ? 'none' : 'flex'}
                     flexDirection="column"
                     minHeight={load ? 0 : '100vh'}
-                    paddingTop={`${downSm ? 70 : heightHeader}px`}
                     overflow={load ? 'hidden' : 'visible'}
                     height={load ? 0 : 'auto'}
                     sx={{
-                      backgroundColor:
-                        mode == 'dark'
-                          ? theme.palette.background.paper
-                          : theme.palette.common.white,
+                      backgroundColor: theme.palette.background.paper,
                       opacity: load ? 0 : 1,
                       filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
+                      margin: 0,
+                      padding: 0,
                     }}
                   >
                     <Component {...pageProps} />

@@ -196,3 +196,4 @@ export const getServerSideProps = async () => {
 }
 
 export default Infografis
+import { memo } from 'react'

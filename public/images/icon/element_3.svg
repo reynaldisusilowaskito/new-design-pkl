@@ -12,20 +12,20 @@
 <g>
 	<g>
 		<g>
-			<circle class="st3" cx="30.13" cy="30.13" r="30.13"/>
-			<circle class="st3" cx="30.13" cy="143.39" r="30.13"/>
-			<circle class="st3" cx="30.13" cy="256.65" r="30.13"/>
-			<circle class="st3" cx="30.13" cy="369.91" r="30.13"/>
-			<circle class="st3" cx="30.13" cy="483.17" r="30.13"/>
-			<circle class="st3" cx="30.13" cy="596.43" r="30.13"/>
+<circle class="st3" cx="30.13" cy="30.13" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="30.13" cy="143.39" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="30.13" cy="256.65" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="30.13" cy="369.91" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="30.13" cy="483.17" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="30.13" cy="596.43" r="30.13" stroke="#fff" stroke-width="4"/>
 		</g>
 		<g>
-			<circle class="st3" cx="143.39" cy="30.13" r="30.13"/>
-			<circle class="st3" cx="143.39" cy="143.39" r="30.13"/>
-			<circle class="st3" cx="143.39" cy="256.65" r="30.13"/>
-			<circle class="st3" cx="143.39" cy="369.91" r="30.13"/>
-			<circle class="st3" cx="143.39" cy="483.17" r="30.13"/>
-			<circle class="st3" cx="143.39" cy="596.43" r="30.13"/>
+<circle class="st3" cx="143.39" cy="30.13" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="143.39" cy="143.39" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="143.39" cy="256.65" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="143.39" cy="369.91" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="143.39" cy="483.17" r="30.13" stroke="#fff" stroke-width="4"/>
+<circle class="st3" cx="143.39" cy="596.43" r="30.13" stroke="#fff" stroke-width="4"/>
 		</g>
 	</g>
 </g>

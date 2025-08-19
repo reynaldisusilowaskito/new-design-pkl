@@ -47,7 +47,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       top: 0,
       borderRadius: 0,
       backgroundColor: theme.palette.primary.main,
-      color: theme.palette.secondary.main,
+      color: theme.palette.background.paper,
       boxShadow,
       padding: theme.spacing(1),
       minWidth: 'auto',
