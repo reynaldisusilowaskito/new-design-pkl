@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/router';
@@ -18,10 +18,10 @@ interface BeritaLainnyaProps {
   onLihatSemua?: () => void;
 }
 
-const SectionContainer = styled(Box)(() => ({
+const SectionContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   width: '100%',
-  backgroundColor: '#ffffffff',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
   backgroundImage: 'url("/images/sekilas/bg%20batik.png")',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
@@ -34,7 +34,7 @@ const SectionContainer = styled(Box)(() => ({
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 57, 55, 0.7)' : 'rgba(255, 255, 255, 0.5)',
     zIndex: 0,
     pointerEvents: 'none',
   },
@@ -45,7 +45,7 @@ const SectionContainer = styled(Box)(() => ({
 }));
 
 const ContentWrapper = styled(Box)(({ theme }) => ({
-  maxWidth: '900px',
+  maxWidth: '1200px',
   margin: '0 auto',
   padding: theme.spacing(0, 2),
   paddingTop: '48px',
@@ -66,10 +66,10 @@ const HeaderContainer = styled(Box)(() => ({
   marginBottom: '30px',
 }));
 
-const TitleText = styled(Typography)(() => ({
+const TitleText = styled(Typography)(({ theme }) => ({
   fontSize: '20px',
   fontWeight: 800,
-  color: '#006462',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#006462',
   fontFamily: "'Roboto', Arial, sans-serif",
   textTransform: 'uppercase',
 }));
@@ -121,45 +121,45 @@ const SliderContainer = styled(Box)(({ theme }) => ({
 const NewsCard = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 57, 55, 0.85)' : 'rgba(255, 255, 255, 0.95)',
   borderRadius: '30px',
-  border: '1.5px solid #D2B690',
+  border: `1.5px solid ${theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#D2B690'}`,
   cursor: 'pointer',
   transition: 'all 0.3s ease-in-out',
-  width: '280px',
-  height: '320px',
-  boxShadow: '0px 4px 15px 0px #00000033',
+  width: '372px', // lebih besar agar 3 card saja yang muat di 1200px
+  height: '350px',
+  boxShadow: theme.palette.mode === 'dark' ? '0px 2px 8px 0px #003937cc' : '0px 2px 8px 0px #00000022',
   flexShrink: 0,
   backdropFilter: 'blur(10px)',
   '&:hover': {
-    backgroundColor: '#006462',
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#006462',
     '& .card-title': {
-      color: 'white',
+      color: theme.palette.mode === 'dark' ? theme.palette.background.paper : 'white',
     },
     '& .card-date': {
-      color: 'white',
+      color: theme.palette.mode === 'dark' ? theme.palette.background.paper : 'white',
     },
   },
   [theme.breakpoints.down('md')]: {
-    width: '240px',
-    height: '300px',
+    width: '300px',
+    height: '280px',
   },
   [theme.breakpoints.down('sm')]: {
-    width: '220px',
-    height: '280px',
+    width: '240px',
+    height: '210px',
   },
 }));
 
 const ImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
-  height: '190px',
+  height: '220px',
   overflow: 'hidden',
   borderRadius: '30px',
   [theme.breakpoints.down('md')]: {
-    height: '160px',
+    height: '180px',
   },
   [theme.breakpoints.down('sm')]: {
-    height: '140px',
+    height: '150px',
   },
 }));
 
@@ -187,8 +187,7 @@ const CardTitle = styled(Typography)(({ theme }) => ({
   fontFamily: "'Lato', Arial, sans-serif",
   fontWeight: 800,
   fontSize: '18px',
-  color: '#474747',
-  width: '100%',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#006462',
   height: 'auto',
   display: '-webkit-box',
   WebkitLineClamp: 2,
@@ -207,7 +206,7 @@ const CardTitle = styled(Typography)(({ theme }) => ({
 const CardDate = styled(Typography)(({ theme }) => ({
   fontFamily: "'Lato', Arial, sans-serif",
   fontSize: '13px',
-  color: '#474747',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#474747',
   width: '100%',
   height: 'auto',
   transition: 'color 0.3s ease-in-out',
@@ -252,16 +251,34 @@ const BeritaLainnya: React.FC<BeritaLainnyaProps> = ({ items, onLihatSemua }) =>
   const router = useRouter();
   const { textToSpeech } = useTextToSpeech();
 
-  const handleScrollLeft = () => {
+  const [startIdx, setStartIdx] = useState(0);
+  const cardsPerView = 3;
+  const cardWidth = 370 + 20; // width + gap (px), harus sama dengan NewsCard dan gap di SliderContainer
+  const maxIdx = Math.max(0, items.length - cardsPerView);
+
+  // Scroll otomatis ke card ke-n saat klik next/prev
+  const scrollToCard = (idx: number) => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+      const card = scrollRef.current.children[idx] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      }
     }
   };
 
-  const handleScrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-    }
+  const handlePrev = () => {
+    setStartIdx((prev) => {
+      const nextIdx = Math.max(0, prev - 1);
+      scrollToCard(nextIdx);
+      return nextIdx;
+    });
+  };
+  const handleNext = () => {
+    setStartIdx((prev) => {
+      const nextIdx = Math.min(maxIdx, prev + 1);
+      scrollToCard(nextIdx);
+      return nextIdx;
+    });
   };
 
   const handleCardClick = (news: schema['schemas']['Article']) => {
@@ -344,12 +361,12 @@ const BeritaLainnya: React.FC<BeritaLainnyaProps> = ({ items, onLihatSemua }) =>
         {/* Slider wrapper */}
         <SliderWrapper>
           {/* Icon Slide Kiri */}
-          <LeftButton onClick={handleScrollLeft} aria-label="Sebelumnya">
+          <LeftButton onClick={handlePrev} aria-label="Sebelumnya" disabled={startIdx === 0}>
             <Box
               component="img"
               src="/images/icon/nav-prev green.svg"
               alt="Sebelumnya"
-              sx={{ width: '41px', height: '41px', display: 'block' }}
+              sx={{ width: '41px', height: '41px', display: 'block', opacity: startIdx === 0 ? 0.3 : 1 }}
             />
           </LeftButton>
 
@@ -429,12 +446,12 @@ const BeritaLainnya: React.FC<BeritaLainnyaProps> = ({ items, onLihatSemua }) =>
           </SliderContainer>
 
           {/* Icon Slide Kanan */}
-          <RightButton onClick={handleScrollRight} aria-label="Berikutnya">
+          <RightButton onClick={handleNext} aria-label="Berikutnya" disabled={startIdx >= maxIdx}>
             <Box
               component="img"
               src="/images/icon/nav-next green.svg"
               alt="Berikutnya"
-              sx={{ width: '41px', height: '41px', display: 'block' }}
+              sx={{ width: '41px', height: '41px', display: 'block', opacity: startIdx >= maxIdx ? 0.3 : 1 }}
             />
           </RightButton>
         </SliderWrapper>

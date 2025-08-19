@@ -1,3 +1,21 @@
+// CardStyled: adopsi dari Sekilas
+const CardStyled = styled(Box)(({ theme }) => ({
+  background: theme.palette.mode === 'dark'
+    ? 'rgba(0, 57, 55, 0.85)'
+    : 'rgba(255,255,255,0.60)',
+  borderRadius: 16,
+  boxShadow: theme.palette.mode === 'dark'
+    ? '0 4px 24px rgba(0,0,0,0.30)'
+    : '0 4px 24px rgba(0,0,0,0.10)',
+  padding: theme.spacing(4, 4),
+  maxWidth: 1200,
+  margin: '32px auto 48px auto',
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(2, 1),
+    maxWidth: '100%',
+    margin: '24px auto 32px auto',
+  },
+}));
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -16,7 +34,7 @@ export interface BeritaDetailProps {
   contents: string[];
 }
 
-const MainContainer = styled(Box)(() => ({
+const MainContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
@@ -24,10 +42,10 @@ const MainContainer = styled(Box)(() => ({
   width: '100%',
   minHeight: '100vh',
   overflowX: 'hidden',
-  backgroundColor: '#ffffffff',
-  backgroundImage: 'url("/images/sekilas/bg%20batik.png")',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
+  backgroundImage: 'url("/images/bg-batik.svg")',
+  backgroundRepeat: 'repeat',
+  backgroundSize: 'contain',
   backgroundPosition: 'center center',
   backgroundAttachment: 'fixed',
   '&::before': {
@@ -37,7 +55,7 @@ const MainContainer = styled(Box)(() => ({
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 57, 55, 0.7)' : 'rgba(255, 255, 255, 0.5)',
     zIndex: 0,
     pointerEvents: 'none',
   },
@@ -57,7 +75,7 @@ const ContentSection = styled(Box)(() => ({
 
 const ContentWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
-  maxWidth: '900px',
+  maxWidth: '1200px',
   padding: theme.spacing(0, 2),
   display: 'flex',
   flexDirection: 'column',
@@ -89,10 +107,10 @@ const BackButton = styled('button')(() => ({
   },
 }));
 
-const BreadcrumbText = styled(Typography)(() => ({
+const BreadcrumbText = styled(Typography)(({ theme }) => ({
   fontFamily: "'Lato', Arial, sans-serif",
   fontSize: '20px',
-  color: '#006462',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#006462',
   fontWeight: 800,
   textTransform: 'uppercase',
 }));
@@ -100,7 +118,7 @@ const BreadcrumbText = styled(Typography)(() => ({
 const TitleText = styled(Typography)(({ theme }) => ({
   fontFamily: "'Roboto', Arial, sans-serif",
   fontSize: '24px',
-  color: '#474747',
+  color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#474747',
   fontWeight: 800,
   lineHeight: 1.3,
   marginBottom: '12px',
@@ -118,7 +136,7 @@ const TitleText = styled(Typography)(({ theme }) => ({
 const DateText = styled(Typography)(({ theme }) => ({
   fontFamily: "'Roboto', Arial, sans-serif",
   fontSize: '14px',
-  color: '#474747',
+  color: theme.palette.mode === 'dark' ? theme.palette.text.secondary : '#474747',
   marginBottom: '16px',
   [theme.breakpoints.down('md')]: {
     fontSize: '13px',
@@ -132,26 +150,26 @@ const DateText = styled(Typography)(({ theme }) => ({
 
 const ImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
-  height: '414px',
+  height: '490px',
   borderRadius: '8px',
   overflow: 'hidden',
   boxShadow: '0px 2px 8px rgba(0,0,0,0.1)',
   marginBottom: '40px',
   marginTop: '20px',
   [theme.breakpoints.down('md')]: {
-    height: '300px',
-    marginTop: '16px',
+    height: '360px',
+    marginTop: '18px',
   },
   [theme.breakpoints.down('sm')]: {
-    height: '200px',
-    marginTop: '12px',
+    height: '240px',
+    marginTop: '14px',
   },
 }));
 
-const ContentArticle = styled(Box)(() => ({
+const ContentArticle = styled(Box)(({ theme }) => ({
   fontFamily: "'Lato', Arial, sans-serif",
   fontSize: '16px',
-  color: '#474747',
+  color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#474747',
   textAlign: 'justify',
   lineHeight: '2rem',
   marginTop: '20px',
@@ -160,6 +178,7 @@ const ContentArticle = styled(Box)(() => ({
     marginBottom: '20px',
     margin: 0,
     padding: 0,
+    color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#474747',
   },
   '& img': {
     maxWidth: '100%',
@@ -174,6 +193,39 @@ const ContentArticle = styled(Box)(() => ({
   },
   video: {
     height: 'auto',
+  },
+  '& a': {
+    color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#006462',
+    textDecoration: 'underline',
+    wordWrap: 'break-word',
+    '&:hover': {
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#2c6f9e',
+    },
+  },
+  '& ul': {
+    listStyle: 'disc',
+    marginLeft: theme.spacing(3),
+    marginBottom: theme.spacing(6),
+    '& li': {
+      color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#006462',
+      marginBottom: theme.spacing(1),
+      wordWrap: 'break-word',
+    },
+  },
+  '& h1, & h2, & h3, & h4, & h5, & h6': {
+    fontFamily: "'Roboto', Arial, sans-serif",
+    fontWeight: 600,
+    color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#222',
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(2),
+    wordWrap: 'break-word',
+  },
+  '& h3': {
+    fontSize: '20px',
+    lineHeight: '24px',
+  },
+  '& strong, & b': {
+    fontWeight: 700,
   },
 }));
 
@@ -291,35 +343,37 @@ const BeritaDetail: React.FC<BeritaDetailProps> = ({ news, contents }) => {
             </ImageContainer>
           )}
 
-          {/* Isi berita */}
-          <ContentArticle onMouseEnter={() => textToSpeech(news.content || '', false)}>
-            {contents.map((item, i) => {
-              const isPdf = item && item.substring(0, 5) === '<pdf>';
-              if (isPdf) {
-                const tagPdf = /<pdf>(.*?)<\/pdf>/g.exec(item);
-                if (tagPdf && tagPdf.length) {
-                  return (
-                    <Box key={i} className="pdf-viewer">
-                      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
-                        <Viewer
-                          fileUrl={tagPdf[0].replace('<pdf>', '').replace('</pdf>', '')}
-                          plugins={[defaultLayoutPluginInstance]}
-                        />
-                      </Worker>
-                    </Box>
-                  );
+          {/* CardStyled untuk isi berita */}
+          <CardStyled>
+            <ContentArticle onMouseEnter={() => textToSpeech(news.content || '', false)}>
+              {contents.map((item, i) => {
+                const isPdf = item && item.substring(0, 5) === '<pdf>';
+                if (isPdf) {
+                  const tagPdf = /<pdf>(.*?)<\/pdf>/g.exec(item);
+                  if (tagPdf && tagPdf.length) {
+                    return (
+                      <Box key={i} className="pdf-viewer">
+                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
+                          <Viewer
+                            fileUrl={tagPdf[0].replace('<pdf>', '').replace('</pdf>', '')}
+                            plugins={[defaultLayoutPluginInstance]}
+                          />
+                        </Worker>
+                      </Box>
+                    );
+                  }
                 }
-              }
 
-              return (
-                <div
-                  key={i}
-                  className="text"
-                  dangerouslySetInnerHTML={{ __html: item }}
-                />
-              );
-            })}
-          </ContentArticle>
+                return (
+                  <div
+                    key={i}
+                    className="text"
+                    dangerouslySetInnerHTML={{ __html: item }}
+                  />
+                );
+              })}
+            </ContentArticle>
+          </CardStyled>
         </ContentWrapper>
       </ContentSection>
     </MainContainer>

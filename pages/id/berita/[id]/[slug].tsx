@@ -96,13 +96,12 @@ const NewsDetail: NextPage<Props> = ({ detail }: Props) => {
       </Head>
       
       {/* Main Content */}
-      <Box sx={{ background: '#FFFFFF', minHeight: '100vh' }}>
+      <Box sx={{ background: (theme) => theme.palette.background.paper, minHeight: '100vh' }}>
         {/* Berita Detail */}
         <BeritaDetail 
           news={data}
           contents={contents}
         />
-        
         {/* Berita Lainnya */}
         <BeritaLainnya 
           items={news || []}

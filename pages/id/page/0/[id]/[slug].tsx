@@ -7,7 +7,9 @@ import replaceAllInserter from 'string.prototype.replaceall'
 import Layout from 'components/layout'
 import PagesTitle from 'components/pages.title'
 import Article from 'components/article'
-import SekilasSurabaya from 'components/sekilas.surabaya'
+import MediaHeader from 'components/media.header'
+import { Box, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { getDetail } from 'utils/services/news'
 import { getOrganization } from 'utils/services/organization'
 import schema from 'types/schemas'
@@ -46,14 +48,223 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
   const isSekilasPage = detail.title?.toLowerCase().includes('sekilas') || 
                        detail.title?.toLowerCase().includes('tentang surabaya')
 
+
   if (isSekilasPage) {
+    // Use Infografis layout concept for Sekilas page
+    // Removed unused: downSm, textToSpeech
+    // Styled background like Infografis
+    const SekilasBoxStyled = styled(Box)(() => ({
+      overflow: 'hidden',
+      position: 'relative',
+      backgroundImage: 'url(/images/bg-batik.svg)',
+      backgroundRepeat: 'repeat',
+      backgroundSize: 'contain',
+      minHeight: '100vh',
+      maxHeight: '400vh',
+      width: '100%',
+      '&.negative': {
+        filter: 'invert(1) hue-rotate(180deg)',
+      },
+    }))
+    // Consistent image row styling
+    const ImageContainer = styled(Box)(({ theme }) => ({
+      display: 'flex',
+      gap: theme.spacing(3),
+      justifyContent: 'center',
+      marginBottom: theme.spacing(4),
+      maxWidth: 2000,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        gap: theme.spacing(2),
+        alignItems: 'center',
+      },
+    }))
+    const StyledImage = styled(Box)(({ theme }) => ({
+      width: '100%',
+      maxWidth: '600px',
+      height: '340px',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      position: 'relative',
+      [theme.breakpoints.up('lg')]: {
+        maxWidth: '600px',
+        height: '340px',
+      },
+      [theme.breakpoints.down('sm')]: {
+        maxWidth: '100%',
+        height: '220px',
+      },
+    }))
+    const CardStyled = styled(Box)(({ theme }) => ({
+      background: 'rgba(255,255,255,0.60)',
+      borderRadius: 16,
+      boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+      padding: theme.spacing(4, 4),
+      maxWidth: 1200,
+      margin: '32px auto 48px auto',
+      [theme.breakpoints.down('md')]: {
+        padding: theme.spacing(2, 1),
+        maxWidth: '100%',
+        margin: '24px auto 32px auto',
+      },
+    }))
+    const ContentText = styled(Box)(({ theme }) => ({
+      maxWidth: 1200,
+      width: '100%',
+      margin: '0 auto',
+      padding: 0,
+      [theme.breakpoints.down('md')]: {
+        padding: theme.spacing(0, 1),
+      },
+      [theme.breakpoints.down('sm')]: {
+        padding: theme.spacing(0, 0.5),
+      },
+      '& p': {
+        color: '#222',
+        fontFamily: "'Roboto', Arial, sans-serif",
+        fontWeight: 400,
+        fontSize: '16px',
+        lineHeight: '24px',
+        marginBottom: theme.spacing(3),
+        wordWrap: 'break-word',
+        textAlign: 'justify',
+      },
+      '& a': {
+        color: '#006462',
+        textDecoration: 'underline',
+        wordWrap: 'break-word',
+        '&:hover': {
+          color: '#2c6f9e',
+        },
+      },
+      '& ul': {
+        listStyle: 'disc',
+        marginLeft: theme.spacing(3),
+        marginBottom: theme.spacing(6),
+        '& li': {
+          color: '#006462',
+          marginBottom: theme.spacing(1),
+          wordWrap: 'break-word',
+        },
+      },
+      '& h1, & h2, & h3, & h4, & h5, & h6': {
+        fontFamily: "'Roboto', Arial, sans-serif",
+        fontWeight: 600,
+        color: '#222',
+        marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(2),
+        wordWrap: 'break-word',
+      },
+      '& h3': {
+        fontSize: '20px',
+        lineHeight: '24px',
+      },
+      '& strong, & b': {
+        fontWeight: 700,
+      },
+    }))
+
     return (
       <React.Fragment>
         <Head>
           <title>Sekilas Tentang Surabaya - Pemerintah Kota Surabaya</title>
           <meta name="description" content="Sekilas tentang Kota Surabaya dengan narasumber yang terpercaya" />
         </Head>
-        <SekilasSurabaya detail={detail} />
+        <SekilasBoxStyled>
+          <Layout paddingY={2}>
+            <Box>
+              <Box position="relative">
+                <Box mb={{ xs: 6, sm: 8, md: 10 }}>
+                  <MediaHeader
+                    text="SEKILAS TENTANG SURABAYA"
+                    description="dengan narasumber yang terpercaya."
+                  />
+                </Box>
+                <ImageContainer>
+                  <StyledImage>
+                    <img
+                      src="/images/sekilas/balai-kota.png"
+                      alt="Balai Kota Surabaya"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                      }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `
+                            <div style="
+                              width: 100%; 
+                              height: 100%; 
+                              background-color: #f5f5f5; 
+                              display: flex; 
+                              align-items: center; 
+                              justify-content: center; 
+                              color: #999;
+                              font-family: 'Roboto', Arial, sans-serif;
+                            ">
+                              Balai Kota Surabaya
+                            </div>
+                          `;
+                        }
+                      }}
+                    />
+                  </StyledImage>
+                  <StyledImage>
+                    <img
+                      src="/images/sekilas/alun-alun-sby.png"
+                      alt="Alun-Alun Surabaya"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                      }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `
+                            <div style="
+                              width: 100%; 
+                              height: 100%; 
+                              background-color: #f5f5f5; 
+                              display: flex; 
+                              align-items: center; 
+                              justify-content: center; 
+                              color: #999;
+                              font-family: 'Roboto', Arial, sans-serif;
+                            ">
+                              Alun-Alun Surabaya
+                            </div>
+                          `;
+                        }
+                      }}
+                    />
+                  </StyledImage>
+                </ImageContainer>
+                <CardStyled>
+                  <ContentText>
+                    {detail.content ? (
+                      <Box dangerouslySetInnerHTML={{ __html: detail.content }} />
+                    ) : (
+                      <Typography color="text.secondary" align="center" sx={{ my: 8 }}>
+                        Konten tidak tersedia.
+                      </Typography>
+                    )}
+                  </ContentText>
+                </CardStyled>
+              </Box>
+            </Box>
+          </Layout>
+        </SekilasBoxStyled>
       </React.Fragment>
     )
   }

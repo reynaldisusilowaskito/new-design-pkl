@@ -183,7 +183,7 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                       gridContent={12}
                       truncateDescription={90}
                       withThumbnail={false}
-                      route="/id/berita"
+                      route="berita"
                     />
                   )}
                 </>
