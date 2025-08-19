@@ -31,6 +31,8 @@ interface Props {
   withPlay?: boolean
   sizePlay?: number
   route: string
+  // variant to separate layout/styling behavior between hero and thumbnail usage
+  variant?: 'main' | 'thumb'
 }
 
 export const fontSizeDateInit = fontSizeDef - 2
@@ -47,10 +49,8 @@ const BoxStyled = styled(Box)(({ theme }) => ({
     '& .content-img': {
       '& img': {
         width: '100%',
-        aspectRatio: '3/2',
         objectFit: 'cover',
         display: 'block',
-        borderRadius: theme.spacing(borderRadius),
       },
       '& .wrapper-svg': {
         position: 'absolute',
@@ -60,6 +60,16 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       },
     },
     '& .icon-surabaya': iconSurabaya(sizeIcon),
+  },
+  // Variant-specific tweaks for thumbnails vs main
+  '& a.thumb .content-img img': {
+    aspectRatio: '16/9',
+    borderTopLeftRadius: theme.spacing(3),
+    borderTopRightRadius: theme.spacing(3),
+  },
+  '& a:not(.thumb) .content-img img': {
+    aspectRatio: '3/2',
+    borderRadius: theme.spacing(borderRadius),
   },
 }))
 
@@ -88,6 +98,7 @@ const NewsItem: React.FunctionComponent<Props> = ({
   withPlay,
   sizePlay,
   route,
+  variant,
 }: Props) => {
   const accessibility = React.useContext(AccessibilityContext)
   const { textToSpeech } = useTextToSpeech()
@@ -99,7 +110,10 @@ const NewsItem: React.FunctionComponent<Props> = ({
   const isWebdisplay = React.useMemo(() => route == 'videos' || route == 'photos', [route])
   return (
     <BoxStyled>
-      <Link href={`/id/${route}/${data.id ? data.id : '0'}/${data.slug}`}>
+      <Link
+        href={`/id/${route}/${data.id ? data.id : '0'}/${data.slug}`}
+        className={variant === 'thumb' ? 'thumb' : undefined}
+      >
         <Grid container spacing={gridSpacing}>
           <Grid item sm={gridImage}>
             <Box
@@ -115,6 +129,7 @@ const NewsItem: React.FunctionComponent<Props> = ({
               <img
                 src={imagePath(data.id || 0, data.feature_image_url || '', isWebdisplay)}
               />
+              {/* Logo overlay intentionally omitted for design parity */}
               {withPlay && (
                 <Box
                   className="wrapper-svg"
@@ -132,7 +147,7 @@ const NewsItem: React.FunctionComponent<Props> = ({
           </Grid>
           <Grid item sm={gridContent}>
             <Box className="inner" display="flex" alignItems="flex-start">
-              {withIconSurabaya && (
+              {withIconSurabaya && variant !== 'thumb' && (
                 <Box>
                   <Box
                     className="icon-surabaya"
@@ -209,6 +224,7 @@ NewsItem.defaultProps = {
   withIconSurabaya: false,
   withPlay: false,
   sizePlay: 50,
+  variant: 'main',
 }
 
 export default memo(NewsItem)

@@ -32,9 +32,13 @@ const MediaDate: React.FunctionComponent<Props> = ({
     <Box display="flex" alignItems="center" justifyContent={justifyContent}>
       <Typography
         onMouseEnter={(e) => textToSpeech(e, true)}
-        sx={{
-          fontSize:`1${accessibility.fontSize}0%`,
-        }}
+        sx={(theme) => ({
+          fontSize: `1${accessibility.fontSize}0%`,
+          color:
+            theme.palette.mode === 'light'
+              ? theme.palette.text.secondary
+              : theme.palette.text.primary,
+        })}
       >
         {withText && `Di unggah : `} {dateFormat} {` | `} {others}
       </Typography>

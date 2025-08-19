@@ -16,8 +16,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     background: '#fff',
     borderRadius: theme.spacing(4),
     boxShadow: '0 2px 16px rgba(0,0,0,0.10)',
-  // Remove padding to eliminate the visible white frame around the hero
-  padding: 0,
+    padding: 0,
     color: '#222',
     // Rounded corners on the viewport area
     '& .slick-list': {
@@ -26,7 +25,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     },
     '& .MuiGrid-container': {
       position: 'relative',
-      minHeight: 420,
+      minHeight: 300,
     },
     '& .MuiGrid-container .MuiGrid-item:first-of-type': {
       flexBasis: '100% !important',
@@ -59,7 +58,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     // Ensure the image covers full hero height
     '& .content-img img': {
       height: '100%',
-      maxHeight: 520,
+      maxHeight: 420,
       objectFit: 'cover',
     },
     // Text styles over the overlay
@@ -105,66 +104,114 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   '& .slick-arrow': { display: 'none !important' },
   },
   '&.thumb': {
-    background: '#fff',
-    borderRadius: theme.spacing(4),
-    border: '1px solid #e0e0e0',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    background: 'transparent',
+    borderRadius: 0,
+  boxShadow: 'none',
     marginTop: theme.spacing(2),
-    padding: theme.spacing(2, 2, 2, 2),
+    padding: 0,
     '& .slick-slider': {
+      maxWidth: 1180,
+      margin: '0 auto',
       '& .slick-list': {
-        borderRadius: theme.spacing(4),
-        overflow: 'hidden',
+        borderRadius: 0,
+        overflow: 'visible',
         '& .slick-track': {
           display: 'flex',
+          alignItems: 'stretch',
           '& .slick-slide': {
             margin: theme.spacing(0, 2, 0, 0),
+            height: 'auto',
+            '& > div': { height: '100%' },
             // Card-like thumbnails
             '& a': {
-              display: 'block',
-              border: '1px solid #e0e0e0',
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              minHeight: 130,
+              border: '3px solid rgba(208, 169, 115, 0.55)',
               borderRadius: theme.spacing(3),
               overflow: 'hidden',
               background: '#fff',
-              boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
             },
-            '& a .content-img': { position: 'relative' },
+            '& a .content-img': {
+              position: 'relative',
+              borderTopLeftRadius: theme.spacing(3),
+              borderTopRightRadius: theme.spacing(3),
+              overflow: 'hidden',
+            },
             '& a .content-img img': {
+              display: 'block',
+              width: '100%',
               borderRadius: `${theme.spacing(3)} ${theme.spacing(3)} 0 0`,
+              // More panoramic like the reference
+              aspectRatio: '16/9',
             },
+            // Top-to-bottom dark gradient only in thumbnails (Pasted Image 2)
             '& a .content-img::after': {
               content: '""',
               position: 'absolute',
               left: 0,
               right: 0,
-              bottom: 0,
-              height: '45%',
-              background: 'linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.55) 100%)',
+              top: 0,
+              height: '60%',
+              background:
+                'linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.08) 70%, rgba(0,0,0,0.00) 100%)',
+              pointerEvents: 'none',
+              borderTopLeftRadius: theme.spacing(3),
+              borderTopRightRadius: theme.spacing(3),
+              zIndex: 1,
             },
+            // (Logo overlay intentionally removed per design)
             '& a .inner': {
-              padding: theme.spacing(1.5, 2),
+              padding: theme.spacing(2, 2.5),
+              minHeight: 120,
             },
             '& a .title': {
               color: '#222',
               fontWeight: 800,
               textTransform: 'uppercase',
+              marginTop: theme.spacing(1),
+              letterSpacing: 0.3,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
             },
             '& a .date': {
               marginTop: theme.spacing(1),
-              display: 'inline-block',
-              background: '#f0f0f0',
-              color: '#666',
-              padding: theme.spacing(0.5, 1.2),
-              borderRadius: 999,
+              color: '#7a7a7a',
+              display: 'block',
+              background: 'transparent',
+              padding: 0,
+              borderRadius: 0,
+              fontWeight: 500,
             },
           },
         },
       },
     },
-  // Show arrows only for the thumbnail carousel
-  '& .slick-arrow': { display: 'flex' },
-  },
+  // Arrow styles for thumbnail: closer to cards and no background
   '& .slick-arrow': {
+    display: 'flex',
+    position: 'absolute',
+    top: '50%',
+    zIndex: 10,
+    width: 'auto',
+    height: 'auto',
+    background: 'transparent',
+    boxShadow: 'none',
+    transform: 'translateY(-50%)',
+  },
+  '& .slick-arrow.prev': {
+  // Move slightly further left for symmetry with the right arrow
+  left: theme.spacing(-1),
+  transform: 'translateY(-50%) rotate(180deg)',
+  },
+  '& .slick-arrow.next': {
+    right: theme.spacing(1),
+  },
+  },
+  '&:not(.thumb) .slick-arrow': {
     position: 'absolute',
     top: '50%',
     zIndex: 9,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -12,16 +12,11 @@ import { StatusCodes } from 'http-status-codes'
 import Layout from 'components/layout'
 import Title from 'components/title'
 import MediaDate from 'components/media.date'
-import { boxShadow, boxShadow2, borderRadius } from 'styles/theme'
+import { boxShadow, borderRadius } from 'styles/theme'
 import { fontSizeTitle } from 'components/news.list'
-import NewsItem from 'components/news.item'
+import InfografisOther from 'components/infografis.other'
 import { BoxStyled as BoxNewsStyled } from 'pages/id/videos/index'
-// import Link from 'next/link';
-import Element1 from 'public/images/icon/element_1.svg'
-import Element3 from 'public/images/icon/element_3.svg'
-import Element4 from 'public/images/icon/element_4.svg'
 import { BreakpointsContext } from 'contexts/breakpoints'
-import { ColorModeContext } from 'contexts/colorMode'
 import { AccessibilityContext } from 'contexts/accessibility'
 import { getDetail } from 'utils/services/news'
 import { getOrganization } from 'utils/services/organization'
@@ -83,65 +78,16 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       },
     },
   },
-  '& .wrapper-svg-element1': {
-    position: 'absolute',
-    top: 0,
-    left: '100%',
-    transform: 'translate(-40%, -30%)',
-    zIndex: -1,
-    '& svg': {
-      width: theme.spacing(70),
-    },
-  },
-  '& .wrapper-svg-element3': {
-    position: 'absolute',
-    top: '50%',
-    left: '100%',
-    transform: 'translate(20px, 0)',
-    zIndex: -1,
-    '& svg': {
-      width: theme.spacing(6),
-      '& circle': {
-        fill: `${theme.palette.secondary.main} !important`,
-      },
-    },
-  },
-  '& .wrapper-svg-element4': {
-    position: 'absolute',
-    bottom: 0,
-    right: '100%',
-    transform: 'translate(40%, -20%)',
-    zIndex: -1,
-    '& svg': {
-      width: theme.spacing(50),
-    },
-  },
-  '&.negative': {
-    '& .wrapper-svg-element4, & .wrapper-svg-element1': {
-      '& svg': {
-        '& path': {
-          stroke: `${theme.palette.common.white} !important`,
-        },
-        '& circle': {
-          stroke: `${theme.palette.common.white} !important`,
-        },
-      },
-    },
-  },
-  [theme.breakpoints.down('sm')]: {
-    '& .wrapper-svg-element1, & .wrapper-svg-element3, & .wrapper-svg-element4': {
-      display: 'none',
-    },
-  },
+  // Removed decorative wrapper element styles
 }))
 
-const BoxStyledOthers = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.divider,
+const BoxStyledOthers = styled(Box)(() => ({
+  backgroundColor: 'transparent',
 }))
 
 const InfografisDetail: NextPage<Props> = ({ detail }: Props) => {
   const router = useRouter()
-  const { mode } = React.useContext(ColorModeContext)
+  // const { mode } = React.useContext(ColorModeContext)
   const { downSm } = React.useContext(BreakpointsContext)
   const accessibility = React.useContext(AccessibilityContext)
   const [news, setNews] = React.useState<schema['schemas']['Article'][]>([])
@@ -180,129 +126,77 @@ const InfografisDetail: NextPage<Props> = ({ detail }: Props) => {
         <title>Pemerintah Kota Surabaya</title>
         <meta name="description" content="Pemerintah Kota Surabaya" />
       </Head>
-      <BoxStyled overflow="hidden" className={accessibility.css.negative ? 'negative' : ''}>
-        <Layout paddingY={2}>
-          <>
-            <Box className="wrapper-svg-element1">
-              <Element1 />
-            </Box>
-            <Box className="wrapper-svg-element3">
-              <Element3 />
-            </Box>
-            <Box className="wrapper-svg-element4">
-              <Element4 />
-            </Box>
-            <Title text="Infografis" paddingY={3} onBack={() => router.push(`/id/infografis`)} />
-            <Box className="container-text">
-              <Typography
-                fontSize={(downSm ? fontSizeTitle - 2 : fontSizeTitle) + accessibility.fontSize}
-                fontWeight={900}
-                lineHeight={1.3}
-                textTransform="uppercase"
-                marginBottom={1}
-              >
-                {detail.title}
-              </Typography>
-              <MediaDate
-                date={detail.publish_date}
-                others={timeAgo.format(new Date(detail.publish_date)) as string}
-                justifyContent="flex-start"
-              />
-              <Box
-                className="content"
-                marginTop={3}
-                sx={{
-                  fontSize: `1${accessibility.fontSize}0%`,
-                }}
-              >
-                <div className="text" dangerouslySetInnerHTML={{ __html: data.content }} />
+      {/* Page-level background like other pages */}
+      <Box
+        overflow="hidden"
+        className={accessibility.css.negative ? 'negative' : ''}
+        sx={{
+          position: 'relative',
+          backgroundImage: 'url(/images/bg-batik.svg)',
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'contain',
+          overflow: 'hidden',
+          minHeight: '100vh',
+          mt: '-130px',
+          // Add top padding so back button sits below the navbar
+          pt: { xs: 6, sm: 8, md: 10 },
+        }}
+      >
+        <BoxStyled overflow="hidden" className={accessibility.css.negative ? 'negative' : ''}>
+          <Layout paddingY={2}>
+            <>
+              <Title text="Infografis" paddingY={3} onBack={() => router.push(`/id/infografis`)} />
+              <Box className="container-text">
+                <Typography
+                  fontSize={(downSm ? fontSizeTitle - 2 : fontSizeTitle) + accessibility.fontSize}
+                  fontWeight={900}
+                  lineHeight={1.3}
+                  textTransform="uppercase"
+                  marginBottom={1}
+                  sx={(theme) => ({
+                    color:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                  })}
+                >
+                  {detail.title}
+                </Typography>
+                <MediaDate
+                  date={detail.publish_date}
+                  others={timeAgo.format(new Date(detail.publish_date)) as string}
+                  justifyContent="flex-start"
+                />
+                <Box
+                  className="content"
+                  marginTop={3}
+                  sx={{
+                    fontSize: `1${accessibility.fontSize}0%`,
+                  }}
+                >
+                  <div className="text" dangerouslySetInnerHTML={{ __html: data.content }} />
+                </Box>
               </Box>
-              {/* <Grid container spacing={3}>
-                <Grid item xs={12} sm={7}>
-                  <Box className="content">
-                    <div className="text" dangerouslySetInnerHTML={{__html: data.content}} />
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                  <Box marginBottom={2}>
-                    <Typography
-                      fontSize={downSm ? fontSizeTitle - 2 : fontSizeTitle}
-                      fontWeight={900}
-                      lineHeight={1.3}
-                      textTransform="uppercase"
-                      marginBottom={1}
-                    >
-                      {detail.title}
-                    </Typography>
-                    <MediaDate date={detail.created_at} others={timeAgo.format(new Date(detail.created_at)) as string} justifyContent="flex-start" />
-                  </Box>
-                  {dataDownload.map((v, i) => (
-                    <DownloadButton link={v} key={i} />
-                  ))}
-                </Grid>
-              </Grid> */}
-            </Box>
-          </>
-        </Layout>
-      </BoxStyled>
-      <BoxStyledOthers marginTop={2} paddingBottom={8}>
-        <Layout>
-          <>
-            <Title
-              text={`Infografis Lainnya`}
-              buttonText={downSm ? 'lainnya' : 'lihat semua'}
-              onClick={handleOnClick}
-            />
-            {!loading && news && news.length > 2 && (
-              <BoxNewsStyled
-                className="container-inner"
-                sx={{
-                  '& a': {
-                    backgroundColor: mode == 'dark' ? 'background.paper' : 'common.white',
-                    '&:hover': {
-                      boxShadow: `${mode == 'dark' ? boxShadow : boxShadow2} !important`,
-                    },
-                  },
-                }}
-              >
-                <Grid container spacing={4} alignItems="stretch">
-                  {[news[0], news[1], news[2]].map((v, i) => (
-                    <Grid
-                      key={i}
-                      item
-                      sm={4}
-                      className={`grid-content`}
-                      sx={{
-                        '& .MuiGrid-container': {
-                          '& .MuiGrid-item': {
-                            '& .inner': {
-                              '& .title': {
-                                fontSize: fontSizeTitle - 5 + accessibility.fontSize,
-                              },
-                            },
-                          },
-                        },
-                      }}
-                    >
-                      <NewsItem
-                        data={v}
-                        gridSpacing={2}
-                        withDescription={false}
-                        gridImage={12}
-                        gridContent={12}
-                        truncateTitle={30}
-                        withIconSurabaya={true}
-                        withPlay={false}
-                        route="infografis"
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </BoxNewsStyled>
-            )}
-          </>
-        </Layout>
-      </BoxStyledOthers>
+            </>
+          </Layout>
+        </BoxStyled>
+        <BoxStyledOthers marginTop={2} paddingBottom={8}>
+          <Layout>
+            <>
+              {!loading && news && news.length > 0 && (
+                <BoxNewsStyled className="container-inner">
+                  <InfografisOther
+                    data={news.slice(0, 9)}
+                    route="infografis"
+                    title="INFOGRAFIS LAINNYA"
+                    onLihatSemua={handleOnClick}
+                  />
+                </BoxNewsStyled>
+              )}
+            </>
+          </Layout>
+        </BoxStyledOthers>
+      </Box>
     </React.Fragment>
   )
 }

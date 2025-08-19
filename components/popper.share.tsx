@@ -103,12 +103,22 @@ const PopperShare: React.FunctionComponent<Props> = ({ title }: Props) => {
       >
         <Box
           className="wrapper-svg"
-          sx={{
+          sx={(theme) => ({
             '& svg': {
               width: `${sizeShare}px`,
               height: `${sizeShare}px`,
             },
-          }}
+            // Background shape (circle) -> cream (primary.main)
+            '& svg circle': {
+              fill: theme.palette.primary.main,
+              stroke: theme.palette.primary.main,
+            },
+            // Arrow/foreground -> green (secondary.main)
+            '& svg path': {
+              fill: theme.palette.secondary.main,
+              stroke: theme.palette.secondary.main,
+            },
+          })}
         >
           <ShareIcon />
         </Box>

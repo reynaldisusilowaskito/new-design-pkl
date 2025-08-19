@@ -7,19 +7,20 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { StatusCodes } from 'http-status-codes'
 import Layout from 'components/layout'
-import CarouselContent from 'components/carousel.content'
+import CarouselContentBerita from 'components/carousel.content.berita'
 import NewsList, { fontSizeBigger, fontSizeTitle } from 'components/news.list'
 import Pagination from 'components/pagination'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import { getOrganization } from 'utils/services/organization'
 import schema from 'types/schemas'
 
-interface Props {}
+interface Props { }
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   '& .main-slider': {
     '& .main': {
-      backgroundColor: theme.palette.common.white,
+      // Inherit page background so corners blend in dark mode too
+      backgroundColor: 'transparent',
       borderRadius: theme.spacing(2.5),
       marginBottom: theme.spacing(5),
       overflow: 'hidden',
@@ -67,13 +68,13 @@ const BoxStyled = styled(Box)(({ theme }) => ({
     },
     '& .thumb': {
       position: 'relative',
-      // Keep subtle white card but reduce apparent border thickness
-      backgroundColor: theme.palette.common.white,
+      // Let StyledBox control background per theme to avoid white edges
+      backgroundColor: 'transparent',
       color: theme.palette.text.secondary,
-      borderRadius: theme.spacing(2),
-      padding: theme.spacing(2),
+      borderRadius: 0,
+      padding: 0,
       '& .slick-slider': {
-        maxWidth: 920,
+        maxWidth: 'unset',
         margin: '0 auto',
       },
       // aksen circle kuning dihapus
@@ -132,8 +133,7 @@ const News: NextPage<Props> = () => {
     setLoading(true)
     console.log('getData search', searchParams)
     const fetchData = await fetch(
-      `/api/data/news?page=${pageParams}&category=berita${
-        searchParams ? `&search=${searchParams}` : ''
+      `/api/data/news?page=${pageParams}&category=berita${searchParams ? `&search=${searchParams}` : ''
       }`,
       { method: 'GET' }
     )
@@ -175,10 +175,17 @@ const News: NextPage<Props> = () => {
       </Head>
       <BoxStyled
         sx={{
+          position: 'relative',
           backgroundImage: 'url(/images/bg-batik.svg)',
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
+          // Match Infografis page so background fills upward
+          overflow: 'hidden',
           minHeight: '100vh',
+          // Pull section upward without reserving extra space below
+          mt: '-130px',
+          // Ensure content doesn't get covered by the footer
+          pb: { xs: 4, sm: 6, md: 8 },
           ...(current != 1 && {
             '& .news-item-container': {
               '& .news-item:first-of-type': {
@@ -203,6 +210,8 @@ const News: NextPage<Props> = () => {
                 letterSpacing: 1,
                 boxShadow: 1,
                 mb: 4,
+                // Compensate for the upward background shift
+                mt: { xs: 6, sm: 8, md: 10 },
               }}
             >
               BERITA
@@ -226,7 +235,7 @@ const News: NextPage<Props> = () => {
               <>
                 <Box className="main-slider">
                   {news && news.length > 0 && current == 1 && (
-                    <CarouselContent
+                    <CarouselContentBerita
                       data={news.slice(0, 7)}
                       gridContent={6}
                       gridImage={6}
@@ -243,7 +252,7 @@ const News: NextPage<Props> = () => {
                 )}
               </>
             )}
-            <Box marginTop={5}>
+            <Box marginTop={5} marginBottom={3}>
               <Pagination
                 total={count}
                 current={current}

@@ -75,9 +75,9 @@ const Infografis: NextPage<Props> = () => {
           backgroundImage: 'url(/images/bg-batik.svg)',
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
+          overflow: 'hidden',
           minHeight: '100vh',
-          maxHeight: '400vh',
-          bottom: 130,
+          mt: '-130px',
         }}
       >
         <Layout paddingY={2}>
@@ -144,6 +144,12 @@ const Infografis: NextPage<Props> = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'space-between',
+                                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  transform: 'translateY(-3px)',
+                                  boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+                                },
                               }}
                             >
                               <InfografisList
