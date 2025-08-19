@@ -42,6 +42,9 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       secondary: {
         main: yellowColor,
       },
+      tertiary: {
+        main: '#fff',
+        },
       text: {
         primary: '#ffffff',
         secondary: '#454444ff',
@@ -50,6 +53,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       divider : '#eaeaea',
       background: {
         paper: greenSurabaya,
+        default: '#fff',
       },
       grey: {
         A100: '#eef2f9',

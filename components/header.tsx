@@ -75,7 +75,7 @@ export const Logo = React.memo(() => {
 })
 
 const AppBarStyled = styled(AppBar)(({ theme }) => ({
-  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  backgroundColor: 'rgba(22, 22, 22, 0.55)',
   backdropFilter: 'blur(10px)',
   borderRadius: '999px',
   margin: theme.spacing(4, 'auto'), // Auto margin untuk center horizontal
