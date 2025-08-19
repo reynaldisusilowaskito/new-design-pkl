@@ -39,30 +39,27 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
   return (
     <BoxStyled className={accessibility.css.negative ? 'negative' : ''}>
       {!loading && (
-        <Box sx={{
-          width: '95%',
-          px: { xs: 2, md: 20 },
-          py: { xs: 4, md: 8 },
-          display: 'flex',
-          flexDirection: 'column',
-          // alignItems: 'center',
-          bgcolor: '#ffffff',
-          borderRadius: 4,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-          mx: 'auto',
-          // maxWidth: 1200,
-        }}>
+        <Box sx={(theme) => ({
+             bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
+             borderRadius: 6,
+             px: downSm ? 2 : 30,
+             py: downSm ? 2 : 10,
+             boxShadow: 2,
+             width: '97%',
+             mx: 'auto',
+             my: 0,
+           })}>
           {/* Section Title */}
           <Box sx={{
             display: 'flex',
-            gap: 1.5,
+            gap: 1,
             mb: 5,
             width: '100%',
           }}>
-            <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 8, display: 'block' }} />
-            <span style={{ fontSize: 24, fontWeight: 700, color: '#2E8B8B', letterSpacing: 0.5, lineHeight: 1.2, textAlign: 'center' }}>
-              PELAYANAN PEMERINTAH KOTA SURABAYA
-            </span>
+            <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
+           <Box component="span" sx={(theme) => ({ color: theme.palette.text.tertiary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+                                       PELAYANAN PEMERINTAH KOTA SURABAYA
+                                     </Box>
           </Box>
           <Box
             sx={{
@@ -121,19 +118,12 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                       },
                     }}
                   >
-                    {v.feature_image_url && (
-                      <img
-                        src={v.feature_image_url}
-                        alt={v.title}
-                        style={{ width: 48, height: 48, objectFit: 'contain', display: 'block', filter: 'brightness(0) invert(1)' }}
-                      />
-                    )}
                   </Box>
                   <Box
                     sx={{
                       color: '#2E8B8B',
                       fontWeight: 600,
-                      fontSize: { xs: 13, md: 14 },
+                      fontSize: { xs: 13 + accessibility.fontSize * 2, md: 14 + accessibility.fontSize * 2 },
                       textAlign: 'center',
                       minHeight: 44,
                       lineHeight: 1.3,

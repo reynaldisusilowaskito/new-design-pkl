@@ -51,7 +51,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     fontWeight: 900,
     textAlign: 'right',
     lineHeight: 1,
-    color:
+     color:
       theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.primary.main,
     WebkitTextStroke: `2px ${theme.palette.primary.main}`,
     WebkitTextFillColor:
@@ -117,7 +117,7 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
             <Typography
               textTransform="uppercase"
               textAlign="center"
-              fontSize={downSm ? fontSize - 1 : fontSize}
+              fontSize={downSm ? fontSize - 1 + accessibility.fontSize : fontSize + accessibility.fontSize}
               fontWeight={500}
               letterSpacing={downSm ? 1 : 4}
               lineHeight={1.2}

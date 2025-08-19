@@ -81,25 +81,25 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
     {
       id: '1',
       title: 'Kegiatan Penanaman Pohon',
-      image: '/images/photos/photo1.jpg',
+      image: '/images/photos/foto_panen_padi.jpg',
       alt: 'Foto kegiatan penanaman pohon bersama masyarakat'
     },
     {
       id: '2',
       title: 'Gotong Royong Lingkungan',
-      image: '/images/photos/photo2.jpg',
+      image: '/images/photos/foto_panen_padi.jpg',
       alt: 'Foto kegiatan gotong royong membersihkan lingkungan'
     },
     {
       id: '3',
       title: 'Acara Budaya Surabaya',
-      image: '/images/photos/photo3.jpg',
+      image: '/images/photos/foto_panen_padi.jpg',
       alt: 'Foto acara budaya khas Surabaya'
     },
     {
       id: '4',
       title: 'Program Pembangunan',
-      image: '/images/photos/photo4.jpg',
+      image: '/images/photos/foto_panen_padi.jpg',
       alt: 'Foto program pembangunan infrastruktur'
     },
   ]
@@ -123,13 +123,13 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <img
-            src="/images/icon/icon_batik_coklat_kiri.svg"
+            src="/images/icon/icon_batik_hijau_kanan.svg"
             alt="icon_batik"
             style={{ width: 32, height: 32, marginRight: 12, display: 'block' }}
           />
-          <span style={{ fontSize: 28, fontWeight: 600, color: '#fff', letterSpacing: 1, lineHeight: 1 }}>
-            FOTO
-          </span>
+                     <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+                                                 FOTO
+                                               </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button
@@ -207,7 +207,7 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
                         padding: 2,
                         background: 'rgba(0,0,0,0.5)',
                         borderRadius: 1,
-                        fontSize: '0.9rem',
+                        fontSize: `calc(0.9rem + ${accessibility.fontSize * 2}px)`,
                         fontWeight: 600,
                       }}
                     >

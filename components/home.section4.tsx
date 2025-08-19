@@ -54,6 +54,7 @@ const HomeSection4: React.FunctionComponent<Props> = () => {
   const { downSm } = React.useContext(BreakpointsContext);
   const loading = false;
   const { data } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_info'])
+  const accessibility = React.useContext(require('contexts/accessibility').AccessibilityContext) as { fontSize: number }
   return (
     <BoxStyled>
       <Box
@@ -68,9 +69,9 @@ const HomeSection4: React.FunctionComponent<Props> = () => {
             alt="icon_batik"
             style={{ width: 32, height: 32, marginRight: 12, display: 'block' }}
           />
-          <span style={{ fontSize: 28, fontWeight: 600, color: '#fff', letterSpacing: 1, lineHeight: 1 }}>
-            AGENDA KOTA
-          </span>
+           <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+                            AGENDA KOTA
+                          </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button

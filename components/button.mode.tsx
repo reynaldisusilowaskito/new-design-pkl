@@ -21,30 +21,35 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
       transform: `translateX(${width - circle}px)`,
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor:  theme.palette.background.paper,
+        border: `0.5px solid ${theme.palette.primary.main}`,
       },
       '& .MuiSwitch-thumb': {
         backgroundColor: theme.palette.primary.main,
+        border: `0.5px solid ${ theme.palette.background.paper}`,
       },
     },
   },
   '& .MuiSwitch-thumb': {
     width: circle,
     height: circle,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.paper,
   },
   '& .MuiSwitch-track': {
     borderRadius: circle,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:  theme.palette.primary.main,
+    border: `0.5px solid ${theme.palette.primary.main}`,
   },
   '&.negative': {
     '& .MuiSwitch-switchBase': {
       '&.Mui-checked': {
         '& + .MuiSwitch-track': {
           backgroundColor: theme.palette.primary.main,
+          border: `0.5px solid ${ theme.palette.background.paper}`,
         },
         '& .MuiSwitch-thumb': {
           backgroundColor: theme.palette.common.white,
+          border: `0.5px solid ${theme.palette.primary.main}`,
         },
       },
     },  

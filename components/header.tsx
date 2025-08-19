@@ -128,10 +128,14 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     },
   },
   '&.negative': {
-    '& a.active': {
-      color: 'rgba(255, 255, 255, 1)',
-      '&::after': {
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    // backgroundColor: theme.palette.background.paper,
+    '& a': {
+      color: theme.palette.text.primary,
+      '&.active': {
+        color: theme.palette.text.primary,
+        '&::after': {
+          // backgroundColor: theme.palette.secondary.main,
+        },
       },
     },
   },
@@ -160,6 +164,8 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
     setOpen(false)
     setSelected(null)
   }, [])
+  // Dynamic font size for menu links, default 13px
+  const menuFontSize = `${13 + accessibility.fontSize}px`;
   return (
     <>
       <HideOnScroll {...props}>
@@ -198,7 +204,7 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
                   justifyContent: 'center',
                   minHeight: 60,
                   '& a': {
-                    fontSize: '13px',
+                    fontSize: menuFontSize,
                     fontWeight: 600,
                     letterSpacing: 0.5,
                     margin: '0 8px',

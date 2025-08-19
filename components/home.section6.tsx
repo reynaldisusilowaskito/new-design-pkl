@@ -60,9 +60,9 @@ const HomeSection6: React.FunctionComponent<Props> = () => {
             alt="icon_batik"
             style={{ width: 32, height: 32, marginRight: 12, display: 'block' }}
           />
-          <span style={{ fontSize: 28, fontWeight: 600, color: '#fff', letterSpacing: 1, lineHeight: 1 }}>
-            VIDEO
-          </span>
+                    <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+                                                VIDEO
+                                              </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button

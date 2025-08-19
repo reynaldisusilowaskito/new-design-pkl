@@ -111,12 +111,21 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
   ]
 
   return (
-    <Box sx={{ bgcolor: '#fff', borderRadius: 6, px: downSm ? 2 : 30, py: downSm ? 2 : 10, boxShadow: 2, width:'97%', mx: 'auto', my: 0 }} >
+    <Box sx={(theme) => ({
+      bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
+      borderRadius: 6,
+      px: downSm ? 2 : 30,
+      py: downSm ? 2 : 10,
+      boxShadow: 2,
+      width: '97%',
+      mx: 'auto',
+      my: 0,
+    })}>
       <Grid container spacing={downSm ? 2 : 4} alignItems="stretch">
         {/* Kiri: Kartu Gambar */}
         <Grid item xs={12} md={4}>
           <Box sx={{
-            bgcolor: (theme) => theme.palette.background.paper,
+            // bgcolor: (theme) => theme.palette.background.paper,
             borderRadius: 5,
             overflow: 'hidden',
             height: downSm ? 260 : 520,
@@ -140,10 +149,11 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
           <Grid container direction="column" spacing={downSm ? 2 : 3}>
             {/* Atas: Tentang Surabaya */}
             <Grid item>
-            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2,  }}>
               {/* Teks Vertikal */}
               <Box sx={{
-                bgcolor: (theme) => theme.palette.background.paper,
+                // bgcolor: (theme) => theme.palette.background.paper,
+                backgroundColor: '#006462',
                 borderRadius: 5,
                 px: 2,
                 minWidth: 40,
@@ -152,7 +162,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                 justifyContent: 'center',
                 writingMode: 'vertical-rl',
                 textOrientation: 'mixed',
-                color: '#fff',
+                color: (theme) => theme.palette.text.primary,
                 fontWeight: 700,
                 fontSize: 16,
                 letterSpacing: 1,
@@ -163,18 +173,19 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
               {/* Box Deskripsi */}
               <Box sx={{
                 flex: 1,
-                border: '2px solid #176B87',
+                border: (theme) => `2px solid ${theme.palette.background.paper}`,
                 borderRadius: 5,
                 px: 3,
                 py: 2,
-                bgcolor: '#F8F8F8',
+                // bgcolor: (theme) => `${theme.palette.text.primary}`,
+                backgroundColor: '#fff',
                 minHeight: 120,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
               }}>
                 {tentangSurabaya.icon}
-                <Typography variant="body2" sx={{ color: '#222', fontSize: 15, lineHeight: 1.6 }}>
+                <Typography variant="body2" sx={(theme) => ({ color: theme.palette.text.secondary, fontSize: 15, lineHeight: 1.6 })}>
                   {tentangSurabaya.desc}
                 </Typography>
               </Box>
@@ -186,7 +197,8 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                 {/* Box utama 3 kolom */}
                 <Box sx={{
                   flex: 1,
-                  bgcolor: (theme) => theme.palette.background.paper,
+                  backgroundColor: '#006462',
+                  // bgcolor: (theme) => theme.palette.background.paper,
                   borderRadius: 5,
                   display: 'flex',
                   flexDirection: 'row',
@@ -197,9 +209,9 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   minHeight: 120,
                 }}>
                   {apaDiSurabaya.map((item, idx) => (
-                    <Box key={idx} sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', borderRight: idx < 2 ? '1px solid #fff3' : 'none', px: 1 }}>
+                    <Box key={idx} sx={(theme) => ({ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: theme.palette.text.primary, borderRight: idx < 2 ? '1px solid #fff3' : 'none', px: 1 })}>
                       {item.icon}
-                      <Typography variant="subtitle1" sx={{ fontWeight: 400, fontSize: 16, textAlign: 'center' }}>{item.label}</Typography>
+                      <Typography variant="subtitle1" sx={(theme) => ({ fontWeight: 400, fontSize: 16, textAlign: 'center', color: theme.palette.text.primary })}>{item.label}</Typography>
                     </Box>
                   ))}
                 </Box>
@@ -216,7 +228,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   justifyContent: 'center',
                   writingMode: 'vertical-rl',
                   textOrientation: 'mixed',
-                  color: '#176B87',
+                  color: (theme) => theme.palette.text.secondary,
                   fontWeight: 700,
                   fontSize: 16,
                   letterSpacing: 1,

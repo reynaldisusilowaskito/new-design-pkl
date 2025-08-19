@@ -10,7 +10,8 @@ export const boxShadow2 = `0 0 20px 20px ${grey[300]}`;
 
 const theme = createTheme();
 const lightColor1 = '#D2B690';
-export const yellowColor = '#006462';
+export const yellowColor = '#fdd300';
+export const greenSurabaya = '#006462';
 
 export const iconSurabaya = (sizeIcon: number) => ({
   backgroundColor: yellowColor,
@@ -44,13 +45,15 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       text: {
         primary: '#ffffff',
         secondary: '#454444ff',
+        tertiary: '#006462',
       },
       divider : '#eaeaea',
       background: {
-        paper: '#006462',
+        paper: greenSurabaya,
       },
       grey: {
         A100: '#eef2f9',
+        A200: '#ffffffc1',
       },
     } : {
       primary: {
@@ -61,6 +64,7 @@ const getDesign = (mode: PaletteMode, negative: boolean) => ({
       },
       text: {
         primary: negative ? yellowColor : '#ffffff',
+        secondary: negative ? yellowColor : '#454444ff',
       },
       divider : '#3b3d4d',
       background: {

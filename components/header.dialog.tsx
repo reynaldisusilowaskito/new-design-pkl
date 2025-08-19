@@ -5,7 +5,6 @@ import { styled } from '@mui/material/styles'
 import { fontSize, heightHeader } from 'styles/theme'
 import HeaderButton from 'components/header.button'
 import SearchIcon from 'public/images/icon/close.svg'
-import Element4 from 'public/images/icon/element_4.svg'
 import { Menu as MenuType } from 'components/header'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import { ColorModeContext } from 'contexts/colorMode'
@@ -25,7 +24,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     textDecoration: 'none',
     display: 'block',
     backgroundColor:
-      theme.palette.mode == 'dark' ? theme.palette.grey.A100 : theme.palette.common.white,
+      theme.palette.mode == 'dark' ? theme.palette.grey.A100 : theme.palette.background.paper,
     color: theme.palette.text.primary,
     textTransform: 'uppercase',
     width: '100%',
@@ -70,6 +69,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
     },
     '&:hover': {
       backgroundColor: theme.palette.mode == 'dark' ? '#363848' : theme.palette.background.paper,
+      transform: 'scale(1.03)',
+      boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+      transition: 'all 0.2s cubic-bezier(.4,2,.3,1)',
+      zIndex: 2,
     },
   },
   [theme.breakpoints.down('sm')]: {
@@ -115,13 +118,19 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const StyledBoxClose = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  borderRadius: '50%',
+  boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   '& svg': {
     height: fontSize + 14,
     '& path': {
-      fill: theme.palette.primary.main,
+      fill: theme.palette.background.paper,
     },
     '& circle': {
-      fill: theme.palette.secondary.main,
+      fill: theme.palette.primary.main,
     },
   },
 }))
@@ -194,7 +203,7 @@ const HeaderDialog: React.FunctionComponent<Props> = ({ menu, open, onClose }: P
           position: 'relative',
           overflow: 'hidden',
           borderRadius: downSm ? 0 : 2,
-          backgroundColor: mode == 'dark' ? 'background.paper' : 'common.white',
+          backgroundColor: mode == 'dark' ? 'background.paper' : 'greenSurabaya',
           backgroundImage: 'none',
           minHeight: `calc(100% - ${(downSm ? 70 : heightHeader) * 2}px)`,
           transform: `translateY(${downSm ? 0 : downSm ? 70 : heightHeader}px)`,
@@ -247,9 +256,9 @@ const HeaderDialog: React.FunctionComponent<Props> = ({ menu, open, onClose }: P
           </Grid>
         </StyledBox>
       </StyledDialogContent>
-      <StyledBoxSvg className="wrapper-svg2">
+      {/* <StyledBoxSvg className="wrapper-svg2">
         <Element4 />
-      </StyledBoxSvg>
+      </StyledBoxSvg> */}
     </Dialog>
   )
 }
