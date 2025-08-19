@@ -128,7 +128,7 @@ export default function MyApp(props: MyAppProps) {
                     overflow={load ? 'hidden' : 'visible'}
                     height={load ? 0 : 'auto'}
                     sx={{
-                      backgroundColor: theme.palette.background.paper,
+                      backgroundColor: theme.palette.common.white,
                       opacity: load ? 0 : 1,
                       filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
                       margin: 0,

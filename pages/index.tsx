@@ -119,7 +119,7 @@ const Home: NextPage<Props> = () => {
       <Box sx={{ m: 0, p: 0, position: 'relative', zIndex: 1 }}>
         <HomeSection1 />
       </Box>
-      <Box sx={{ m: 0, p: 0 }}>
+      <Box sx={(theme) => ({ m: 0, p: 0, bgcolor: theme.palette.background.paper })}>
         <HomeSection2 />
       </Box>
       <BoxStyled1>
