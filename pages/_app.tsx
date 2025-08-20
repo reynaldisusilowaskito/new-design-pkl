@@ -122,7 +122,7 @@ export default function MyApp(props: MyAppProps) {
                   {!load && <Header opacity={load ? 0 : 1} />}
                   <Accessibility />
                   <Box
-                    display={load ? 'none' : 'flex'}
+                     display={load ? 'none' : 'flex'}
                     flexDirection="column"
                     minHeight={load ? 0 : '100vh'}
                     paddingTop={`${downSm ? 70 : heightHeader}px`}
@@ -135,6 +135,8 @@ export default function MyApp(props: MyAppProps) {
                           : theme.palette.common.white,
                       opacity: load ? 0 : 1,
                       filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
+                      // margin: 0,
+                      // padding: 0,
                     }}
                   >
                     <Component {...pageProps} />

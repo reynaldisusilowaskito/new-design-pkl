@@ -33,7 +33,9 @@ export interface SliderType {
 interface Props {}
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  minHeight: '102vh',
+  minHeight: '100vh',
+  paddingTop: 0,
+  marginTop: 0,
   backgroundColor: theme.palette.background.paper,
   backgroundImage: 'url(/images/bg-landing-sby.svg)',
   backgroundSize: 'cover',
@@ -41,16 +43,15 @@ const StyledBox = styled(Box)(({ theme }) => ({
   backgroundRepeat: 'no-repeat',
   display: 'flex',
   alignItems: 'center',
-  position: 'relative',
-  bottom: 158,
   overflow: 'hidden',
+  position: 'relative',
   '& .typo1': {
     fontSize: fontSize + 70,
     textTransform: 'uppercase',
     fontWeight: 900,
     textAlign: 'right',
     lineHeight: 1,
-    color:
+     color:
       theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.primary.main,
     WebkitTextStroke: `2px ${theme.palette.primary.main}`,
     WebkitTextFillColor:
@@ -71,7 +72,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
     },
   },
   [theme.breakpoints.down('sm')]: {
-    minHeight: `calc(100vh - ${70}px)`,
+    minHeight: `100vh`,
+    paddingTop: 0,
     '& .wrapper-svg1, & .wrapper-svg3': {
       display: 'none',
     },
@@ -101,21 +103,21 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          minHeight="80vh"
+          minHeight="100vh"
           pt={0}
         >
           <Box width="100%" maxWidth={700} textAlign="center" mb={downSm ? 4 : 1}>
              <img
         src="/images/icon/icon-text-surabaya.svg"
         alt="Surabaya"
-        style={{ width: 400, marginBottom: 16, marginTop: 200 }}
+        style={{ width: 400, marginBottom: 5, marginTop: 250 }}
       />
             <Box className="wrapper-svg2" sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
             </Box>
             <Typography
               textTransform="uppercase"
               textAlign="center"
-              fontSize={downSm ? fontSize - 1 : fontSize}
+              fontSize={downSm ? fontSize - 1 + accessibility.fontSize : fontSize + accessibility.fontSize}
               fontWeight={500}
               letterSpacing={downSm ? 1 : 4}
               lineHeight={1.2}

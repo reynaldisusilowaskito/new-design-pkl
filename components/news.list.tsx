@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { fontSize, borderRadius } from 'styles/theme'
-import NewsItem from 'components/news.item'
+import CarouselNewsItem from 'components/carousel.news.item'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import schema from 'types/schemas'
 
@@ -27,7 +27,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       transition: `all 0.2s ease-in-out`,
   color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
       '&:hover': {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.secondary.main,
         color: theme.palette.common.white,
         '& .inner .MuiBox-root p.title, & .inner .MuiBox-root p.description, & .inner .MuiBox-root p.date': {
           color: theme.palette.text.primary,
@@ -77,7 +77,7 @@ const NewsList: React.FunctionComponent<Props> = ({ data, route }: Props) => {
       <Box className="news-item-container">
         {data.map((v, i) => (
           <Box marginTop={downSm ? 2 : 5} key={i} className="news-item">
-            <NewsItem
+            <CarouselNewsItem
               key={i}
               data={v}
               gridImage={4}

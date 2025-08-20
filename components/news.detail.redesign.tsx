@@ -136,7 +136,7 @@ const TitleText = styled(Typography)(({ theme }) => ({
 const DateText = styled(Typography)(({ theme }) => ({
   fontFamily: "'Roboto', Arial, sans-serif",
   fontSize: '14px',
-  color: theme.palette.mode === 'dark' ? theme.palette.text.secondary : '#474747',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#474747',
   marginBottom: '16px',
   [theme.breakpoints.down('md')]: {
     fontSize: '13px',
@@ -169,16 +169,32 @@ const ImageContainer = styled(Box)(({ theme }) => ({
 const ContentArticle = styled(Box)(({ theme }) => ({
   fontFamily: "'Lato', Arial, sans-serif",
   fontSize: '16px',
-  color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#474747',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#474747',
   textAlign: 'justify',
   lineHeight: '2rem',
   marginTop: '20px',
   marginBottom: '50px',
+  // Force all nested text to white in dark mode
+  ...(theme.palette.mode === 'dark' && {
+    '&, & *': {
+      color: '#fff !important',
+      borderColor: '#fff',
+    },
+    '& a': {
+      color: theme.palette.secondary.main + ' !important',
+    },
+    '& ul li': {
+      color: '#fff !important',
+    },
+    '& h1, & h2, & h3, & h4, & h5, & h6': {
+      color: '#fff !important',
+    },
+  }),
   '& p': {
     marginBottom: '20px',
     margin: 0,
     padding: 0,
-    color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#474747',
+    color: theme.palette.mode === 'dark' ? '#fff' : '#474747',
   },
   '& img': {
     maxWidth: '100%',
@@ -207,7 +223,7 @@ const ContentArticle = styled(Box)(({ theme }) => ({
     marginLeft: theme.spacing(3),
     marginBottom: theme.spacing(6),
     '& li': {
-      color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#006462',
+      color: theme.palette.mode === 'dark' ? '#fff' : '#006462',
       marginBottom: theme.spacing(1),
       wordWrap: 'break-word',
     },
@@ -215,7 +231,7 @@ const ContentArticle = styled(Box)(({ theme }) => ({
   '& h1, & h2, & h3, & h4, & h5, & h6': {
     fontFamily: "'Roboto', Arial, sans-serif",
     fontWeight: 600,
-    color: theme.palette.mode === 'dark' ? theme.palette.text.primary : '#222',
+    color: theme.palette.mode === 'dark' ? '#fff' : '#222',
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
     wordWrap: 'break-word',

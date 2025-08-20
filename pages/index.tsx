@@ -12,6 +12,8 @@ import HomeSection2 from 'components/home.section2'
 import HomeSection3 from 'components/home.section3'
 import HomeSection4 from 'components/home.section4'
 import HomeSection5 from 'components/home.section5'
+import HomeSection6 from 'components/home.section6'
+import HomeSection7 from 'components/home.section7'
 import { getNews } from 'utils/services/news'
 // import { getAgenda } from 'utils/services/agenda'
 import { getServices } from 'utils/services/service'
@@ -33,9 +35,7 @@ interface Props { }
 const BoxStyled1 = styled(Box)(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  backgroundColor: theme.palette.background.paper,
-  // background: `linear-gradient(0deg, ${theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.common.white
-  //   } 85%, ${theme.palette.grey.A100} 100%)`,
+  // backgroundColor handled by _app.index.tsx
   '& .wrapper-svg1, & .wrapper-svg2': {
     position: 'absolute',
     zIndex: 0,
@@ -66,8 +66,7 @@ const BoxStyled1 = styled(Box)(({ theme }) => ({
     },
   },
   '& .box-section4': {
-    backgroundColor:
-      theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.grey[100],
+    backgroundColor: theme.palette.background.paper,
   },
   '& .box-inner': {
     position: 'relative',
@@ -117,32 +116,33 @@ const Home: NextPage<Props> = () => {
         <meta name="description" content="Pemerintah Kota Surabaya" />
         <script async type="text/javascript" src="https://widget.kominfo.go.id/gpr-widget-kominfo.min.js"></script>
       </Head>
-      <Box sx={{ m: 0, p: 0 }}>
+      <Box sx={{ m: 0, p: 0, position: 'relative', zIndex: 1 }}>
         <HomeSection1 />
       </Box>
-      <Box sx={{ position: 'relative', bottom: 190, zIndex: 1, height: '69vh' }}>
+      <Box sx={{ m: 0, p: 0 }}>
         <HomeSection2 />
       </Box>
       <BoxStyled1>
-        <Layout paddingY={0}>
+        <Box sx={{backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}>
           <>
             <HomeSection3 />
-          </>
-        </Layout>
-        <Box className="box-section4">
-          <Layout>
-            <>
               <HomeSection4 />
-              {/* <Title text="Pelayanan Pemerintah Kota Surabaya" paddingY={0} /> */}
-            </>
-          </Layout>
+          </>
         </Box>
-        <Box className="box-inner">
-          <Layout paddingY={0}>
+        <Box sx={{m:0, p:0}}>
             <>
               <HomeSection5 />
             </>
-          </Layout>
+        </Box>
+                <Box sx={{backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}>
+            <>
+              <HomeSection6 />
+            </>
+        </Box>
+          <Box sx={{m:0, p:0}}>
+            <>
+              <HomeSection7 />
+            </>
         </Box>
       </BoxStyled1>
     </React.Fragment>

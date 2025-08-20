@@ -176,7 +176,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
           <Layout paddingY={2}>
             <Box>
               <Box position="relative">
-                <Box mb={{ xs: 6, sm: 8, md: 10 }}>
+                <Box mb={{ xs: 6, sm: 8, md: 10 }} mt={{ xs: 8, sm: 10, md: 5 }}>
                   <MediaHeader
                     text="SEKILAS TENTANG SURABAYA"
                     description="dengan narasumber yang terpercaya."

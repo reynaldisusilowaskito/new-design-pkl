@@ -44,6 +44,9 @@ export interface NewsType {
 interface Props { }
 
 const BoxStyled = styled(Box)(({ theme }) => ({
+  width: '80%',
+  maxWidth: '80%',
+  margin: '0 auto',
   '& .MuiGrid-container': {
     position: 'relative',
     zIndex: 1,
@@ -74,6 +77,7 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
   const loading = false
   const { downSm } = React.useContext(BreakpointsContext)
   const { data } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_news'])
+  const accessibility = React.useContext(require('contexts/accessibility').AccessibilityContext) as { fontSize: number }
   const handleLihatSemua = React.useCallback(() => {
     router.push('/id/berita')
   }, [router])
@@ -107,18 +111,18 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
   return (
     <>
       {data?.data && (
-        <BoxStyled sx={{ position: 'relative', borderRadius: 0, p: downSm ? 2 : 4, overflow: 'hidden' }}>
+        <BoxStyled sx={{ position: 'relative', borderRadius: 0, p: downSm ? 4 : 7, overflow: 'hidden' }}>
           {/* Top Bar */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, mt: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <img
                 src="/images/icon/icon_batik_coklat_kiri.svg"
                 alt="icon_batik"
                 style={{ width: 32, height: 32, marginRight: 12, display: 'block' }}
               />
-              <span style={{ fontSize: 28, fontWeight: 600, color: '#fff', letterSpacing: 1, lineHeight: 1 }}>
-                BERITA TERBARU
-              </span>
+                <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+                  BERITA TERBARU
+                </Box>
             </Box>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <button
@@ -134,7 +138,7 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                   padding: '6px 18px',
                   fontWeight: 500,
                   cursor: 'pointer',
-                  fontSize: 15,
+                fontSize: 15 + accessibility.fontSize * 2,
                   boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
                   transition: 'background 0.2s, color 0.2s',
                 }}
@@ -177,7 +181,7 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                       slidesToShow={1}
                       gridSpacing={0}
                       truncateTitle={60}
-                      fontSizeProps={18}
+                      fontSizeProps={18 + accessibility.fontSize * 2}
                       withDescription={false}
                       gridImage={12}
                       gridContent={12}
@@ -200,17 +204,17 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                 flexDirection: 'column',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
               }}>
-                <div style={{ fontWeight: 700, fontSize: 18, color: '#066666', marginBottom: 12 }}>PEMILU SERENTAK 2024</div>
+                <div style={{ fontWeight: 700, fontSize: 18 + accessibility.fontSize * 2, color: '#066666', marginBottom: 12 }}>PEMILU SERENTAK 2024</div>
                 <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 12, paddingRight: 4 }}>
                   {pemiluArticles.map((item, idx) => (
                     <div key={idx} style={{ background: '#fff', borderRadius: 12, padding: '10px 14px', marginBottom: 6, boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
-                      <div style={{ fontSize: 11, color: '#888', marginBottom: 2 }}>{item.date}</div>
-                      <div style={{ fontWeight: 600, fontSize: 14, color: '#066666', lineHeight: 1.3 }}>Artikel</div>
-                      <div style={{ fontSize: 13, color: '#222', marginTop: 2 }}>{item.title}</div>
+                      <div style={{ fontSize: 11 + accessibility.fontSize * 2, color: '#888', marginBottom: 2 }}>{item.date}</div>
+                      <div style={{ fontWeight: 600, fontSize: 14 + accessibility.fontSize * 2, color: '#066666', lineHeight: 1.3 }}>Artikel</div>
+                      <div style={{ fontSize: 13 + accessibility.fontSize * 2, color: '#222', marginTop: 2 }}>{item.title}</div>
                     </div>
                   ))}
                 </div>
-                <div style={{ textAlign: 'center', color: '#888', fontSize: 13, marginTop: 10 }}>infopemilu.go.id</div>
+                <div style={{ textAlign: 'center', color: '#888', fontSize: 13 + accessibility.fontSize * 2, marginTop: 10 }}>infopemilu.go.id</div>
               </Box>
             </Grid>
           </Grid>
