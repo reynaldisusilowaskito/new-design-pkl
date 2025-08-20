@@ -85,7 +85,7 @@ const Infografis: NextPage<Props> = () => {
             <Box
               sx={{
                 display: 'inline-block',
-                backgroundColor: 'secondary.main',
+                backgroundColor: '#006462',
                 color: 'common.white',
                 borderRadius: 8,
                 px: 2,
@@ -95,7 +95,7 @@ const Infografis: NextPage<Props> = () => {
                 letterSpacing: 1,
                 boxShadow: 1,
                 mb: 4,
-                mt: { xs: 6, sm: 8, md: 10 }, // padding atas lebih banyak
+                mt: { xs: 6, sm: 8, md: 20 }, // padding atas lebih banyak
               }}
             >
               INFOGRAFIS

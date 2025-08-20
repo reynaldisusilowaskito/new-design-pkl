@@ -35,7 +35,7 @@ interface Props { }
 const BoxStyled1 = styled(Box)(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  backgroundColor: theme.palette.background.paper,
+  // backgroundColor handled by _app.index.tsx
   '& .wrapper-svg1, & .wrapper-svg2': {
     position: 'absolute',
     zIndex: 0,
@@ -119,7 +119,7 @@ const Home: NextPage<Props> = () => {
       <Box sx={{ m: 0, p: 0, position: 'relative', zIndex: 1 }}>
         <HomeSection1 />
       </Box>
-      <Box sx={(theme) => ({ m: 0, p: 0, bgcolor: theme.palette.background.paper })}>
+      <Box sx={{ m: 0, p: 0 }}>
         <HomeSection2 />
       </Box>
       <BoxStyled1>

@@ -30,13 +30,13 @@ const StyledBoxArrow = styled(Box)(({ theme }) => ({
       '& svg': {
         cursor: 'pointer',
         '& path:nth-of-type(1)': {
-          fill: theme.palette.primary.main,
+          fill: theme.palette.background.paper,
         },
         '& path:nth-of-type(2)': {
           fill: theme.palette.background.paper,
         },
         '& circle': {
-          fill: theme.palette.secondary.main,
+          fill: theme.palette.primary.main,
         },
       },
     },

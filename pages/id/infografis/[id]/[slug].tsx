@@ -139,13 +139,13 @@ const InfografisDetail: NextPage<Props> = ({ detail }: Props) => {
           minHeight: '100vh',
           mt: '-130px',
           // Add top padding so back button sits below the navbar
-          pt: { xs: 6, sm: 8, md: 10 },
+          pt: { xs: 6, sm: 8, md: 20 },
         }}
       >
         <BoxStyled overflow="hidden" className={accessibility.css.negative ? 'negative' : ''}>
           <Layout paddingY={2}>
             <>
-              <Title text="Infografis" paddingY={3} onBack={() => router.push(`/id/infografis`)} />
+              <Title text="Infografis" paddingY={3} color="#006462" onBack={() => router.push(`/id/infografis`)} />
               <Box className="container-text">
                 <Typography
                   fontSize={(downSm ? fontSizeTitle - 2 : fontSizeTitle) + accessibility.fontSize}

@@ -41,7 +41,7 @@ const HeaderContainer = styled(Box)(() => ({
 const TitleText = styled(Typography)(({ theme }) => ({
   fontSize: 20,
   fontWeight: 800,
-  color: `${yellowColor} !important`,
+  color: '#006462',
   fontFamily: "'Roboto', Arial, sans-serif",
   textTransform: 'uppercase',
 }))

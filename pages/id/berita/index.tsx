@@ -200,7 +200,7 @@ const News: NextPage<Props> = () => {
             <Box
               sx={{
                 display: 'inline-block',
-                backgroundColor: 'secondary.main',
+                backgroundColor: 'background.paper',
                 color: 'common.white',
                 borderRadius: 8,
                 px: 2,

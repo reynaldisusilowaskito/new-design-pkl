@@ -23,6 +23,7 @@ interface Props {
   justifyContent?: string;
   onBack?: () => any;
   onClick?: () => any;
+  color?: string; // optional override for title text color
 };
 
 const BoxStyled = styled(Box)(() => ({
@@ -65,6 +66,7 @@ const Title: React.FunctionComponent<Props> = ({
   justifyContent,
   onBack,
   onClick,
+  color,
 }: Props) => {
   const { mode } = React.useContext(ColorModeContext);
   const { downSm } = React.useContext(BreakpointsContext);
@@ -96,7 +98,7 @@ const Title: React.FunctionComponent<Props> = ({
         <Typography
           onMouseEnter={(e) => textToSpeech(e, true)}
           sx={{
-            color: withBackground ? mode == 'dark' ? 'background.paper' : 'text.primary' : 'primary.main',
+            color: color || (withBackground ? (mode == 'dark' ? 'background.paper' : 'text.primary') : 'primary.main'),
             fontSize: {
               xs: (fontSize + 2) + accessibility.fontSize,
               sm: (fontSize + 4) + accessibility.fontSize,
