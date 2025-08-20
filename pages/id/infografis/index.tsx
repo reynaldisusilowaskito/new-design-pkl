@@ -75,9 +75,9 @@ const Infografis: NextPage<Props> = () => {
           backgroundImage: 'url(/images/bg-batik.svg)',
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
+          overflow: 'hidden',
           minHeight: '100vh',
-          maxHeight: '400vh',
-          bottom: 130,
+          mt: '-130px',
         }}
       >
         <Layout paddingY={2}>
@@ -85,7 +85,7 @@ const Infografis: NextPage<Props> = () => {
             <Box
               sx={{
                 display: 'inline-block',
-                backgroundColor: 'secondary.main',
+                backgroundColor: '#006462',
                 color: 'common.white',
                 borderRadius: 8,
                 px: 2,
@@ -95,7 +95,7 @@ const Infografis: NextPage<Props> = () => {
                 letterSpacing: 1,
                 boxShadow: 1,
                 mb: 4,
-                mt: { xs: 6, sm: 8, md: 10 }, // padding atas lebih banyak
+                mt: { xs: 6, sm: 8, md: 20 }, // padding atas lebih banyak
               }}
             >
               INFOGRAFIS
@@ -144,6 +144,12 @@ const Infografis: NextPage<Props> = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'space-between',
+                                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  transform: 'translateY(-3px)',
+                                  boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+                                },
                               }}
                             >
                               <InfografisList

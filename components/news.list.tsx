@@ -25,9 +25,9 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       borderRadius: theme.spacing(borderRadius),
       overflow: 'hidden',
       transition: `all 0.2s ease-in-out`,
-  color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
+      color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.secondary,
       '&:hover': {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: '#006462',
         color: theme.palette.common.white,
         '& .inner .MuiBox-root p.title, & .inner .MuiBox-root p.description, & .inner .MuiBox-root p.date': {
           color: theme.palette.text.primary,

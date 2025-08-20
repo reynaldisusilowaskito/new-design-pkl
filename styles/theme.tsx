@@ -14,7 +14,7 @@ export const yellowColor = '#fdd300';
 export const greenSurabaya = '#006462';
 
 export const iconSurabaya = (sizeIcon: number) => ({
-  backgroundColor: yellowColor,
+  backgroundColor: greenSurabaya,
   width: sizeIcon + 16,
   height: sizeIcon + 16,
   display: 'flex',
