@@ -59,7 +59,7 @@ export default function AppIndex(props: MyAppProps) {
                     flexDirection="column"
                     minHeight="100vh"
                     sx={{
-                      backgroundColor: theme.palette.background.paper,
+                      backgroundColor: theme.palette.common.white,
                       filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
                       margin: 0,
                       padding: 0,
