@@ -110,42 +110,37 @@ const BoxStyled1 = styled(Box)(({ theme }) => ({
 
 const Home: NextPage<Props> = () => {
   return (
-    <React.Fragment>
+    <Box sx={(theme) => ({ bgcolor: theme.palette.background.paper, minHeight: '100vh', width: '100%', p: 0, mt: '-90px' })}>
       <Head>
         <title>Pemerintah Kota Surabaya</title>
         <meta name="description" content="Pemerintah Kota Surabaya" />
         <script async type="text/javascript" src="https://widget.kominfo.go.id/gpr-widget-kominfo.min.js"></script>
       </Head>
-      <Box sx={{ m: 0, p: 0, position: 'relative', zIndex: 1 }}>
+      {/* Remove margin and padding from header and main content */}
+      <Box sx={{ m: 0, p: 0, position: 'relative', zIndex: 1, boxSizing: 'border-box' }}>
         <HomeSection1 />
       </Box>
-      <Box sx={{ m: 0, p: 0 }}>
+      <Box sx={{ m: 0, p: 0, boxSizing: 'border-box' }}>
         <HomeSection2 />
       </Box>
-      <BoxStyled1>
-        <Box sx={{backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}>
+      <BoxStyled1 sx={{ m: 0, p: 0, boxSizing: 'border-box' }}>
+        <Box sx={{backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', m: 0, p: 0, boxSizing: 'border-box'}}>
           <>
             <HomeSection3 />
-              <HomeSection4 />
+            <HomeSection4 />
           </>
         </Box>
-        <Box sx={{m:0, p:0}}>
-            <>
-              <HomeSection5 />
-            </>
+        <Box sx={(theme) => ({m:0, p:0, bgcolor: theme.palette.background.paper, boxSizing: 'border-box'})}>
+          <HomeSection5 />
         </Box>
-                <Box sx={{backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}>
-            <>
-              <HomeSection6 />
-            </>
+        <Box sx={(theme) => ({m:0, p:0,backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', bgcolor: theme.palette.background.paper, boxSizing: 'border-box'})}>
+          <HomeSection6 />
         </Box>
-          <Box sx={{m:0, p:0}}>
-            <>
-              <HomeSection7 />
-            </>
+        <Box sx={(theme) => ({m:0, p:0, bgcolor: theme.palette.background.paper, boxSizing: 'border-box'})}>
+          <HomeSection7 />
         </Box>
       </BoxStyled1>
-    </React.Fragment>
+    </Box>
   )
 }
 
