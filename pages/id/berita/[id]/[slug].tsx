@@ -96,7 +96,18 @@ const NewsDetail: NextPage<Props> = ({ detail }: Props) => {
       </Head>
       
       {/* Main Content */}
-      <Box sx={{ background: (theme) => theme.palette.background.paper, minHeight: '100vh' }}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          width: 'xl',
+          backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
+          backgroundImage: 'url("/images/bg-batik.svg")',
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
         {/* Berita Detail */}
         <BeritaDetail 
           news={data}

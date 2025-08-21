@@ -18,26 +18,10 @@ interface BeritaLainnyaProps {
   onLihatSemua?: () => void;
 }
 
-const SectionContainer = styled(Box)(({ theme }) => ({
+const SectionContainer = styled(Box)(() => ({
   position: 'relative',
   width: '100%',
-  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
-  backgroundImage: 'url("/images/sekilas/bg%20batik.png")',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center center',
-  backgroundAttachment: 'fixed',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 57, 55, 0.7)' : 'rgba(255, 255, 255, 0.5)',
-    zIndex: 0,
-    pointerEvents: 'none',
-  },
+  background: 'none',
   '& > *': {
     position: 'relative',
     zIndex: 1,

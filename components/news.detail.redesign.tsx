@@ -34,7 +34,7 @@ export interface BeritaDetailProps {
   contents: string[];
 }
 
-const MainContainer = styled(Box)(({ theme }) => ({
+const MainContainer = styled(Box)(() => ({
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
@@ -42,27 +42,7 @@ const MainContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   minHeight: '100vh',
   overflowX: 'hidden',
-  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
-  backgroundImage: 'url("/images/bg-batik.svg")',
-  backgroundRepeat: 'repeat',
-  backgroundSize: 'contain',
-  backgroundPosition: 'center center',
-  backgroundAttachment: 'fixed',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 57, 55, 0.7)' : 'rgba(255, 255, 255, 0.5)',
-    zIndex: 0,
-    pointerEvents: 'none',
-  },
-  '& > *': {
-    position: 'relative',
-    zIndex: 1,
-  },
+  background: 'none',
 }));
 
 const ContentSection = styled(Box)(() => ({
@@ -179,22 +159,26 @@ const ContentArticle = styled(Box)(({ theme }) => ({
     '&, & *': {
       color: '#fff !important',
       borderColor: '#fff',
+      fontFamily: "'Lato', Arial, sans-serif !important",
     },
     '& a': {
       color: theme.palette.secondary.main + ' !important',
     },
     '& ul li': {
       color: '#fff !important',
+      fontFamily: "'Lato', Arial, sans-serif !important",
     },
     '& h1, & h2, & h3, & h4, & h5, & h6': {
       color: '#fff !important',
+      fontFamily: "'Lato', Arial, sans-serif !important",
     },
   }),
   '& p': {
-    marginBottom: '20px',
+    marginBottom: 0,
     margin: 0,
     padding: 0,
     color: theme.palette.mode === 'dark' ? '#fff' : '#474747',
+    fontFamily: "'Lato', Arial, sans-serif",
   },
   '& img': {
     maxWidth: '100%',

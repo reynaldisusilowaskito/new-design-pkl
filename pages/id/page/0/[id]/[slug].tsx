@@ -98,9 +98,13 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
       },
     }))
     const CardStyled = styled(Box)(({ theme }) => ({
-      background: 'rgba(255,255,255,0.60)',
+      background: theme.palette.mode === 'dark'
+        ? 'rgba(0, 57, 55, 0.85)'
+        : 'rgba(255,255,255,0.60)',
       borderRadius: 16,
-      boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+      boxShadow: theme.palette.mode === 'dark'
+        ? '0 4px 24px rgba(0,0,0,0.30)'
+        : '0 4px 24px rgba(0,0,0,0.10)',
       padding: theme.spacing(4, 4),
       maxWidth: 1200,
       margin: '32px auto 48px auto',
@@ -121,22 +125,23 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
       [theme.breakpoints.down('sm')]: {
         padding: theme.spacing(0, 0.5),
       },
+      color: theme.palette.mode === 'dark' ? '#fff' : '#222',
       '& p': {
-        color: '#222',
+        color: theme.palette.mode === 'dark' ? '#fff' : '#222',
         fontFamily: "'Roboto', Arial, sans-serif",
         fontWeight: 400,
         fontSize: '16px',
         lineHeight: '24px',
-        marginBottom: theme.spacing(3),
+        marginBottom: theme.spacing(0),
         wordWrap: 'break-word',
         textAlign: 'justify',
       },
       '& a': {
-        color: '#006462',
+        color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#006462',
         textDecoration: 'underline',
         wordWrap: 'break-word',
         '&:hover': {
-          color: '#2c6f9e',
+          color: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#2c6f9e',
         },
       },
       '& ul': {
@@ -144,7 +149,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
         marginLeft: theme.spacing(3),
         marginBottom: theme.spacing(6),
         '& li': {
-          color: '#006462',
+          color: theme.palette.mode === 'dark' ? '#fff' : '#006462',
           marginBottom: theme.spacing(1),
           wordWrap: 'break-word',
         },
@@ -152,7 +157,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
       '& h1, & h2, & h3, & h4, & h5, & h6': {
         fontFamily: "'Roboto', Arial, sans-serif",
         fontWeight: 600,
-        color: '#222',
+        color: theme.palette.mode === 'dark' ? '#fff' : '#222',
         marginTop: theme.spacing(4),
         marginBottom: theme.spacing(2),
         wordWrap: 'break-word',
