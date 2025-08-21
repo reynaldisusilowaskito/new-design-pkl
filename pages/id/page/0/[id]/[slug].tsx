@@ -58,10 +58,12 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
       position: 'relative',
       backgroundImage: 'url(/images/bg-batik.svg)',
       backgroundRepeat: 'repeat',
-      backgroundSize: 'contain',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
       minHeight: '100vh',
-      maxHeight: '400vh',
       width: '100%',
+      marginTop: '-180px',
       '&.negative': {
         filter: 'invert(1) hue-rotate(180deg)',
       },
@@ -131,8 +133,9 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
         fontFamily: "'Roboto', Arial, sans-serif",
         fontWeight: 400,
         fontSize: '16px',
-        lineHeight: '24px',
-        marginBottom: theme.spacing(0),
+        lineHeight: '22px',
+        marginTop: 0,
+        marginBottom: 0,
         wordWrap: 'break-word',
         textAlign: 'justify',
       },
@@ -181,7 +184,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
           <Layout paddingY={2}>
             <Box>
               <Box position="relative">
-                <Box mb={{ xs: 6, sm: 8, md: 10 }} mt={{ xs: 8, sm: 10, md: 5 }}>
+                <Box mb={{ xs: 6, sm: 8, md: 10 }} mt={{ xs: 24, sm: 26, md: 30 }}>
                   <MediaHeader
                     text="SEKILAS TENTANG SURABAYA"
                     description="dengan narasumber yang terpercaya."

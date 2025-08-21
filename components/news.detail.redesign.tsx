@@ -70,7 +70,7 @@ const BreadcrumbContainer = styled(Box)(() => ({
   alignItems: 'center',
   gap: '5px',
   marginBottom: '4px',
-  marginTop: '80px',
+  marginTop: '160px',
 }));
 
 const BackButton = styled('button')(() => ({
@@ -174,11 +174,13 @@ const ContentArticle = styled(Box)(({ theme }) => ({
     },
   }),
   '& p': {
+    marginTop: 0,
     marginBottom: 0,
-    margin: 0,
     padding: 0,
     color: theme.palette.mode === 'dark' ? '#fff' : '#474747',
     fontFamily: "'Lato', Arial, sans-serif",
+    fontSize: '16px',
+    lineHeight: '22px',
   },
   '& img': {
     maxWidth: '100%',
