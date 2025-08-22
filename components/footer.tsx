@@ -30,11 +30,12 @@ const StyledFooter = styled(Box)(({ theme }) => ({
 
 const Footer: React.FunctionComponent<Props> = ({ load }: Props) => {
   const socialMedia = [
-    { icon: '/images/footer/icon-fb.svg', url: 'https://facebook.com', label: 'Facebook' },
-    { icon: '/images/footer/icon-x.svg', url: 'https://twitter.com', label: 'Twitter/X' },
-    { icon: '/images/footer/icon-ig.svg', url: 'https://instagram.com', label: 'Instagram' },
-    { icon: '/images/footer/icon-yt.svg', url: 'https://youtube.com', label: 'YouTube' },
-    { icon: '/images/footer/icon-tt.svg', url: 'https://tiktok.com', label: 'TikTok' },
+  // Masing-masing diarahkan ke akun resmi Sapawarga Surabaya
+  { icon: '/images/footer/icon-fb.svg', url: 'https://www.facebook.com/sapawargakotasurabaya?_rdc=2&_rdr#', label: 'Facebook Sapawarga Surabaya' },
+  { icon: '/images/footer/icon-x.svg', url: 'https://x.com/SapawargaSby', label: 'Twitter/X Sapawarga Surabaya' },
+  { icon: '/images/footer/icon-ig.svg', url: 'https://instagram.com/sapawargasby', label: 'Instagram Sapawarga Surabaya' },
+  { icon: '/images/footer/icon-yt.svg', url: 'https://www.youtube.com/user/MediaCenterPemkotSby', label: 'YouTube Sapawarga Surabaya' },
+  { icon: '/images/footer/icon-tt.svg', url: 'https://www.tiktok.com/@sapawargasby', label: 'TikTok Sapawarga Surabaya' },
   ]
   const accessibility = useContext(AccessibilityContext)
   return (
@@ -91,8 +92,37 @@ const Footer: React.FunctionComponent<Props> = ({ load }: Props) => {
                   className="footer-icon"
                 />
                 <Box>
-                  <Typography variant="body2" sx={{ fontSize: 14 + accessibility.fontSize }}>
-                    (031) 5321444<br />
+                   <Typography
+                    variant="body2"
+                    component="a"
+                    href="https://wa.me/62315321444"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      fontSize: 14 + accessibility.fontSize,
+                      display: 'block',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      '&:hover': { textDecoration: 'underline' },
+                    }}
+                  >
+                    (031) 5321444
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    component="a"
+                    href="https://wa.me/623199277339"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      fontSize: 14 + accessibility.fontSize,
+                      display: 'block',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      mt: 0.5,
+                      '&:hover': { textDecoration: 'underline' },
+                    }}
+                  >
                     (031) 99277339
                   </Typography>
                 </Box>
@@ -106,9 +136,34 @@ const Footer: React.FunctionComponent<Props> = ({ load }: Props) => {
                   className="footer-icon"
                 />
                 <Box>
-                  <Typography variant="body2" sx={{ fontSize: 14 + accessibility.fontSize }}>
-                    dinkominfo@surabaya.go.id,<br />
-                    mediacenter@surabaya.go.id
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    sx={{ fontSize: 14 + accessibility.fontSize, lineHeight: 1.4 }}
+                  >
+                    <Box
+                      component="a"
+                      href="mailto:dinkominfo@surabaya.go.id"
+                      sx={{
+                        color: 'inherit',
+                        textDecoration: 'none',
+                        '&:hover': { textDecoration: 'underline' },
+                      }}
+                    >
+                      dinkominfo@surabaya.go.id
+                    </Box>
+                    <br />
+                    <Box
+                      component="a"
+                      href="mailto:mediacenter@surabaya.go.id"
+                      sx={{
+                        color: 'inherit',
+                        textDecoration: 'none',
+                        '&:hover': { textDecoration: 'underline' },
+                      }}
+                    >
+                      mediacenter@surabaya.go.id
+                    </Box>
                   </Typography>
                 </Box>
               </Stack>
