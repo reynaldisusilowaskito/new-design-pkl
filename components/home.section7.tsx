@@ -33,44 +33,60 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   },
 }))
 
-const PhotoCard = styled(Box)(() => ({
+// Flip card styles
+const FlipCardContainer = styled(Box)(() => ({
+  perspective: '1200px',
+  width: '100%',
+  aspectRatio: '16/9',
+  borderRadius: '12px',
+  cursor: 'pointer',
+  margin: '0 auto',
   position: 'relative',
+  height: '100%',
+}));
+
+const FlipCardInner = styled(Box)(() => ({
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  transition: 'transform 0.6s cubic-bezier(.25,.8,.25,1)',
+  transformStyle: 'preserve-3d',
+  borderRadius: '12px',
+  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+  '&.flipped': {
+    transform: 'rotateY(180deg)',
+  },
+}));
+
+const FlipCardFace = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  backfaceVisibility: 'hidden',
   borderRadius: '12px',
   overflow: 'hidden',
-  cursor: 'pointer',
-  transition: 'all 0.3s ease-in-out',
-  aspectRatio: '16/9',
-  '&:hover': {
-    transform: 'scale(1.02)',
-    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
-  },
-  '& img': {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    transition: 'transform 0.3s ease-in-out',
-  },
-  '&:hover img': {
-    transform: 'scale(1.05)',
-  },
-}))
-
-const PhotoOverlay = styled(Box)(() => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%)',
-  opacity: 0,
-  transition: 'opacity 0.3s ease-in-out',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  '&:hover': {
-    opacity: 1,
+  background: 'transparent',
+  color: 'inherit',
+  fontSize: 'inherit',
+  fontWeight: 'inherit',
+  padding: 0,
+  textAlign: 'left',
+  zIndex: 1,
+  transition: 'background 0.3s',
+  '&.back': {
+    background: 'rgba(0, 100, 98, 0.7)',
+    color: '#fff',
+    fontSize: '1.2rem',
+    fontWeight: 600,
+    padding: '2rem',
+    textAlign: 'center',
+    zIndex: 2,
+    transform: 'rotateY(180deg)',
   },
-}))
+}));
 
 const HomeSection7: React.FunctionComponent<Props> = () => {
   const accessibility = React.useContext(AccessibilityContext)
@@ -104,10 +120,7 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
     },
   ]
 
-  const handlePhotoClick = (photo: any) => {
-    // Handle photo click - navigate to photo detail or open modal
-    console.log('Opening photo:', photo.title)
-  }
+  // handlePhotoClick removed (unused)
 
   return (
     <BoxStyled
@@ -190,31 +203,9 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
           <Grid container spacing={2}>
             {photos.map((photo) => (
               <Grid item xs={12} sm={6} key={photo.id}>
-                <PhotoCard onClick={() => handlePhotoClick(photo)}>
-                  <img
-                    src={photo.image}
-                    alt={photo.alt}
-                    onError={(e) => {
-                      // Fallback image if photo fails to load
-                      e.currentTarget.src = '/images/placeholder-photo.jpg'
-                    }}
-                  />
-                  <PhotoOverlay>
-                    <Box
-                      sx={{
-                        color: 'white',
-                        textAlign: 'center',
-                        padding: 2,
-                        background: 'rgba(0,0,0,0.5)',
-                        borderRadius: 1,
-                        fontSize: `calc(0.9rem + ${accessibility.fontSize * 2}px)`,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {photo.title}
-                    </Box>
-                  </PhotoOverlay>
-                </PhotoCard>
+                <FlipCardContainer>
+                  <FlipCardHover photo={photo} />
+                </FlipCardContainer>
               </Grid>
             ))}
           </Grid>
@@ -224,6 +215,32 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
   )
 }
 
-HomeSection7.defaultProps = {}
+// FlipCardHover component
+const FlipCardHover = ({ photo }) => {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <div
+      style={{ width: '100%', height: '100%' }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <FlipCardInner className={hover ? 'flipped' : ''}>
+        <FlipCardFace>
+          <img
+            src={photo.image}
+            alt={photo.alt}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={e => { e.currentTarget.src = '/images/placeholder-photo.jpg'; }}
+          />
+        </FlipCardFace>
+        <FlipCardFace className="back">
+          {photo.title}
+        </FlipCardFace>
+      </FlipCardInner>
+    </div>
+  );
+};
 
-export default memo(HomeSection7)
+HomeSection7.defaultProps = {};
+
+export default memo(HomeSection7);
