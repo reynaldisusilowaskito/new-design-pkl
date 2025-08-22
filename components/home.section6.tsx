@@ -37,6 +37,59 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 }))
 
 const HomeSection6: React.FunctionComponent<Props> = () => {
+  // List of YouTube video links (updated with user's links)
+  const videoLinks = [
+    'https://www.youtube.com/embed/k5ofLiNDp_0',
+    'https://www.youtube.com/embed/mx-shqeA5b8',
+    'https://www.youtube.com/embed/XWu3BXD0U7Q',
+  ]
+  // State for video meta: title, publish date, thumbnail
+  const [videoMeta, setVideoMeta] = React.useState<{title: string, date: string, thumbnail: string}[]>(Array(3).fill({title: '', date: '', thumbnail: ''}))
+  React.useEffect(() => {
+    async function fetchMeta() {
+      const getMeta = async (url: string) => {
+        const videoId = url.split('/embed/')[1]
+        try {
+          const res = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
+          const data = await res.json()
+          // Get thumbnail
+          const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+          // Get publish date
+          let date = ''
+          if (data.upload_date) {
+            date = data.upload_date // format: YYYY-MM-DD
+          }
+          return { title: data.title || 'Video', date, thumbnail }
+        } catch {
+          return { title: 'Video', date: '', thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` }
+        }
+      }
+      const promises = videoLinks.map(getMeta)
+      const results = await Promise.all(promises)
+      setVideoMeta(results)
+    }
+    fetchMeta()
+  }, [])
+  // Helper to format date as 'Day, DD Month YYYY'
+  function formatDate(dateStr: string) {
+    if (!dateStr) return ''
+    const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
+    const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']
+    const d = new Date(dateStr)
+    const dayName = days[d.getDay()]
+    const day = d.getDate()
+    const month = months[d.getMonth()]
+    const year = d.getFullYear()
+    return `${dayName}, ${day} ${month} ${year}`
+  }
+  // Helper to get 'X hari yang lalu'
+  function getTimeAgo(dateStr: string) {
+    if (!dateStr) return ''
+    const d = new Date(dateStr)
+    const now = new Date()
+    const diff = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24))
+    return `${diff} hari yang lalu`
+  }
   const { downSm } = React.useContext(BreakpointsContext)
   const accessibility = React.useContext(AccessibilityContext)
   const loading = false
@@ -102,32 +155,57 @@ const HomeSection6: React.FunctionComponent<Props> = () => {
         </Box>
       </Box>
       <Box sx={{ px: { xs: 3, md: 2 }, pt: 4, width: '100%', maxWidth: 1100, mx: 'auto', position: 'relative' }}>
-        {loading ? (
-          <Skeleton
-            variant="rectangular"
-            width="100%"
-            height={150}
-            sx={{
-              borderRadius: 3,
-              bgcolor: 'rgba(0, 0, 0, 0.1)',
-            }}
-          />
-        ) : (
-          <>
-            {!!data?.data?.length &&
-              <CarouselContent
-                data={data.data}
-                gridContent={6}
-                gridImage={6}
-                slidesToShow={downSm ? 1 : 3}
-                gridSpacing={2}
-                route="videos"
-                withDescription={false}
-                truncateTitle={60}
-              />
-            }
-          </>
-        )}
+        {/* 3 YouTube video cards with overlayed title and publish date */}
+        <Box display="flex" gap={3} justifyContent="center">
+          {videoLinks.map((link, i) => {
+            const meta = videoMeta[i] || { title: '', date: '', thumbnail: '' }
+            return (
+              <Box key={i} sx={{
+                width: { xs: '100%', sm: '48%', md: '32%' },
+                maxWidth: 340,
+                height: 220,
+                position: 'relative',
+                borderRadius: 3,
+                overflow: 'hidden',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+                background: '#000',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+              }}>
+                {/* Visible YouTube iframe */}
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={link}
+                  title={meta.title || `Video ${i + 1}`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ display: 'block', border: 0, borderRadius: 'inherit', minHeight: 180, maxHeight: 220 }}
+                />
+                {/* Overlay for title and date */}
+                <Box sx={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  p: 2,
+                  background: 'linear-gradient(0deg, rgba(0,0,0,0.7) 80%, rgba(0,0,0,0.2) 100%)',
+                  color: '#fff',
+                  zIndex: 2,
+                }}>
+                  <Box sx={{ fontWeight: 700, fontSize: 18, lineHeight: 1.2, mb: 0.5, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                    {meta.title}
+                  </Box>
+                  <Box sx={{ fontSize: 14, opacity: 0.9 }}>
+                    {meta.date ? `${formatDate(meta.date)} | ${getTimeAgo(meta.date)}` : ''}
+                  </Box>
+                </Box>
+              </Box>
+            )
+          })}
+        </Box>
       </Box>
     </BoxStyled>
   )

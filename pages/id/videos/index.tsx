@@ -12,9 +12,6 @@ import Pagination from 'components/pagination'
 import NewsItem from 'components/news.item'
 import { fontSizeBigger, fontSizeTitle } from 'components/news.list'
 import { borderRadius, boxShadow } from 'styles/theme'
-import Element1 from 'public/images/icon/element_1.svg'
-import Element3 from 'public/images/icon/element_3.svg'
-import Element4 from 'public/images/icon/element_4.svg'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import { AccessibilityContext } from 'contexts/accessibility'
 import { getOrganization } from 'utils/services/organization'
@@ -279,20 +276,10 @@ const Videos: NextPage<Props> = () => {
       <BoxStyled overflow="hidden" className={accessibility.css.negative ? 'negative' : ''}>
         <Layout paddingY={2}>
           <>
-            <Box className="wrapper-svg-element1">
-              <Element1 />
-            </Box>
-            <Box className="wrapper-svg-element4">
-              <Element4 />
-            </Box>
+           
+           
             <Title text="Video" />
             <Box position="relative">
-              <Box className="wrapper-svg-element3a">
-                <Element3 />
-              </Box>
-              <Box className="wrapper-svg-element3b">
-                <Element3 />
-              </Box>
               <Grid container spacing={4}>
                 {loading ? (
                   <>
