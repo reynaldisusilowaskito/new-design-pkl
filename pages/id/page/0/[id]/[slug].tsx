@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { parse } from 'node-html-parser'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import replaceAllInserter from 'string.prototype.replaceall'
+import { Box } from '@mui/material'
+import { AccessibilityContext } from 'contexts/accessibility'
 import Layout from 'components/layout'
 import PagesTitle from 'components/pages.title'
 import Article from 'components/article'
@@ -65,12 +67,30 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
         <title>Pemerintah Kota Surabaya</title>
         <meta name="description" content="Pemerintah Kota Surabaya" />
       </Head>
-      <Layout paddingY={0}>
-        <PagesTitle text={detail.title} />
-      </Layout>
-      <Layout paddingY={0} maxWidth="md">
-        <Article contents={contents} paddingY={8} />
-      </Layout>
+      <Box
+        className={React.useContext(AccessibilityContext).css.negative ? 'negative' : ''}
+        sx={{
+        position: 'relative',
+        width: '100%',
+        backgroundImage: 'url(/images/bg-batik.svg)',
+        backgroundRepeat: 'repeat',
+        backgroundPosition: 'top center',
+        backgroundSize: 'contain',
+        overflow: 'hidden',
+        minHeight: '100vh',
+        mt: '-130px',
+        pb: { xs: 4, sm: 6, md: 8 },
+      }}
+      >
+        <Box sx={{ pt: { xs: 6, sm: 8, md: 20 } }}>
+          <Layout paddingY={0}>
+            <PagesTitle text={detail.title} />
+          </Layout>
+        </Box>
+        <Layout paddingY={0} maxWidth="md">
+          <Article contents={contents} paddingY={8} />
+        </Layout>
+      </Box>
     </React.Fragment>
   )
 }

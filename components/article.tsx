@@ -17,6 +17,24 @@ interface Props {
 }
 
 const BoxStyled = styled(Box)(({ theme }) => ({
+  // Default text color for article body
+  '& .text, & .description': {
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.text.secondary
+        : theme.palette.common.white,
+    // Make links follow the same readable color in both modes
+    '& a, & a:visited': {
+      color:
+        theme.palette.mode === 'light'
+          ? `${theme.palette.text.secondary} !important`
+          : `${theme.palette.common.white} !important`,
+    },
+    '& a:hover, & a:focus': {
+      textDecoration: 'underline',
+      opacity: 0.9,
+    },
+  },
   '& .description': {
     '& h1, & h2, & h3, & h4, & h5, & h6, & p': {
       marginTop: 0,
@@ -24,6 +42,22 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       '& b, & strong': {
         fontWeight: 900,
       },
+    },
+  },
+  // Style the first content block's heading (the text above the list)
+  '& .text:first-of-type': {
+    '& h1, & h2, & h3, & h4, & h5, & h6': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.text.secondary
+          : theme.palette.common.white,
+    },
+    // Some pages use a strong inside a paragraph as the heading
+    '& p > strong:first-child': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.text.secondary
+          : theme.palette.common.white,
     },
   },
   '&.webdisplay': {
