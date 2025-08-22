@@ -81,33 +81,6 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
   const handleLihatSemua = React.useCallback(() => {
     router.push('/id/berita')
   }, [router])
-
-
-
-  // Static data for right card (PEMILU SERENTAK 2024)
-  const pemiluArticles = [
-    {
-      date: '27-02-2024 20:12',
-      title: 'Pendekatan Multi-Stakeholder Perlu bagi Pemajuan Diplomasi Digital',
-    },
-    {
-      date: '22-02-2024 13:00',
-      title: 'Baru 2 Hari, 44,7% Anak Sudah Imunisasi SUB PIN Polio Putaran Dua',
-    },
-    {
-      date: '22-02-2024 04:44',
-      title: 'Ayo Lakukan Pemadanan NIK-NPWP!',
-    },
-    {
-      date: '22-02-2024 09:51',
-      title: 'Forum Tematik Bakohumas: Komitmen Seluruh Humas Sukseskan Pelaporan SPT dan Pemadanan NIK-NPWP',
-    },
-    {
-      date: '22-02-2024 15:07',
-      title: 'KY Buka Pendaftaran 10 Calon Hakim Agung & 3 Calon Hakim ad hoc HAM',
-    },
-  ]
-
   return (
     <>
       {data?.data && (
@@ -192,30 +165,6 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                   )}
                 </>
               )}
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box sx={{
-                background: '#E6D2B5',
-                borderRadius: 5,
-                p: 2.5,
-                minHeight: 200,
-                maxHeight: 480,
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
-              }}>
-                <div style={{ fontWeight: 700, fontSize: 18 + accessibility.fontSize * 2, color: '#066666', marginBottom: 12 }}>PEMILU SERENTAK 2024</div>
-                <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 12, paddingRight: 4 }}>
-                  {pemiluArticles.map((item, idx) => (
-                    <div key={idx} style={{ background: '#fff', borderRadius: 12, padding: '10px 14px', marginBottom: 6, boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}>
-                      <div style={{ fontSize: 11 + accessibility.fontSize * 2, color: '#888', marginBottom: 2 }}>{item.date}</div>
-                      <div style={{ fontWeight: 600, fontSize: 14 + accessibility.fontSize * 2, color: '#066666', lineHeight: 1.3 }}>Artikel</div>
-                      <div style={{ fontSize: 13 + accessibility.fontSize * 2, color: '#222', marginTop: 2 }}>{item.title}</div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ textAlign: 'center', color: '#888', fontSize: 13 + accessibility.fontSize * 2, marginTop: 10 }}>infopemilu.go.id</div>
-              </Box>
             </Grid>
           </Grid>
         </BoxStyled>

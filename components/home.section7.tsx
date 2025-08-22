@@ -93,32 +93,56 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
   const loading = false
 
   // Sample photos data - replace with actual data from API
-  const photos = [
-    {
-      id: '1',
-      title: 'Kegiatan Penanaman Pohon',
-      image: '/images/photos/foto_panen_padi.jpg',
-      alt: 'Foto kegiatan penanaman pohon bersama masyarakat'
-    },
-    {
-      id: '2',
-      title: 'Gotong Royong Lingkungan',
-      image: '/images/photos/foto_panen_padi.jpg',
-      alt: 'Foto kegiatan gotong royong membersihkan lingkungan'
-    },
-    {
-      id: '3',
-      title: 'Acara Budaya Surabaya',
-      image: '/images/photos/foto_panen_padi.jpg',
-      alt: 'Foto acara budaya khas Surabaya'
-    },
-    {
-      id: '4',
-      title: 'Program Pembangunan',
-      image: '/images/photos/foto_panen_padi.jpg',
-      alt: 'Foto program pembangunan infrastruktur'
-    },
-  ]
+    const photos = [
+      {
+        id: '1',
+        title: 'Kegiatan Penanaman Pohon',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto kegiatan penanaman pohon bersama masyarakat'
+      },
+      {
+        id: '2',
+        title: 'Gotong Royong Lingkungan',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto kegiatan gotong royong membersihkan lingkungan'
+      },
+      {
+        id: '3',
+        title: 'Acara Budaya Surabaya',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto acara budaya khas Surabaya'
+      },
+      {
+        id: '4',
+        title: 'Program Pembangunan',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto program pembangunan infrastruktur'
+      },
+      {
+        id: '5',
+        title: 'Festival Kuliner',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto festival kuliner Surabaya'
+      },
+      {
+        id: '6',
+        title: 'Pameran Seni',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto pameran seni Surabaya'
+      },
+      {
+        id: '7',
+        title: 'Lomba Kebersihan',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto lomba kebersihan lingkungan'
+      },
+      {
+        id: '8',
+        title: 'Pelatihan UMKM',
+        image: '/images/photos/foto_panen_padi.jpg',
+        alt: 'Foto pelatihan UMKM Surabaya'
+      },
+    ]
 
   // handlePhotoClick removed (unused)
 
@@ -185,8 +209,10 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
       <Box sx={{ px: { xs: 3, md: 2 }, pt: 4, width: '100%', maxWidth: 1100, mx: 'auto', position: 'relative' }}>
         {loading ? (
           <Grid container spacing={2}>
-            {[1, 2, 3, 4].map((item) => (
-              <Grid item xs={12} sm={6} key={item}>
+            {[1,2,3,4,5,6,7,8].map((item, idx) => (
+              <Grid item xs={12} sm={4} md={
+                idx < 3 ? 4 : (idx < 5 ? 6 : 4)
+              } key={item}>
                 <Skeleton
                   variant="rectangular"
                   width="100%"
@@ -201,8 +227,10 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
           </Grid>
         ) : (
           <Grid container spacing={2}>
-            {photos.map((photo) => (
-              <Grid item xs={12} sm={6} key={photo.id}>
+            {photos.map((photo, idx) => (
+              <Grid item xs={12} sm={4} md={
+                idx < 3 ? 4 : (idx < 5 ? 6 : 4)
+              } key={photo.id}>
                 <FlipCardContainer>
                   <FlipCardHover photo={photo} />
                 </FlipCardContainer>
