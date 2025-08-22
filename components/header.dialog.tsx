@@ -23,8 +23,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   '& a.MuiButton-root': {
     textDecoration: 'none',
     display: 'block',
-    backgroundColor:
-      theme.palette.mode == 'dark' ? theme.palette.grey.A100 : theme.palette.background.paper,
+    backgroundColor: 'rgba(22, 22, 22, 0)',
     color: theme.palette.text.primary,
     textTransform: 'uppercase',
     width: '100%',
@@ -37,10 +36,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     '&.active': {
-      backgroundColor: theme.palette.primary.main,
+          backgroundColor: 'rgba(22, 22, 22, 0.9)',
       color: theme.palette.secondary.main,
       '&:hover': {
-        backgroundColor: theme.palette.primary.main,
+            backgroundColor: 'rgba(22, 22, 22, 0.9)',
       },
     },
     '& .MuiButton-endIcon': {
@@ -68,7 +67,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
       },
     },
     '&:hover': {
-      backgroundColor: theme.palette.mode == 'dark' ? '#363848' : theme.palette.background.paper,
+       backgroundColor: 'rgba(22, 22, 22, 0.8)',
       transform: 'scale(1.03)',
       boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
       transition: 'all 0.2s cubic-bezier(.4,2,.3,1)',
@@ -118,7 +117,7 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }))
 
 const StyledBoxClose = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+    backgroundColor: 'rgba(22, 22, 22, 0.55)',
   borderRadius: '50%',
   boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
   display: 'flex',
@@ -127,10 +126,10 @@ const StyledBoxClose = styled(Box)(({ theme }) => ({
   '& svg': {
     height: fontSize + 14,
     '& path': {
-      fill: theme.palette.background.paper,
+          backgroundColor: 'rgba(22, 22, 22, 0.9)',
     },
     '& circle': {
-      fill: theme.palette.primary.main,
+          backgroundColor: 'rgba(22, 22, 22, 0.9)',
     },
   },
 }))
@@ -203,7 +202,7 @@ const HeaderDialog: React.FunctionComponent<Props> = ({ menu, open, onClose }: P
           position: 'relative',
           overflow: 'hidden',
           borderRadius: downSm ? 0 : 2,
-          backgroundColor: mode == 'dark' ? 'background.paper' : 'greenSurabaya',
+          backgroundColor: 'rgba(22, 22, 22, 0.55)',
           backgroundImage: 'none',
           minHeight: `calc(100% - ${(downSm ? 70 : heightHeader) * 2}px)`,
           transform: `translateY(${downSm ? 0 : downSm ? 70 : heightHeader}px)`,
