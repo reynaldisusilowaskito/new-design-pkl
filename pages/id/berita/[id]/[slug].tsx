@@ -96,13 +96,24 @@ const NewsDetail: NextPage<Props> = ({ detail }: Props) => {
       </Head>
       
       {/* Main Content */}
-      <Box sx={{ background: '#FFFFFF', minHeight: '100vh' }}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          width: '100%',
+          backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
+          backgroundImage: 'url("/images/bg-batik.svg")',
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'cover', // ganti ke 'contain' jika ingin persis infografis
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          mt: { xs: '-90px', md: '-130px' },
+        }}
+      >
         {/* Berita Detail */}
         <BeritaDetail 
           news={data}
           contents={contents}
         />
-        
         {/* Berita Lainnya */}
         <BeritaLainnya 
           items={news || []}
