@@ -4,6 +4,7 @@
     "@next/next/no-img-element": "off",
     "@next/next/no-document-import-in-page": "off",
     "react/jsx-filename-extension": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "no-unused-vars": "warn"
   }
 }

@@ -20,6 +20,9 @@ interface Props {
 }
 
 const Pages: NextPage<Props> = ({ detail }: Props) => {
+  
+  const accessibilityContext = React.useContext(AccessibilityContext)
+  
   // const content = React.useMemo(() => detail.content.replace(new RegExp('\\src="../../', 'gm'), `src="https://surabaya.go.id/`), [detail]);
   const content = React.useMemo(() => {
     const replaceData = replaceAllInserter(
@@ -286,7 +289,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
         <meta name="description" content="Pemerintah Kota Surabaya" />
       </Head>
       <Box
-        className={React.useContext(AccessibilityContext).css.negative ? 'negative' : ''}
+        className={accessibilityContext.css.negative ? 'negative' : ''}
         sx={{
         position: 'relative',
         width: '100%',
