@@ -57,7 +57,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
             width: '100%',
           }}>
             <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
-           <Box component="span" sx={(theme) => ({ color: theme.palette.text.secondary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+           <Box component="span" sx={(theme) => ({ fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
                                        PELAYANAN PEMERINTAH KOTA SURABAYA
                                      </Box>
           </Box>
