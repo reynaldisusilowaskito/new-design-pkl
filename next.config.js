@@ -10,7 +10,6 @@ module.exports = {
   experimental: {
     scrollRestoration: true,
   },
-  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
