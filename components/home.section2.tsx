@@ -3,6 +3,7 @@ import { Grid, Box, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { styled } from '@mui/material/styles'
 import { orderBy } from 'lodash'
+import { useRouter } from 'next/router'
 import CarouselSmall from 'components/carousel.small'
 import { Menu as MenuType } from 'components/header'
 import { fontSize, borderRadius } from 'styles/theme'
@@ -13,12 +14,12 @@ import schema from 'types/schemas'
 interface Props {}
 
 const BoxStyled = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme. palette.primary.main,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   padding: theme.spacing(2),
-  '& .MuiTypography-root': {
+  '& . MuiTypography-root': {
     fontSize: fontSize + 8,
     textTransform: 'uppercase',
     fontWeight: 300,
@@ -30,7 +31,7 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       fontSize: fontSize + 18,
     },
   },
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints. down('sm')]: {
     borderRadius: theme.spacing(borderRadius),
     '& .MuiTypography-root': {
       fontSize: fontSize + 4,
@@ -44,13 +45,13 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 function findMenu(array: schema['schemas']['Menu'][], title: string) {
   let object = null
   array.some(function f(a: MenuType) {
-    const isInclude = a.title.toLowerCase().includes(title.toLowerCase())
+    const isInclude = a.title. toLowerCase().includes(title.toLowerCase())
     if (isInclude) {
       object = a
       return true
     }
-    if (Array.isArray(a.child)) {
-      return a.child.some(f)
+    if (Array.isArray(a. child)) {
+      return a. child.some(f)
     }
   })
   return object
@@ -62,10 +63,17 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
   const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
   const menu = React.useMemo(() => contents?.menu || [], [contents])
   const { textToSpeech } = useTextToSpeech()
+  const router = useRouter()
+  
   const whatsInSurabaya: MenuType[] = React.useMemo(() => {
     const result = findMenu(menu, 'Ada Apa di Surabaya')
-    return menu.length > 0 ? (result ? orderBy(result['child'], ['order', 'asc']) : []) : []
+    return menu.length > 0 ? (result ?  orderBy(result['child'], ['order', 'asc']) : []) : []
   }, [menu])
+
+  // Handler untuk navigasi
+  const handleWisataClick = () => {
+    router.push('/wisata/')
+  }
 
   // Placeholder data untuk deskripsi dan icon
   const tentangSurabaya = {
@@ -90,7 +98,8 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
           <img src="/images/icon/Logo-Bisnis_Investasi.svg" alt="Bisnis dan Investasi" style={{ width: 50, height: 50 }} />
         </Box>
       ), 
-      label: 'Bisnis dan Investasi' 
+      label: 'Bisnis dan Investasi',
+      onClick: null
     },
     { 
       icon: (
@@ -98,7 +107,8 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
           <img src="/images/icon/Logo-Transportasi.svg" alt="Transportasi" style={{ width: 50, height: 50 }} />
         </Box>
       ), 
-      label: 'Transportasi' 
+      label: 'Transportasi',
+      onClick: null
     },
     { 
       icon: (
@@ -106,13 +116,14 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
           <img src="/images/icon/Logo-Wisata.svg" alt="Wisata" style={{ width: 50, height: 50 }} />
         </Box>
       ), 
-      label: 'Wisata' 
+      label: 'Wisata',
+      onClick: handleWisataClick
     },
   ]
 
   return (
     <Box sx={(theme) => ({
-      bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
+      bgcolor: theme. palette.mode === 'dark' ? 'rgba(2, 29, 29, 0. 7)' : '#fff',
       borderRadius: 6,
       px: downSm ? 2 : 30,
       py: downSm ? 2 : 10,
@@ -152,7 +163,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2,  }}>
               {/* Teks Vertikal */}
               <Box sx={{
-                // bgcolor: (theme) => theme.palette.background.paper,
+                // bgcolor: (theme) => theme.palette. background.paper,
                 backgroundColor: '#006462',
                 borderRadius: 5,
                 px: 2,
@@ -209,7 +220,26 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   minHeight: 120,
                 }}>
                   {apaDiSurabaya.map((item, idx) => (
-                    <Box key={idx} sx={(theme) => ({ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: theme.palette.text.primary, borderRight: idx < 2 ? '1px solid #fff3' : 'none', px: 1 })}>
+                    <Box 
+                      key={idx} 
+                      onClick={item.onClick}
+                      sx={(theme) => ({ 
+                        flex: 1, 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        color: theme.palette.text.primary, 
+                        borderRight: idx < 2 ? '1px solid #fff3' : 'none', 
+                        px: 1,
+                        cursor: item.onClick ? 'pointer' : 'default',
+                        transition: 'transform 0.2s, opacity 0.2s',
+                        '&:hover': item.onClick ? {
+                          transform: 'scale(1.05)',
+                          opacity: 0.8,
+                        } : {}
+                      })}
+                    >
                       {item.icon}
                       <Typography variant="subtitle1" sx={(theme) => ({ fontWeight: 400, fontSize: 16, textAlign: 'center', color: theme.palette.text.primary })}>{item.label}</Typography>
                     </Box>
