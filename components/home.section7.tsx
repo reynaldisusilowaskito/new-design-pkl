@@ -97,49 +97,49 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
       {
         id: '1',
         title: 'Kegiatan Penanaman Pohon',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_1.jpg',
         alt: 'Foto kegiatan penanaman pohon bersama masyarakat'
       },
       {
         id: '2',
         title: 'Gotong Royong Lingkungan',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_2.jpg',
         alt: 'Foto kegiatan gotong royong membersihkan lingkungan'
       },
       {
         id: '3',
         title: 'Acara Budaya Surabaya',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_3.jpg',
         alt: 'Foto acara budaya khas Surabaya'
       },
       {
         id: '4',
         title: 'Program Pembangunan',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_4.jpg',
         alt: 'Foto program pembangunan infrastruktur'
       },
       {
         id: '5',
         title: 'Festival Kuliner',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_5.jpg',
         alt: 'Foto festival kuliner Surabaya'
       },
       {
         id: '6',
         title: 'Pameran Seni',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_1.jpg',
         alt: 'Foto pameran seni Surabaya'
       },
       {
         id: '7',
         title: 'Lomba Kebersihan',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_2.jpg',
         alt: 'Foto lomba kebersihan lingkungan'
       },
       {
         id: '8',
         title: 'Pelatihan UMKM',
-        image: '/images/photos/foto_panen_padi.jpg',
+        image: '/images/photos/img_3.jpg',
         alt: 'Foto pelatihan UMKM Surabaya'
       },
     ]
