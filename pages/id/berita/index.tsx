@@ -176,7 +176,7 @@ const News: NextPage<Props> = () => {
       <BoxStyled
         sx={{
           position: 'relative',
-          backgroundImage: 'url(/images/bg-batik.svg)',
+          backgroundImage: 'url(/images/bg-batik.webp)',
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
           // Match Infografis page so background fills upward

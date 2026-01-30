@@ -138,6 +138,83 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
           <Box width="100%" display="flex" justifyContent="center" alignItems="flex-end" mt={downSm ? 2 : 6}>
             {!!data && <CarouselMain data={data} loading={false} />}
           </Box>
+          <Box width="100%" display="flex" justifyContent="center" mt={downSm ? -32 : -64} mb={8} sx={{ overflow: 'visible', pointerEvents: 'auto', position: 'relative', zIndex: 10 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+                maxWidth: '1200px',
+                px: 2,
+                perspective: '1200px',
+                height: downSm ? 350 : 450,
+                overflow: 'visible',
+                pointerEvents: 'auto',
+                position: 'relative',
+                zIndex: 10,
+              }}
+            >
+              {[
+                { src: '/images/Card/card1.webp', alt: 'Card 1', rotate: -22, translateY: 150 },
+                { src: '/images/Card/card2.webp', alt: 'Card 2', rotate: -8, translateY: 120 },
+                { src: '/images/Card/card3.webp', alt: 'Card 3', rotate: 8, translateY: 120 },
+                { src: '/images/Card/card4.webp', alt: 'Card 4', rotate: 22, translateY: 150 },
+              ].map((card, idx) => (
+                <Box
+                  key={idx} 
+                  sx={{
+                    width: downSm ? 156 : 253,
+                    height: downSm ? 234: 340,
+                    position: 'relative',
+                    borderRadius: '15px',
+                    overflow: 'visible',
+                    boxShadow: '0 15px 40px rgba(0, 0, 0, 0.25)',
+                    transition: 'all 1.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    transform: `rotateZ(${card.rotate}deg) translateY(${card.translateY}px)`,
+                    transformStyle: 'preserve-3d',
+                    zIndex: idx === 3 ? 12 : idx === 1 || idx === 2 ? 10 : 5,
+                    marginLeft: idx === 0 ? 0 : downSm ? -3 : -8,
+                    pointerEvents: 'auto',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      transform: `rotateZ(0deg) translateY(${card.translateY - 40}px) scale(1.05)`,
+                      boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
+                      zIndex: 15,
+                      position: 'relative',
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: '#FFF',
+                      borderRadius: '15px',
+                      position: 'relative',
+                      overflow: 'visible',
+                      border: '1px solid rgba(255, 255, 255, 0.8)',
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={card.src}
+                      alt={card.alt}
+                      sx={{
+                        width: downSm ? 148 : 226,
+                        height: downSm ? 223 : 316,
+                        borderRadius: '12px',
+                        position: 'absolute',
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
         </Box>
       </Box>
     </StyledBox>

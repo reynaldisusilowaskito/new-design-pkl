@@ -15,6 +15,10 @@ interface Props {}
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
   zIndex: 1,
+  backgroundImage: 'url(/images/bg-batik.webp)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
   // backgroundColor: theme.palette.background.paper,
   borderRadius: 0,
   padding: theme.spacing(6, 0, 0, 0),

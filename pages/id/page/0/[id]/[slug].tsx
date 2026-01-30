@@ -60,7 +60,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
     const SekilasBoxStyled = styled(Box)(() => ({
       overflow: 'hidden',
       position: 'relative',
-      backgroundImage: 'url(/images/bg-batik.svg)',
+      backgroundImage: 'url(/images/bg-batik.webp)',
       backgroundRepeat: 'repeat',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
@@ -197,7 +197,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
                 <ImageContainer>
                   <StyledImage>
                     <img
-                      src="/images/sekilas/balai-kota.png"
+                      src="/images/sekilas/balai-kota.webp"
                       alt="Balai Kota Surabaya"
                       style={{
                         width: '100%',
@@ -230,7 +230,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
                   </StyledImage>
                   <StyledImage>
                     <img
-                      src="/images/sekilas/alun-alun-sby.png"
+                      src="/images/sekilas/alun-alun-sby.webp"
                       alt="Alun-Alun Surabaya"
                       style={{
                         width: '100%',
@@ -293,7 +293,7 @@ const Pages: NextPage<Props> = ({ detail }: Props) => {
         sx={{
         position: 'relative',
         width: '100%',
-        backgroundImage: 'url(/images/bg-batik.svg)',
+        backgroundImage: 'url(/images/bg-batik.webp)',
         backgroundRepeat: 'repeat',
         backgroundPosition: 'top center',
         backgroundSize: 'contain',

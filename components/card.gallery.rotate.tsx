@@ -8,10 +8,10 @@ interface RotateCardGalleryProps {
 
 const RotateCardGallery: React.FC<RotateCardGalleryProps> = ({
   cards = [
-    '/images/Card/front_card_1.png',
-    '/images/Card/front_card_2.png',
-    '/images/Card/front_card_3.png',
-    '/images/Card/front_card_4.png',
+    '/images/Card/card1.webp',
+    '/images/Card/card2.webp',
+    '/images/Card/card3.webp',
+    '/images/Card/card4.webp',
   ],
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

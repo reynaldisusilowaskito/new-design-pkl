@@ -15,6 +15,10 @@ interface Props { };
 const BoxStyled = styled(Box)(({ theme }) => ({
   position: 'relative',
   zIndex: 1,
+  backgroundImage: 'url(/images/bg-batik.webp)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
   // backgroundColor: 'transparent',
   borderRadius: 0,
   padding: theme.spacing(6, 0, 0, 0),
@@ -53,8 +57,16 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 const HomeSection4: React.FunctionComponent<Props> = () => {
   const { downSm } = React.useContext(BreakpointsContext);
   const loading = false;
-  const { data } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_info'])
+  const { data, isLoading, error } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_info'])
   const accessibility = React.useContext(require('contexts/accessibility').AccessibilityContext) as { fontSize: number }
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('HomeSection4 data:', data)
+    console.log('HomeSection4 error:', error)
+    console.log('HomeSection4 isLoading:', isLoading)
+  }, [data, error, isLoading])
+  
   return (
     <BoxStyled>
       <Box

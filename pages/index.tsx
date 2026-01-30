@@ -10,6 +10,7 @@ import Title from 'components/title'
 import HomeSection1 from 'components/home.section1'
 import HomeSection2 from 'components/home.section2'
 import HomeSection3 from 'components/home.section3'
+import HomeSection3_5 from 'components/home.section3.5'
 import HomeSection4 from 'components/home.section4'
 import HomeSection5 from 'components/home.section5'
 import HomeSection6 from 'components/home.section6'
@@ -125,6 +126,7 @@ const Home: NextPage<Props> = () => {
       <BoxStyled1 sx={{ m: 0, p: 0, boxSizing: 'border-box' }}>
         <Box sx={{backgroundImage: 'url(/images/bg-batik.svg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', m: 0, p: 0, boxSizing: 'border-box'}}>
           <>
+            <HomeSection3_5 />
             <HomeSection3 />
             <HomeSection4 />
           </>

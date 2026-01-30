@@ -2,8 +2,7 @@ import React, { memo } from 'react'
 import {
   Box,
   Skeleton,
-  Grid,
-} from '@mui/material'
+  Grid,  useTheme,} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { AccessibilityContext } from 'contexts/accessibility'
 
@@ -19,11 +18,12 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: 'rgba(0,0,0,0.5)',
+  backgroundColor: theme.palette.mode === 'light' ? '#ffffff' : '#021D1D',
   borderRadius: 20,
 //   boxShadow: '0 4px 20px rgba(21, 3, 3, 1)',
   marginLeft: 'auto',
   marginRight: 'auto',
+  transition: 'background-color 0.3s ease',
   // maxWidth: 1200,
   [theme.breakpoints.up('md')]: {
     paddingLeft: theme.spacing(20),
@@ -31,6 +31,16 @@ const BoxStyled = styled(Box)(({ theme }) => ({
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
   },
+}))
+
+const BackgroundContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  backgroundImage: 'url(/images/bg-batik.webp)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(4, 0),
 }))
 
 // Flip card styles
@@ -90,6 +100,7 @@ const FlipCardFace = styled(Box)(({ theme }) => ({
 
 const HomeSection7: React.FunctionComponent<Props> = () => {
   const accessibility = React.useContext(AccessibilityContext)
+  const theme = useTheme()
   const loading = false
 
   // Sample photos data - replace with actual data from API
@@ -97,49 +108,49 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
       {
         id: '1',
         title: 'Kegiatan Penanaman Pohon',
-        image: '/images/photos/img_1.jpg',
+        image: '/images/photos/kegiatanmenanampohon.webp',
         alt: 'Foto kegiatan penanaman pohon bersama masyarakat'
       },
       {
         id: '2',
         title: 'Gotong Royong Lingkungan',
-        image: '/images/photos/img_2.jpg',
+        image: '/images/photos/gotongroyong.webp',
         alt: 'Foto kegiatan gotong royong membersihkan lingkungan'
       },
       {
         id: '3',
         title: 'Acara Budaya Surabaya',
-        image: '/images/photos/img_3.jpg',
+        image: '/images/photos/acarabudaya.webp',
         alt: 'Foto acara budaya khas Surabaya'
       },
       {
         id: '4',
         title: 'Program Pembangunan',
-        image: '/images/photos/img_4.jpg',
+        image: '/images/photos/PembangunanSurabaya.webp',
         alt: 'Foto program pembangunan infrastruktur'
       },
       {
         id: '5',
         title: 'Festival Kuliner',
-        image: '/images/photos/img_5.jpg',
+        image: '/images/photos/FestivalKuliner.webp',
         alt: 'Foto festival kuliner Surabaya'
       },
       {
         id: '6',
         title: 'Pameran Seni',
-        image: '/images/photos/img_1.jpg',
+        image: '/images/photos/acarabudaya.webp',
         alt: 'Foto pameran seni Surabaya'
       },
       {
         id: '7',
         title: 'Lomba Kebersihan',
-        image: '/images/photos/img_2.jpg',
+        image: '/images/photos/Lombakebersihan.webp',
         alt: 'Foto lomba kebersihan lingkungan'
       },
       {
         id: '8',
         title: 'Pelatihan UMKM',
-        image: '/images/photos/img_3.jpg',
+        image: '/images/photos/PelatihanUMKM.webp',
         alt: 'Foto pelatihan UMKM Surabaya'
       },
     ]
@@ -147,11 +158,12 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
   // handlePhotoClick removed (unused)
 
   return (
-    <BoxStyled
+    <BackgroundContainer
       sx={{
         filter: `grayscale(${accessibility.css.grayscale ? '100%' : '0'})`,
       }}
     >
+      <BoxStyled>
       <Box
         display="flex"
         alignItems="center"
@@ -164,9 +176,16 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
             alt="icon_batik"
             style={{ width: 32, height: 32, marginRight: 12, display: 'block' }}
           />
-                     <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
-                                                 FOTO
-                                               </Box>
+          <Box component="span" sx={(theme) => ({ 
+            color: theme.palette.mode === 'light' ? '#006462' : '#ffffff',
+            fontSize: 28 + accessibility.fontSize * 2,
+            fontWeight: 600,
+            letterSpacing: 1,
+            lineHeight: 1,
+            transition: 'color 0.3s ease'
+          })}>
+            FOTO
+          </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button
@@ -174,26 +193,28 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              background: '#fff',
+              background: theme.palette.mode === 'light' ? '#fff' : '#021D1D',
               color: '#C7A97A',
-              border: 'none',
+              border: '1px solid #C7A97A',
               borderRadius: 999,
               padding: '6px 18px',
               fontWeight: 500,
               cursor: 'pointer',
               fontSize: 15,
-              boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-              transition: 'background 0.2s, color 0.2s',
+              boxShadow: theme.palette.mode === 'light' ? '0 1px 4px rgba(0,0,0,0.04)' : '0 1px 4px rgba(0,0,0,0.3)',
+              transition: 'background 0.2s, color 0.2s, border-color 0.2s',
             }}
             onMouseOver={e => {
               e.currentTarget.style.background = '#C7A97A'
               e.currentTarget.style.color = '#fff'
+              e.currentTarget.style.borderColor = '#C7A97A'
               const svg = e.currentTarget.querySelector('svg path')
               if (svg) svg.setAttribute('fill', '#fff')
             }}
             onMouseOut={e => {
-              e.currentTarget.style.background = '#fff'
+              e.currentTarget.style.background = theme.palette.mode === 'light' ? '#fff' : '#021D1D'
               e.currentTarget.style.color = '#C7A97A'
+              e.currentTarget.style.borderColor = '#C7A97A'
               const svg = e.currentTarget.querySelector('svg path')
               if (svg) svg.setAttribute('fill', '#C7A97A')
             }}
@@ -240,6 +261,7 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
         )}
       </Box>
     </BoxStyled>
+    </BackgroundContainer>
   )
 }
 

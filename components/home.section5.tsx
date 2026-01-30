@@ -16,6 +16,10 @@ const paddingList = 4
 const transition = 0.1
 const BoxStyled = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6, 0),
+  backgroundImage: 'url(/images/bg-batik.webp)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
   position: 'relative',
   '& .wrapper-svg-section3': {
     position: 'absolute',
@@ -36,6 +40,46 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
   const accessibility = React.useContext(AccessibilityContext)
   const { textToSpeech } = useTextToSpeech()
   const loading = false
+
+  // Icon mapping for services
+  const iconMap: { [key: string]: string } = {
+    'administrasi': '/images/Pelayanan/administrasi.svg',
+    'broadbandlearning': '/images/Pelayanan/broadbandlearning.svg',
+    'ehealth': '/images/Pelayanan/ehealth.svg',
+    'infografis': '/images/Pelayanan/infografis.svg',
+    'jaringandokumentasi': '/images/Pelayanan/jaringandokumentasi.svg',
+    'kecamatan': '/images/Pelayanan/kecamatan.svg',
+    'ketenagakerjaan': '/images/Pelayanan/ketenagakerjaan.svg',
+    'layananpengadaan': '/images/Pelayanan/layananpengadaan.svg',
+    'pelayanandinaspendidikan': '/images/Pelayanan/pelayanandinaspendidikan.svg',
+    'pelayanandinassosial': '/images/Pelayanan/pelayanandinassosial.png',
+    'pemberdayaan': '/images/Pelayanan/pemberdayaan.svg',
+    'pengaduan': '/images/Pelayanan/pengaduan.svg',
+    'ppid': '/images/Pelayanan/ppid.svg',
+    'satudata': '/images/Pelayanan/satudata.svg',
+    'ssw alfa': '/images/Pelayanan/sswalfa.svg',
+  }
+
+  // Mock data for services (fallback)
+  const mockServices = [
+    { id: 1, alias: 'administrasi', title: 'Administrasi', url: '#' },
+    { id: 2, alias: 'broadbandlearning', title: 'Broadband Learning', url: '#' },
+    { id: 3, alias: 'ehealth', title: 'E-Health', url: '#' },
+    { id: 4, alias: 'infografis', title: 'Infografis', url: '#' },
+    { id: 5, alias: 'jaringandokumentasi', title: 'Jaringan Dokumentasi', url: '#' },
+    { id: 6, alias: 'kecamatan', title: 'Kecamatan', url: '#' },
+    { id: 7, alias: 'ketenagakerjaan', title: 'Ketenagakerjaan', url: '#' },
+    { id: 8, alias: 'layananpengadaan', title: 'Layanan Pengadaan', url: '#' },
+    { id: 9, alias: 'pelayanandinaspendidikan', title: 'Pelayanan Dinas Pendidikan', url: '#' },
+    { id: 10, alias: 'pelayanandinassosial', title: 'Pelayanan Dinas Sosial', url: '#' },
+    { id: 11, alias: 'pemberdayaan', title: 'Pemberdayaan', url: '#' },
+    { id: 12, alias: 'pengaduan', title: 'Pengaduan', url: '#' },
+    { id: 13, alias: 'ppid', title: 'PPID', url: '#' },
+    { id: 14, alias: 'satudata', title: 'Satu Data', url: '#' },
+    { id: 15, alias: 'ssw alfa', title: 'SSW ALFA', url: '#' },
+  ]
+
+  const servicesData = (data && data.length > 0) ? data : mockServices
   return (
     <BoxStyled className={accessibility.css.negative ? 'negative' : ''}>
       {!loading && (
@@ -57,12 +101,14 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
             width: '100%',
           }}>
             <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
-           <Box component="span" sx={(theme) => ({ fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+           <Box component="span" sx={(theme) => ({ color: theme.palette.mode === 'light' ? '#006462' : '#ffffff', fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
                                        PELAYANAN PEMERINTAH KOTA SURABAYA
                                      </Box>
           </Box>
           <Box
             sx={{
+              borderRadius: 4,
+              padding: { xs: 4, sm: 5, md: 6 },
               display: 'grid',
               gridTemplateColumns: {
                 xs: 'repeat(2, 1fr)',
@@ -70,13 +116,13 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                 md: 'repeat(4, 1fr)',
                 lg: 'repeat(5, 1fr)',
               },
-              gap: { xs: 3, sm: 4, md: 2 },
+              gap: { xs: 4, sm: 5, md: 2.4 },
               width: '100%',
               justifyItems: 'center',
               alignItems: 'center',
             }}
           >
-            {data?.length > 0 && data.map((v, i) => (
+            {servicesData?.length > 0 && servicesData.map((v, i) => (
               <Link key={i} href={v.url} style={{ textDecoration: 'none', width: '100%' }}>
                 <Box
                   tabIndex={0}
@@ -86,7 +132,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     width: '100%',
-                    maxWidth: 180,
+                    maxWidth: 216,
                     mx: 'auto',
                     cursor: 'pointer',
                     outline: 'none',
@@ -103,8 +149,8 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                 >
                   <Box
                     sx={{
-                      width: { xs: 80, md: 90 },
-                      height: { xs: 80, md: 90 },
+                      width: { xs: 96, md: 108 },
+                      height: { xs: 96, md: 108 },
                       borderRadius: '50%',
                       bgcolor: '#9C7B43',
                       display: 'flex',
@@ -118,12 +164,20 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                       },
                     }}
                   >
+                    <img
+                      src={iconMap[v.alias?.toLowerCase()] || '/images/placeholder-icon.svg'}
+                      alt={v.title}
+                      style={{ width: '60%', height: '60%', objectFit: 'contain' }}
+                      onError={(e) => {
+                        e.currentTarget.src = '/images/placeholder-icon.svg'
+                      }}
+                    />
                   </Box>
                   <Box
                     sx={{
-                      color: '#2E8B8B',
+                      color: theme => theme.palette.mode === 'light' ? '#006462' : '#ffffff',
                       fontWeight: 600,
-                      fontSize: { xs: 13 + accessibility.fontSize * 2, md: 14 + accessibility.fontSize * 2 },
+                      fontSize: { xs: 17 + accessibility.fontSize * 2, md: 18 + accessibility.fontSize * 2 },
                       textAlign: 'center',
                       minHeight: 44,
                       lineHeight: 1.3,

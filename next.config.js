@@ -5,7 +5,13 @@ module.exports = {
   reactStrictMode: false,
   poweredByHeader: false,
   images: {
-    domains: ['localhost', 'surabaya.go.id'],
+    domains: ['localhost', 'surabaya.go.id', 'webdisplay.surabaya.go.id'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.surabaya.go.id',
+      },
+    ],
   },
   experimental: {
     scrollRestoration: true,

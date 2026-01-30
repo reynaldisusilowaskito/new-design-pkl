@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import Image from 'next/image'
 import { Grid, Typography, Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Link from 'next/link'
@@ -69,6 +70,10 @@ const Typography1Styled = styled(Typography)(() => ({
 }))
 
 export function imagePath(id: number, url: string, isWebdisplay: boolean = false) {
+  // Support untuk gambar lokal (e.g., /images/Agenda/...)
+  if (url.startsWith('/images/')) {
+    return url
+  }
   const oldUrl = url.includes('pictures/')
   if (oldUrl) return `${isWebdisplay ? 'https://webdisplay.surabaya.go.id' : 'https://surabaya.go.id/uploads/'}${url.replace('/uploads/', '')}`
   return `${isWebdisplay ? 'https://webdisplay.surabaya.go.id' : 'https://surabaya.go.id/uploads/'}images/posts/post_${id}/${url}`
@@ -101,9 +106,13 @@ const NewsItem: React.FunctionComponent<Props> = ({
     <BoxStyled>
       <Link href={`/id/${route}/${data.id ? data.id : '0'}/${data.slug}`}>
         <Box position="relative" className="content-img">
-          <img
+          <Image
             src={imagePath(data.id || 0, data.feature_image_url || '', isWebdisplay)}
-            style={{ width: '100%', aspectRatio: '3/2', objectFit: 'cover', display: 'block', borderRadius: 16 }}
+            alt={data.title || 'News'}
+            width={600}
+            height={400}
+            style={{ width: '100%', height: 'auto', objectFit: 'cover', display: 'block', borderRadius: 16 }}
+            priority={false}
           />
           {/* Overlay info berita */}
           <Box
@@ -133,6 +142,7 @@ const NewsItem: React.FunctionComponent<Props> = ({
               fontSize={fontSizeDate + accessibility.fontSize}
               marginBottom={0.5}
               className="date"
+              suppressHydrationWarning
               sx={{ color: '#fff', opacity: 0.85 }}
               onMouseEnter={(e) => textToSpeech(e, true)}
             >

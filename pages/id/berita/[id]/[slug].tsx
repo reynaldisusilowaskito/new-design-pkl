@@ -101,7 +101,7 @@ const NewsDetail: NextPage<Props> = ({ detail }: Props) => {
           minHeight: '100vh',
           width: '100%',
           backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.paper : '#fff',
-          backgroundImage: 'url("/images/bg-batik.svg")',
+          backgroundImage: 'url("/images/bg-batik.webp")',
           backgroundRepeat: 'repeat',
           backgroundSize: 'cover', // ganti ke 'contain' jika ingin persis infografis
           backgroundPosition: 'center',

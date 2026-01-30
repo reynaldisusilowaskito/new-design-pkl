@@ -11,6 +11,8 @@ export default class MyDocument extends Document {
         <Head>
           {/* PWA primary color */}
           {/* <meta name="theme-color" content={theme.palette.primary.main} /> */}
+          {/* Viewport meta tag untuk mencegah zoom scaling */}
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
           <link
             href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
             rel="stylesheet"

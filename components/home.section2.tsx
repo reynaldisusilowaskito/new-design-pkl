@@ -15,6 +15,10 @@ interface Props {}
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   backgroundColor: theme. palette.primary.main,
+  backgroundImage: 'url(/images/bg-batik.webp)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -40,6 +44,60 @@ const BoxStyled = styled(Box)(({ theme }) => ({
       },
     },
   },
+}))
+
+const StatCard = styled(Box)(({ theme }) => ({
+  backgroundColor: '#fff',
+  border: '2px solid #176B87',
+  borderRadius: 16,
+  padding: theme.spacing(1.8),
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: theme.spacing(1.8),
+  minHeight: 120,
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    boxShadow: '0 4px 12px rgba(23, 107, 135, 0.15)',
+  },
+}))
+
+const StatContent = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 1,
+})
+
+const StatLabel = styled(Typography)(({ theme }) => ({
+  fontSize: 11,
+  fontWeight: 500,
+  color: theme.palette.text.secondary,
+  marginBottom: theme.spacing(0.5),
+}))
+
+const StatValue = styled(Typography)({
+  fontSize: 21,
+  fontWeight: 700,
+  color: '#000',
+  lineHeight: 1,
+})
+
+const StatSubtext = styled(Typography)(({ theme }) => ({
+  fontSize: 10,
+  fontWeight: 500,
+  color: '#4CAF50',
+  marginTop: theme.spacing(0.5),
+}))
+
+const StatIconBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minWidth: 45,
+  height: 45,
+  borderRadius: 12,
+  flexShrink: 0,
 }))
 
 function findMenu(array: schema['schemas']['Menu'][], title: string) {
@@ -121,20 +179,55 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
     },
   ]
 
+  const statisticsData = [
+    {
+      label: 'Total Penduduk',
+      value: '2.87M',
+      subtext: '+12.1% tahun ini',
+      bgColor: '#E8D5F2',
+      icon: '/images/stat surabaya/totalpenduduk.png',
+      isImage: true,
+    },
+    {
+      label: 'Luas Wilayah',
+      value: '333',
+      unit: 'km²',
+      bgColor: '#FFE8CC',
+      icon: '/images/stat surabaya/Luaswilayah.png',
+      isImage: true,
+    },
+    {
+      label: 'Total Kecamatan',
+      value: '31',
+      subtext: '+1 langkah',
+      bgColor: '#D4E8F7',
+      icon: '/images/stat surabaya/totalkecamatan.png',
+      isImage: true,
+    },
+    {
+      label: 'Total Kelurahan',
+      value: '154',
+      subtext: 'Asd semua',
+      bgColor: '#D4F1E6',
+      icon: '/images/stat surabaya/totalkeluraha.png',
+      isImage: true,
+    },
+  ]
+
   return (
     <Box sx={(theme) => ({
       bgcolor: theme. palette.mode === 'dark' ? 'rgba(2, 29, 29, 0. 7)' : '#fff',
       borderRadius: 6,
-      px: downSm ? 2 : 30,
+      px: downSm ? 2 : 15,
       py: downSm ? 2 : 10,
       boxShadow: 2,
-      width: '97%',
+      width: '100%',
       mx: 'auto',
       my: 0,
     })}>
       <Grid container spacing={downSm ? 2 : 4} alignItems="stretch">
         {/* Kiri: Kartu Gambar */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3.2}>
           <Box sx={{
             // bgcolor: (theme) => theme.palette.background.paper,
             borderRadius: 5,
@@ -155,9 +248,9 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
           </Box>
         </Grid>
 
-        {/* Kanan: Atas dan Bawah */}
-        <Grid item xs={12} md={8}>
-          <Grid container direction="column" spacing={downSm ? 2 : 3}>
+        {/* Tengah: Tentang dan Ada Apa */}
+        <Grid item xs={12} md={6.28}>
+          <Grid container direction="column" spacing={downSm ? 2 : 2.7}>
             {/* Atas: Tentang Surabaya */}
             <Grid item>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2,  }}>
@@ -186,11 +279,11 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                 flex: 1,
                 border: (theme) => `2px solid ${theme.palette.background.paper}`,
                 borderRadius: 5,
-                px: 3,
-                py: 2,
+                px: 2.7,
+                py: 1.8,
                 // bgcolor: (theme) => `${theme.palette.text.primary}`,
                 backgroundColor: '#fff',
-                minHeight: 120,
+                minHeight: 108,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -215,9 +308,9 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'stretch',
-                  px: 2,
-                  py: downSm ? 2 : 3,
-                  minHeight: 120,
+                  px: 1.8,
+                  py: downSm ? 2 : 2.7,
+                  minHeight: 108,
                 }}>
                   {apaDiSurabaya.map((item, idx) => (
                     <Box 
@@ -269,6 +362,31 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
               </Box>
             </Grid>
           </Grid>
+        </Grid>
+
+        {/* Kanan: Statistik */}
+        <Grid item xs={12} md={2.52}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
+            {statisticsData.map((stat, idx) => (
+              <StatCard key={idx}>
+                <StatContent>
+                  <StatLabel>{stat.label}</StatLabel>
+                  <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
+                    <StatValue>{stat.value}</StatValue>
+                    {stat.unit && <Typography sx={{ fontSize: 12, fontWeight: 500, color: '#666' }}>{stat.unit}</Typography>}
+                  </Box>
+                  {stat.subtext && <StatSubtext>{stat.subtext}</StatSubtext>}
+                </StatContent>
+                <StatIconBox sx={{ backgroundColor: stat.bgColor }}>
+                  {stat.isImage ? (
+                    <img src={stat.icon} alt={stat.label} style={{ width: 32, height: 32, objectFit: 'contain' }} />
+                  ) : (
+                    <Typography sx={{ fontSize: 21 }}>{stat.icon}</Typography>
+                  )}
+                </StatIconBox>
+              </StatCard>
+            ))}
+          </Box>
         </Grid>
       </Grid>
     </Box>

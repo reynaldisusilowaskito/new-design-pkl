@@ -24,10 +24,10 @@ export default function MyPage() {
   return (
     <StaggeredCardGallery 
       cards={[
-        '/images/Card/front_card_1.png',
-        '/images/Card/front_card_2.png',
-        '/images/Card/front_card_3.png',
-        '/images/Card/front_card_4.png',
+        '/images/Card/front_card_1.webp',
+        '/images/Card/front_card_2.webp',
+        '/images/Card/front_card_3.webp',
+        '/images/Card/front_card_4.webp',
       ]}
     />
   );

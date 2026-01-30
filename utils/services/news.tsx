@@ -58,19 +58,47 @@ export const getDetail = async (
   return getData
 }
 
+// Fallback data untuk development/testing
+const fallbackNewsData = [
+  {
+    id: 1,
+    title: 'Berita Terbaru Kota Surabaya',
+    feature_image_url: '/images/Agenda/kegiatanmenanampohon.webp',
+    publish_date: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+    slug: 'berita-terbaru-1',
+    view_count: 0,
+    details: [],
+    content: 'Konten berita',
+  },
+  {
+    id: 2,
+    title: 'Perkembangan Pembangunan Surabaya',
+    feature_image_url: '/images/Agenda/PembangunanSurabaya.webp',
+    publish_date: dayjs().format('YYYY-MM-DDTHH:mm:ssZ'),
+    slug: 'berita-terbaru-2',
+    view_count: 0,
+    details: [],
+    content: 'Konten berita',
+  },
+]
+
 export const getNews = async (
   page: number = 1,
   search: string = '',
   limit: number = 10,
   category: string = ''
 ) => {
+  const endpoint = `public/${process.env.SURABAYA_SLUG}/post/${
+    category ? `${category}` : ''
+  }?limit=${limit}&page=${page}&search=${search}&orderColumn=publish_date&orderBy=desc`
+  
+  console.log('[getNews] Fetching from endpoint:', endpoint)
+  console.log('[getNews] Base URL:', process.env.BASE_API_URL)
+  
   const getData = await axiosConfig(true)
-    .get(
-      `public/${process.env.SURABAYA_SLUG}/post/${
-        category ? `${category}` : ''
-      }?limit=${limit}&page=${page}&search=${search}&orderColumn=publish_date&orderBy=desc`
-    )
+    .get(endpoint)
     .then(async (response) => {
+      console.log('[getNews] API Response:', response.data)
       const { data } = response.data
       return data?.length
         ? await Promise.all(
@@ -104,8 +132,17 @@ export const getNews = async (
         : []
     })
     .catch((err: any) => {
-      console.log('Getting Error', err)
-      return []
+      console.error('[getNews] API Error:', {
+        message: err.message,
+        code: err.code,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+      })
+      console.warn('[getNews] Using fallback data')
+      return fallbackNewsData
     })
-  return { data: getData, count: await getCount(search, category) }
+  
+  const count = await getCount(search, category)
+  console.log('[getNews] Final data length:', getData.length)
+  return { data: getData, count }
 }

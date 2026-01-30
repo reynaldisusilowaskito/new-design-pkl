@@ -44,12 +44,18 @@ export interface NewsType {
 interface Props { }
 
 const BoxStyled = styled(Box)(({ theme }) => ({
-  width: '80%',
-  maxWidth: '80%',
+  width: '100%',
   margin: '0 auto',
+  backgroundImage: 'url(/images/bg-batik.webp)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
   '& .MuiGrid-container': {
     position: 'relative',
     zIndex: 1,
+    width: '80%',
+    maxWidth: '80%',
+    margin: '0 auto',
   },
   '& .wrapper-svg-section3': {
     position: 'absolute',
@@ -76,17 +82,25 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
   const router = useRouter()
   const loading = false
   const { downSm } = React.useContext(BreakpointsContext)
-  const { data } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_news'])
+  const { data, isLoading, error } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_news'])
   const accessibility = React.useContext(require('contexts/accessibility').AccessibilityContext) as { fontSize: number }
   const handleLihatSemua = React.useCallback(() => {
     router.push('/id/berita')
   }, [router])
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('HomeSection3 data:', data)
+    console.log('HomeSection3 error:', error)
+    console.log('HomeSection3 isLoading:', isLoading)
+  }, [data, error, isLoading])
+  
   return (
     <>
-      {data?.data && (
+      {data?.data && data.data.length > 0 && (
         <BoxStyled sx={{ position: 'relative', borderRadius: 0, p: downSm ? 4 : 7, overflow: 'hidden' }}>
           {/* Top Bar */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, mt: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3, mt: 2, ml: 18 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <img
                 src="/images/icon/icon_batik_coklat_kiri.svg"
@@ -97,7 +111,7 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                   BERITA TERBARU
                 </Box>
             </Box>
-            <Box sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, mr: 18 }}>
               <button
                 onClick={handleLihatSemua}
                 style={{
@@ -135,8 +149,8 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
               </button>
             </Box>
           </Box>
-          <Grid container spacing={downSm ? 0 : 4} alignItems="stretch">
-            <Grid item xs={12} sm={8}>
+          <Grid container spacing={downSm ? 0 : 4} alignItems="stretch" justifyContent="flex-start">
+            <Grid item xs={12} sm={6.4}>
               {loading ? (
                 <Skeleton
                   variant="rectangular"
