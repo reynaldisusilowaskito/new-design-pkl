@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
-import StaggeredCardGallery from '@/components/card.gallery.staggered';
-
+import StaggeredCardGallery from '../components/card.gallery.staggered';
 const CardGalleryPage: React.FC = () => {
   return (
     <Box
