@@ -106,13 +106,12 @@ const NewsItem: React.FunctionComponent<Props> = ({
     <BoxStyled>
       <Link href={`/id/${route}/${data.id ? data.id : '0'}/${data.slug}`}>
         <Box position="relative" className="content-img">
-          <Image
+          <img
             src={imagePath(data.id || 0, data.feature_image_url || '', isWebdisplay)}
             alt={data.title || 'News'}
             width={600}
             height={400}
             style={{ width: '100%', height: 'auto', objectFit: 'cover', display: 'block', borderRadius: 16 }}
-            priority={false}
           />
           {/* Overlay info berita */}
           <Box
