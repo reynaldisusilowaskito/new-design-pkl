@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import { Box } from '@mui/material'
-import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { styled } from '@mui/material/styles'
 import { fontSize } from 'styles/theme'
@@ -10,7 +9,7 @@ import { AccessibilityContext } from 'contexts/accessibility'
 import useTextToSpeech from 'hooks/useTextToSpeech'
 import schema from 'types/schemas'
 
-interface Props {}
+interface Props { }
 
 const paddingList = 4
 const transition = 0.1
@@ -64,20 +63,20 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
   }
 
   const servicesData = (data && data.length > 0) ? data : []
-  
+
   return (
     <BoxStyled className={accessibility.css.negative ? 'negative' : ''}>
       {!loading && (
         <Box sx={(theme) => ({
-             bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
-             borderRadius: 6,
-             px: downSm ? 2 : 30,
-             py: downSm ? 2 : 10,
-             boxShadow: 2,
-             width: '97%',
-             mx: 'auto',
-             my: 0,
-           })}>
+          bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
+          borderRadius: 6,
+          px: downSm ? 2 : 30,
+          py: downSm ? 2 : 10,
+          boxShadow: 2,
+          width: '97%',
+          mx: 'auto',
+          my: 0,
+        })}>
           {/* Section Title */}
           <Box sx={{
             display: 'flex',
@@ -86,9 +85,9 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
             width: '100%',
           }}>
             <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
-           <Box component="span" sx={(theme) => ({ color: theme.palette.mode === 'light' ? '#006462' : '#ffffff', fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
-                                       PELAYANAN PEMERINTAH KOTA SURABAYA
-                                     </Box>
+            <Box component="span" sx={(theme) => ({ color: theme.palette.mode === 'light' ? '#006462' : '#ffffff', fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+              PELAYANAN PEMERINTAH KOTA SURABAYA
+            </Box>
           </Box>
           <Box
             sx={{
@@ -108,7 +107,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
             }}
           >
             {servicesData?.length > 0 && servicesData.map((v, i) => (
-              <Link key={i} href={v.url} style={{ textDecoration: 'none', width: '100%' }}>
+              <a key={i} href={v.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', width: '100%', display: 'block' }}>
                 <Box
                   tabIndex={0}
                   sx={{
@@ -175,7 +174,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     {v.title}
                   </Box>
                 </Box>
-              </Link>
+              </a>
             ))}
           </Box>
         </Box>

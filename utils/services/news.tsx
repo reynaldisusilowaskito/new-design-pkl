@@ -92,13 +92,9 @@ export const getNews = async (
     category ? `${category}` : ''
   }?limit=${limit}&page=${page}&search=${search}&orderColumn=publish_date&orderBy=desc`
   
-  console.log('[getNews] Fetching from endpoint:', endpoint)
-  console.log('[getNews] Base URL:', process.env.BASE_API_URL)
-  
   const getData = await axiosConfig(true)
     .get(endpoint)
     .then(async (response) => {
-      console.log('[getNews] API Response:', response.data)
       const { data } = response.data
       return data?.length
         ? await Promise.all(
