@@ -63,6 +63,7 @@ export const Logo = React.memo(() => {
         },
       }}
     >
+      <img src={`/images/logo/mark-fire.png`} height={36} />
       <img 
         src={`/images/logo/logo-navbar.svg`} 
         height={36} 
