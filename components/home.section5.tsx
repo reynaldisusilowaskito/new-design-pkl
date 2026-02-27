@@ -165,7 +165,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     }}
                   >
                     <img
-                      src={iconMap[v.alias?.toLowerCase()] || '/images/placeholder-icon.svg'}
+                      src={iconMap[v.alias?.toLowerCase()]}
                       alt={v.title}
                       style={{ width: '60%', height: '60%', objectFit: 'contain' }}
                       onError={(e) => {
