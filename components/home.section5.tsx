@@ -41,26 +41,30 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
   const { textToSpeech } = useTextToSpeech()
   const loading = false
 
-  // Mock data for services (fallback)
-  const mockServices = [
-    { id: 1, alias: 'administrasi', title: 'Administrasi', url: '#', icon: '/images/Pelayanan/administrasi.svg' },
-    { id: 2, alias: 'broadbandlearning', title: 'Broadband Learning', url: '#', icon: '/images/Pelayanan/broadbandlearning.svg' },
-    { id: 3, alias: 'ehealth', title: 'E-Health', url: '#', icon: '/images/Pelayanan/ehealth.svg' },
-    { id: 4, alias: 'infografis', title: 'Infografis', url: '#', icon: '/images/Pelayanan/infografis.svg' },
-    { id: 5, alias: 'jaringandokumentasi', title: 'Jaringan Dokumentasi', url: '#', icon: '/images/Pelayanan/jaringandokumentasi.svg' },
-    { id: 6, alias: 'kecamatan', title: 'Kecamatan', url: '#', icon: '/images/Pelayanan/kecamatan.svg' },
-    { id: 7, alias: 'ketenagakerjaan', title: 'Ketenagakerjaan', url: '#', icon: '/images/Pelayanan/ketenagakerjaan.svg' },
-    { id: 8, alias: 'layananpengadaan', title: 'Layanan Pengadaan', url: '#', icon: '/images/Pelayanan/layananpengadaan.svg' },
-    { id: 9, alias: 'pelayanandinaspendidikan', title: 'Pelayanan Dinas Pendidikan', url: '#', icon: '/images/Pelayanan/pelayanandinaspendidikan.svg' },
-    { id: 10, alias: 'pelayanandinassosial', title: 'Pelayanan Dinas Sosial', url: '#', icon: '/images/Pelayanan/pelayanandinassosial.png' },
-    { id: 11, alias: 'pemberdayaan', title: 'Pemberdayaan', url: '#', icon: '/images/Pelayanan/pemberdayaan.svg' },
-    { id: 12, alias: 'pengaduan', title: 'Pengaduan', url: '#', icon: '/images/Pelayanan/pengaduan.svg' },
-    { id: 13, alias: 'ppid', title: 'PPID', url: '#', icon: '/images/Pelayanan/ppid.svg' },
-    { id: 14, alias: 'satudata', title: 'Satu Data', url: '#', icon: '/images/Pelayanan/satudata.svg' },
-    { id: 15, alias: 'ssw alfa', title: 'SSW ALFA', url: '#', icon: '/images/Pelayanan/sswalfa.svg' },
-  ]
+  // Icon mapping for services
+  const iconMap: { [key: string]: string } = {
+    'administrasikependudukan': '/images/Pelayanan/administrasi.svg',
+    'blc': '/images/Pelayanan/broadbandlearning.svg',
+    'e-health': '/images/Pelayanan/ehealth.svg',
+    'infografis': '/images/Pelayanan/infografis.svg',
+    'jaringandokumentasi': '/images/Pelayanan/jaringandokumentasi.svg',
+    'kecamatan': '/images/Pelayanan/kecamatan.svg',
+    'ketenagakerjaan': '/images/Pelayanan/ketenagakerjaan.svg',
+    'layananpengadaan': '/images/Pelayanan/layananpengadaan.svg',
+    'pelayanandinaspendik': '/images/Pelayanan/pelayanandinaspendidikan.svg',
+    'pelayanandinassosial': '/images/Pelayanan/pelayanandinassosial.png',
+    'pemberdayaanekonomi': '/images/Pelayanan/pemberdayaan.svg',
+    'pengaduanmasyarakat': '/images/Pelayanan/pengaduan.svg',
+    'pelayananinformasi(ppidkotasurabaya)': '/images/Pelayanan/ppid.svg',
+    'jdih': '/images/Pelayanan/ppid.svg',
+    'rup': '/images/Pelayanan/ppid.svg',
+    'lpse': '/images/Pelayanan/ppid.svg',
+    'satudata': '/images/Pelayanan/satudata.svg',
+    'sswalfa': '/images/Pelayanan/sswalfa.svg',
+  }
 
-  const servicesData = (data && data.length > 0) ? data : mockServices
+  const servicesData = (data && data.length > 0) ? data : []
+  
   return (
     <BoxStyled className={accessibility.css.negative ? 'negative' : ''}>
       {!loading && (
@@ -146,7 +150,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     }}
                   >
                     <img
-                      src={v.icon}
+                      src={iconMap[v.title?.replaceAll(' ', '').toLowerCase()] || '/images/placeholder-icon.svg'}
                       alt={v.title}
                       style={{ width: '60%', height: '60%', objectFit: 'contain' }}
                       onError={(e) => {
