@@ -3,7 +3,6 @@ import { Box, Card, Typography, Grid, LinearProgress } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import InteractiveMapSurabaya from './map.surabaya.interactive'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const demografiRaw = require('../data/demografi.surabaya.json') as Record<string, KecamatanData>
 
 interface Props { }
