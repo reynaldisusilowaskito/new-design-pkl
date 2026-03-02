@@ -1,174 +1,229 @@
-import React, { memo, useState, useRef, useEffect } from 'react'
-import { Box, Typography, Paper } from '@mui/material'
+// REIMPLEMENTED: GeoJSON-based SVG map — fetches from remote URL
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { Box, CircularProgress, Paper, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { BreakpointsContext } from 'contexts/breakpoints'
 
-interface Props { }
+const GEO_URL = '/kecamatan.geojson'
 
-const MapWrapper = styled(Box)(({ theme }) => ({
+// ── GeoJSON minimal types ──────────────────────────────────────────────
+interface GeoFeatureProps {
+  nm_kecamatan: string
+  kd_kecamatan: string
+  kd_propinsi: string
+  kd_dati2: string
+}
+interface GeoFeature {
+  type: 'Feature'
+  geometry: {
+    type: 'Polygon' | 'MultiPolygon'
+    coordinates: any
+  }
+  properties: GeoFeatureProps
+}
+interface GeoFeatureCollection {
+  type: 'FeatureCollection'
+  features: GeoFeature[]
+}
+
+interface Props {
+  onSelect?: (district: string | null) => void
+}
+
+// ── Styled components ──────────────────────────────────────────────────
+const MapWrapper = styled(Box)(() => ({
   position: 'relative',
   width: '100%',
   height: '100%',
-  minHeight: '600px',
+  minHeight: '400px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: 'transparent',
-  padding: theme.spacing(2),
-}))
-
-const MapContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  width: '100%',
-  maxWidth: '900px',
-  margin: '0 auto',
-}))
-
-const SVGContainer = styled(Box)(({ theme }) => ({
-  width: '100%',
-  cursor: 'pointer',
-  '& svg': {
-    width: '100%',
-    height: 'auto',
-    display: 'block',
-    filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))',
-  },
-  '& path, & polygon': {
-    transition: 'all 0.3s ease',
-    cursor: 'pointer',
-    '&:hover': {
-      fill: '#ffd54f !important',
-      filter: 'brightness(1.1) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-    },
-  },
 }))
 
 const TooltipBox = styled(Paper)(({ theme }) => ({
   position: 'absolute',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)',
-  padding: theme.spacing(1.5, 2),
+  backgroundColor: 'rgba(255,255,255,0.97)',
+  padding: theme.spacing(1, 1.5),
   borderRadius: '8px',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.18)',
   pointerEvents: 'none',
   zIndex: 1000,
   border: '2px solid #1a7a7a',
+  maxWidth: '200px',
 }))
 
-const TooltipTitle = styled(Typography)(({ theme }) => ({
-  fontSize: '14px',
-  fontWeight: 600,
-  color: '#1a7a7a',
-  marginBottom: theme.spacing(0.5),
-}))
+// ── Constants ──────────────────────────────────────────────────────────
+const SVG_W     = 820
+const SVG_H     = 480
+const PAD       = 12
+const C_DEFAULT  = '#ffffff'
+const C_HOVERED  = '#ffd54f'
+const C_SELECTED = '#ffeb3b'
 
-const TooltipText = styled(Typography)(({ theme }) => ({
-  fontSize: '12px',
-  color: '#666',
-}))
+// ── Path computation (runs once via useMemo) ───────────────────────────
+function buildPaths(features: GeoFeature[]): Record<string, string[]> {
+  let minLon = Infinity, maxLon = -Infinity
+  let minLat = Infinity, maxLat = -Infinity
 
-const InteractiveMapSurabaya: React.FunctionComponent<Props> = () => {
-  const { downSm } = React.useContext(BreakpointsContext)
-  const [hoveredDistrict, setHoveredDistrict] = useState<string | null>(null)
-  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null)
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 })
-  const [svgContent, setSvgContent] = useState<string>('')
-  const svgRef = useRef<HTMLDivElement>(null)
+  const visit = (c: number[]) => {
+    if (c[0] < minLon) minLon = c[0]
+    if (c[0] > maxLon) maxLon = c[0]
+    if (c[1] < minLat) minLat = c[1]
+    if (c[1] > maxLat) maxLat = c[1]
+  }
+
+  features.forEach(f => {
+    if (f.geometry.type === 'Polygon') {
+      (f.geometry.coordinates as number[][][]).forEach(ring => ring.forEach(visit))
+    } else {
+      (f.geometry.coordinates as number[][][][]).forEach(poly =>
+        poly.forEach(ring => ring.forEach(visit)))
+    }
+  })
+
+  const lonSpan = maxLon - minLon
+  const latSpan = maxLat - minLat
+  const iW = SVG_W - PAD * 2
+  const iH = SVG_H - PAD * 2
+
+  const project = (lon: number, lat: number) =>
+    `${(PAD + ((lon - minLon) / lonSpan) * iW).toFixed(1)},` +
+    `${(PAD + ((maxLat - lat) / latSpan) * iH).toFixed(1)}`
+
+  const ring2path = (ring: number[][]) =>
+    ring.map((c, i) => (i === 0 ? 'M' : 'L') + project(c[0], c[1])).join('') + 'Z'
+
+  const groups: Record<string, string[]> = {}
+
+  features.forEach(f => {
+    const kec = f.properties.nm_kecamatan.toUpperCase()
+    if (!groups[kec]) groups[kec] = []
+    if (f.geometry.type === 'Polygon') {
+      groups[kec].push(
+        (f.geometry.coordinates as number[][][]).map(ring2path).join(' ')
+      )
+    } else {
+      ;(f.geometry.coordinates as number[][][][]).forEach(poly =>
+        groups[kec].push(poly.map(ring2path).join(' '))
+      )
+    }
+  })
+
+  return groups
+}
+
+// ── Component ──────────────────────────────────────────────────────────
+const InteractiveMapSurabaya: React.FunctionComponent<Props> = ({ onSelect }) => {
+  const containerRef                    = useRef<HTMLDivElement>(null)
+  const [hovered,  setHovered]          = useState<string | null>(null)
+  const [selected, setSelected]         = useState<string | null>(null)
+  const [tooltip,  setTooltip]          = useState<{ x: number; y: number } | null>(null)
+  const [features, setFeatures]         = useState<GeoFeature[]>([])
+  const [loading,  setLoading]          = useState(true)
+  const [error,    setError]            = useState<string | null>(null)
 
   useEffect(() => {
-    // Load SVG content
-    fetch('/images/Kecamatan/Surabaya.svg')
-      .then(response => response.text())
-      .then(data => {
-        setSvgContent(data)
-      })
-      .catch(error => console.error('Error loading SVG:', error))
+    fetch(GEO_URL)
+      .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json() })
+      .then((data: GeoFeatureCollection) => setFeatures(data.features))
+      .catch(err => setError(String(err)))
+      .finally(() => setLoading(false))
   }, [])
 
-  useEffect(() => {
-    if (svgRef.current && svgContent) {
-      const svgElement = svgRef.current.querySelector('svg')
-      if (svgElement) {
-        // Get all path and polygon elements
-        const paths = svgElement.querySelectorAll('path, polygon')
-        
-        paths.forEach((path, index) => {
-          const element = path as SVGElement
-          
-          // Add event listeners
-          element.addEventListener('mouseenter', (e) => {
-            const districtName = element.getAttribute('id') || element.getAttribute('data-name') || `Kecamatan ${index + 1}`
-            setHoveredDistrict(districtName)
-            
-            const rect = element.getBoundingClientRect()
-            setTooltipPos({
-              x: rect.left + rect.width / 2,
-              y: rect.top,
-            })
-          })
-          
-          element.addEventListener('mousemove', (e: Event) => {
-            const mouseEvent = e as MouseEvent
-            setTooltipPos({
-              x: mouseEvent.clientX + 10,
-              y: mouseEvent.clientY + 10,
-            })
-          })
-          
-          element.addEventListener('mouseleave', () => {
-            setHoveredDistrict(null)
-          })
-          
-          element.addEventListener('click', () => {
-            const districtName = element.getAttribute('id') || element.getAttribute('data-name') || `Kecamatan ${index + 1}`
-            setSelectedDistrict(selectedDistrict === districtName ? null : districtName)
-            console.log('Selected district:', districtName)
-          })
-          
-          // Style selected district
-          if (selectedDistrict && (element.getAttribute('id') === selectedDistrict || element.getAttribute('data-name') === selectedDistrict)) {
-            element.style.fill = '#ffeb3b'
-          }
-        })
-      }
-    }
-  }, [svgContent, selectedDistrict])
+  const kecamatanPaths = useMemo(
+    () => features.length ? buildPaths(features) : {},
+    [features]
+  )
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (rect) setTooltip({ x: e.clientX - rect.left + 14, y: e.clientY - rect.top - 8 })
+  }
+
+  const handleClick = (kec: string) => {
+    const next = selected === kec ? null : kec
+    setSelected(next)
+    onSelect?.(next)
+  }
+
+  const getColor = (kec: string) => {
+    if (kec === selected) return C_SELECTED
+    if (kec === hovered)  return C_HOVERED
+    return C_DEFAULT
+  }
+
+  const toTitle = (k: string) => k.charAt(0) + k.slice(1).toLowerCase()
+
+  if (loading) return (
+    <MapWrapper><CircularProgress sx={{ color: '#1a7a7a' }} /></MapWrapper>
+  )
+  if (error) return (
+    <MapWrapper>
+      <Typography sx={{ color: '#c62828', fontSize: '14px' }}>Gagal memuat peta: {error}</Typography>
+    </MapWrapper>
+  )
 
   return (
-    <MapWrapper>
-      <MapContainer>
-        <SVGContainer 
-          ref={svgRef}
-          dangerouslySetInnerHTML={{ __html: svgContent }}
-        />
-        <Typography
-          variant="body2"
-          sx={{
-            textAlign: 'center',
-            marginTop: 2,
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontStyle: 'italic',
-          }}
-        >
-          Peta Interaktif 31 Kecamatan Kota Surabaya
-        </Typography>
-      </MapContainer>
+    <MapWrapper ref={containerRef} onMouseMove={handleMouseMove}>
+      <svg
+        viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+        style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
+        aria-label="Peta Interaktif Kecamatan Surabaya"
+      >
+        {Object.entries(kecamatanPaths).map(([kec, paths]) => (
+          <g
+            key={kec}
+            style={{ cursor: 'pointer' }}
+            onMouseEnter={() => setHovered(kec)}
+            onMouseLeave={() => { setHovered(null); setTooltip(null) }}
+            onClick={() => handleClick(kec)}
+          >
+            {paths.map((d, i) => (
+              <path
+                key={i}
+                d={d}
+                fill={getColor(kec)}
+                stroke="#000000"
+                strokeWidth="1.5"
+                style={{
+                  transition: 'fill 0.2s ease',
+                  filter: kec === selected
+                    ? 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))'
+                    : undefined,
+                }}
+              />
+            ))}
+          </g>
+        ))}
+      </svg>
 
-      {hoveredDistrict && (
-        <TooltipBox
-          sx={{
-            left: `${tooltipPos.x}px`,
-            top: `${tooltipPos.y}px`,
-          }}
-        >
-          <TooltipTitle>{hoveredDistrict}</TooltipTitle>
-          <TooltipText>Klik untuk melihat detail</TooltipText>
+      <Typography
+        variant="body2"
+        sx={{
+          textAlign: 'center',
+          mt: 1,
+          color: 'rgba(255,255,255,0.75)',
+          fontStyle: 'italic',
+          fontSize: '12px',
+        }}
+      >
+        Peta Interaktif 31 Kecamatan Kota Surabaya
+      </Typography>
+
+      {hovered && tooltip && (
+        <TooltipBox sx={{ left: tooltip.x, top: tooltip.y, transform: 'translateY(-100%)' }}>
+          <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#1a7a7a' }}>
+            Kec. {toTitle(hovered)}
+          </Typography>
+          <Typography sx={{ fontSize: '11px', color: '#888' }}>
+            {selected === hovered ? 'Dipilih • klik untuk batalkan' : 'Klik untuk lihat detail'}
+          </Typography>
         </TooltipBox>
       )}
     </MapWrapper>
   )
 }
-
-InteractiveMapSurabaya.defaultProps = {}
 
 export default memo(InteractiveMapSurabaya)

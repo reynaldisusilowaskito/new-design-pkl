@@ -132,6 +132,7 @@ const HomeSection6: React.FunctionComponent<Props> = () => {
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button
+            onClick={() => window.open('https://www.youtube.com/@BanggaSurabaya')}
             style={{
               display: 'flex',
               alignItems: 'center',

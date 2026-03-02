@@ -80,6 +80,7 @@ const HomeSection4: React.FunctionComponent<Props> = () => {
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button
+            onClick={() => window.open('/agenda')}
             style={{
               display: 'flex',
               alignItems: 'center',

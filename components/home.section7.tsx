@@ -189,6 +189,7 @@ const HomeSection7: React.FunctionComponent<Props> = () => {
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button
+            onClick={() => window.open('/photos', '_blank')}
             style={{
               display: 'flex',
               alignItems: 'center',

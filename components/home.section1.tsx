@@ -30,7 +30,7 @@ export interface SliderType {
   viewed_count?: number
 }
 
-interface Props {}
+interface Props { }
 
 const StyledBox = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
@@ -51,7 +51,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     fontWeight: 900,
     textAlign: 'right',
     lineHeight: 1,
-     color:
+    color:
       theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.primary.main,
     WebkitTextStroke: `2px ${theme.palette.primary.main}`,
     WebkitTextFillColor:
@@ -107,11 +107,11 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
           pt={0}
         >
           <Box width="100%" maxWidth={700} textAlign="center" mb={downSm ? 4 : 1}>
-             <img
-        src="/images/icon/icon-text-surabaya.svg"
-        alt="Surabaya"
-        style={{ width: 400, marginBottom: 5, marginTop: 250 }}
-      />
+            <img
+              src="/images/icon/icon-text-surabaya.svg"
+              alt="Surabaya"
+              style={{ width: 400, marginBottom: 5, marginTop: 250 }}
+            />
             <Box className="wrapper-svg2" sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
             </Box>
             <Typography
@@ -154,17 +154,29 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
                 zIndex: 10,
               }}
             >
-              {[
-                { src: '/images/Card/card1.webp', alt: 'Card 1', rotate: -22, translateY: 150 },
-                { src: '/images/Card/card2.webp', alt: 'Card 2', rotate: -8, translateY: 120 },
-                { src: '/images/Card/card3.webp', alt: 'Card 3', rotate: 8, translateY: 120 },
-                { src: '/images/Card/card4.webp', alt: 'Card 4', rotate: 22, translateY: 150 },
-              ].map((card, idx) => (
+              {(() => {
+                const rotates = [-22, -8, 8, 22]
+                const translateYs = [150, 120, 120, 150]
+                const fallback = [
+                  { src: '/images/Card/card1.webp', alt: 'Card 1' },
+                  { src: '/images/Card/card2.webp', alt: 'Card 2' },
+                  { src: '/images/Card/card3.webp', alt: 'Card 3' },
+                  { src: '/images/Card/card4.webp', alt: 'Card 4' },
+                ]
+                const source = data.length >= 4
+                  ? data.slice(0, 4).map((s) => ({ src: `https://surabaya.go.id/uploads/${s.feature_image}`, alt: s.title || '' }))
+                  : fallback
+                return source.map((item, idx) => ({
+                  ...item,
+                  rotate: rotates[idx],
+                  translateY: translateYs[idx],
+                }))
+              })().map((card, idx) => (
                 <Box
-                  key={idx} 
+                  key={idx}
                   sx={{
                     width: downSm ? 156 : 253,
-                    height: downSm ? 234: 340,
+                    height: downSm ? 234 : 340,
                     position: 'relative',
                     borderRadius: '15px',
                     overflow: 'visible',
