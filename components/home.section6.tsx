@@ -40,47 +40,29 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   },
 }))
 
-const HomeSection6: React.FunctionComponent<Props> = () => {
-  // List of YouTube video IDs
-  const videoIds = [
-    'k5ofLiNDp_0',
-    'mx-shqeA5b8',
-    'XWu3BXD0U7Q',
-  ]
-  const videoLinks = videoIds.map(id => `https://www.youtube.com/watch?v=${id}`)
+interface VideoItem {
+  videoId: string
+  title: string
+  published: string
+  thumbnail: string
+}
 
-  // State for video meta: title, publish date, thumbnail
-  const [videoMeta, setVideoMeta] = React.useState<{ title: string, date: string, thumbnail: string }[]>(Array(3).fill({ title: '', date: '', thumbnail: '' }))
+const HomeSection6: React.FunctionComponent<Props> = () => {
+  const [videos, setVideos]             = React.useState<VideoItem[]>([])
+  const [videosLoading, setVideosLoading] = React.useState(true)
   const [playingVideo, setPlayingVideo] = React.useState<number | null>(null)
-  const [origin, setOrigin] = React.useState('')
+  const [origin, setOrigin]             = React.useState('')
 
   React.useEffect(() => {
     setOrigin(window.location.origin)
   }, [])
 
   React.useEffect(() => {
-    async function fetchMeta() {
-      const getMeta = async (videoId: string) => {
-        try {
-          const res = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`)
-          const data = await res.json()
-          // Get thumbnail
-          const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-          // Get publish date
-          let date = ''
-          if (data.upload_date) {
-            date = data.upload_date // format: YYYY-MM-DD
-          }
-          return { title: data.title || 'Video', date, thumbnail }
-        } catch {
-          return { title: 'Video', date: '', thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` }
-        }
-      }
-      const promises = videoIds.map(getMeta)
-      const results = await Promise.all(promises)
-      setVideoMeta(results)
-    }
-    fetchMeta()
+    fetch('/api/youtube-videos')
+      .then(res => res.json())
+      .then(data => { if (data.videos) setVideos(data.videos) })
+      .catch(() => {})
+      .finally(() => setVideosLoading(false))
   }, [])
 
   // Helper to format date as 'Day, DD Month YYYY'
@@ -169,10 +151,16 @@ const HomeSection6: React.FunctionComponent<Props> = () => {
         </Box>
       </Box>
       <Box sx={{ px: { xs: 3, md: 2 }, pt: 4, width: '100%', maxWidth: 1100, mx: 'auto', position: 'relative' }}>
-        {/* 3 YouTube video cards with thumbnail and click-to-play */}
+        {/* YouTube video cards with thumbnail and click-to-play */}
         <Box display="flex" gap={3} justifyContent="center" flexWrap="wrap">
-          {videoIds.map((videoId, i) => {
-            const meta = videoMeta[i] || { title: '', date: '', thumbnail: '' }
+          {videosLoading
+            ? Array(3).fill(0).map((_, i) => (
+                <Box key={i} sx={{ width: { xs: '100%', sm: '48%', md: '32%' }, maxWidth: 340, height: 220, borderRadius: 3, overflow: 'hidden', background: 'rgba(0,0,0,0.08)' }} />
+              ))
+            : null}
+          {videos.slice(0, 3).map((video, i) => {
+            const videoId = video.videoId
+            const meta = { title: video.title, date: video.published, thumbnail: video.thumbnail }
             const isPlaying = playingVideo === i
 
             return (
@@ -285,7 +273,7 @@ const HomeSection6: React.FunctionComponent<Props> = () => {
                         {meta.title || 'Loading...'}
                       </Box>
                       <Box sx={{ fontSize: 12, opacity: 0.9 }}>
-                        {meta.date ? `${formatDate(meta.date)} | ${getTimeAgo(meta.date)}` : ''}
+                        {meta.date ? getTimeAgo(meta.date) : ''}
                       </Box>
                     </Box>
                   </>
