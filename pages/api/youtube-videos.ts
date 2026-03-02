@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const xml = await rssRes.text()
 
     // Parse entries
-    const entries = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)]
+    const entries = Array.from(xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g))
     const videos: YoutubeVideo[] = entries.slice(0, 6).map(entry => {
       const content   = entry[1]
       const videoId   = (content.match(/<yt:videoId>(.*?)<\/yt:videoId>/) || [])[1] || ''
