@@ -63,6 +63,7 @@ export const Logo = React.memo(() => {
         },
       }}
     >
+      <img src={`/images/logo/mark-fire.png`} height={36} />
       <img 
         src={`/images/logo/logo-navbar.svg`} 
         height={36} 
@@ -146,113 +147,9 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
   const { downSm, downMd } = React.useContext(BreakpointsContext)
   const accessibility = React.useContext(AccessibilityContext)
   const { textToSpeech } = useTextToSpeech()
-  const menu=[
-    {
-        "title": "Mengenal Surabaya",
-        "url": "#",
-        "level": 0,
-        "child": [
-            { "title": "Tentang Surabaya", "url": "/page/0/1/sekilas-tentang-surabaya", "child": [] },
-            {
-                "title": "Pemerintahan",
-                "url": "#",
-                "child": [
-                    { "title": "Visi & Misi", "url": "/page/0/11/visi-misi-kota-surabaya", "child": [] },
-                    { "title": "Struktur Organisasi", "url": "#", "child": [] },
-                    { "title": "Perangkat Daerah", "url": "#", "child": [] },
-                    { "title": "Profil Walikota", "url": "#", "child": [] },
-                    { "title": "Alamat Pemkot", "url": "#", "child": [] }
-                ]
-            },
-            {
-                "title": "Ada Apa di Surabaya ?",
-                "url": "#",
-                "child": [
-                    { "title": "Transportasi", "url": "#", "child": [] },
-                    { "title": "Bisnis & Investasi", "url": "#", "child": [] },
-                    { "title": "Akomodasi", "url": "#", "child": [] },
-                    { "title": "Wisata", "url": "#", "child": [] }
-                ]
-            },
-            {
-                "title": "Organisasi",
-                "url": "#",
-                "child": [
-                    { "title": "Dharma Wanita", "url": "/news", "child": [] },
-                    { "title": "PMI Kota Surabaya", "url": "/pmi", "child": [] },
-                    { "title": "PKK Surabaya", "url": "/pkk", "child": [] }
-                ]
-            }
-        ]
-    },
-    {
-        "title": "Layanan Publik",
-        "url": "#",
-        "child": [
-            { "title": "Pengaduan Masyarakat", "url": "#", "child": [{ "title": "Media Center", "url": "#", "child": [] }] },
-            { "title": "Perizinan", "url": "#", "child": [{ "title": "SSW Alfa", "url": "#", "child": [] }] },
-            { "title": "Kesehatan", "url": "#", "child": [
-                { "title": "E-Health", "url": "#", "child": [] },
-                { "title": "Lawan Covid", "url": "#", "child": [] },
-                { "title": "Sertifikat Vaksin", "url": "#", "child": [] }
-            ]},
-            { "title": "Pendidikan", "url": "#", "child": [
-                { "title": "Profil Sekolah", "url": "#", "child": [] },
-                { "title": "Rapor Online", "url": "#", "child": [] },
-                { "title": "Aplikasi Guru", "url": "#", "child": [] }
-            ]},
-            { "title": "Sosial Masyarakat", "url": "#", "child": [{ "title": "E-Pemutakhiran Data", "url": "#", "child": [] }] },
-            { "title": "Kependudukan", "url": "#", "child": [{ "title": "KLAMPID", "url": "#", "child": [] }] },
-            { "title": "Ekonomi", "url": "#", "child": [{ "title": "E-Peken", "url": "#", "child": [] }] },
-            { "title": "WhistleBlowing", "url": "#", "child": [] }
-        ]
-    },
-    {
-        "title": "Informasi Publik",
-        "url": "#",
-        "child": [
-            { "title": "JDIH", "url": "#", "child": [] },
-            { "title": "PPID", "url": "#", "child": [] },
-            { "title": "Open Data", "url": "#", "child": [] },
-            { "title": "Satu Peta", "url": "#", "child": [] },
-            { "title": "Foto", "url": "/photos", "child": [] },
-            { "title": "Video", "url": "/videos", "child": [] },
-            { "title": "Infografis", "url": "/infografis", "child": [] },
-            { "title": "Podcast", "url": "/podcasts", "child": [] },
-            { "title": "Berita Terbaru", "url": "/news", "child": [] },
-            { "title": "Siaran Pers", "url": "/pers", "child": [] },
-
-        ]
-    },{
-        "title": "Transparansi",
-        "url": "#",
-        "child": [  
-            { "title": "Transparansi Tahun 2026", "url": "/page/0/9/kontak-kami", "child": [] },
-            { "title": "Transparansi Tahun 2025", "url": "/page/0/10/tata-cara-penggunaan-website", "child": [] },
-            { "title": "Transparansi Tahun 2024", "url": "/page/0/7/kebijakan-privasi", "child": [] },
-            { "title": "Transparansi Tahun 2023", "url": "/page/0/7/kebijakan-privasi", "child": [] },
-            { "title": "Transparansi Tahun 2022", "url": "/page/0/7/kebijakan-privasi", "child": [] },
-            { "title": "Transparansi Tahun 2021", "url": "/page/0/7/kebijakan-privasi", "child": [] }
-        ]
-    },{
-        "title": "PPID",
-        "url": "#",
-        "child": [{ "title": "PPID Pemerintah Kota Surabaya", "child": [] }
-      ]   
-
-    },{
-        "title": "Sosial Media",
-        "url": "/page/0/9/kontak-kami",
-        "level": 0,
-        "child": [  { "title": "Facebook", "url": "/page/0/9/kontak-kami", "child": [] },
-            { "title": "Instagram", "url": "/page/0/10/tata-cara-penggunaan-website", "child": [] },
-            { "title": "X", "url": "/page/0/7/kebijakan-privasi", "child": [] },
-            { "title": "Youtube", "url": "/page/0/7/kebijakan-privasi", "child": [] },
-            { "title": "Tiktok", "url": "/page/0/7/kebijakan-privasi", "child": [] },
-            ]
-
-    }
-];
+  const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
+  const menu = React.useMemo(() => contents?.menu || [], [contents])
+  
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState(null)
   const [menuSelected, setMenuSelected] = React.useState([])

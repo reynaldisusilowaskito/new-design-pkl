@@ -59,14 +59,7 @@ const HomeSection4: React.FunctionComponent<Props> = () => {
   const loading = false;
   const { data, isLoading, error } = useQuery<{ data: schema['schemas']['Article'][] }>(['home_info'])
   const accessibility = React.useContext(require('contexts/accessibility').AccessibilityContext) as { fontSize: number }
-  
-  // Debug logging
-  React.useEffect(() => {
-    console.log('HomeSection4 data:', data)
-    console.log('HomeSection4 error:', error)
-    console.log('HomeSection4 isLoading:', isLoading)
-  }, [data, error, isLoading])
-  
+
   return (
     <BoxStyled>
       <Box
@@ -81,12 +74,13 @@ const HomeSection4: React.FunctionComponent<Props> = () => {
             alt="icon_batik"
             style={{ width: 32, height: 32, marginRight: 12, display: 'block' }}
           />
-           <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
-                            AGENDA KOTA
-                          </Box>
+          <Box component="span" sx={(theme) => ({ color: theme.palette.text.primary, fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
+            AGENDA KOTA
+          </Box>
         </Box>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <button
+            onClick={() => window.open('/agenda')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -116,7 +110,7 @@ const HomeSection4: React.FunctionComponent<Props> = () => {
             }}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ display: 'inline', verticalAlign: 'middle' }}>
-              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5zm0 12c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-7A2.5 2.5 0 1 0 12 16a2.5 2.5 0 0 0 0-5z" fill="#C7A97A"/>
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5zm0 12c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-7A2.5 2.5 0 1 0 12 16a2.5 2.5 0 0 0 0-5z" fill="#C7A97A" />
             </svg>
             Lihat Semua
           </button>

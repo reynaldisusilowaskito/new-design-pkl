@@ -154,12 +154,24 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
                 zIndex: 10,
               }}
             >
-              {[
-                { src: '/images/Card/card1.webp', alt: 'Card 1', rotate: -22, translateY: 150 },
-                { src: '/images/Card/card2.webp', alt: 'Card 2', rotate: -8, translateY: 120 },
-                { src: '/images/Card/card3.webp', alt: 'Card 3', rotate: 8, translateY: 120 },
-                { src: '/images/Card/card4.webp', alt: 'Card 4', rotate: 22, translateY: 150 },
-              ].map((card, idx) => (
+              {(() => {
+                const rotates = [-22, -8, 8, 22]
+                const translateYs = [150, 120, 120, 150]
+                const fallback = [
+                  { src: '/images/Card/card1.webp', alt: 'Card 1' },
+                  { src: '/images/Card/card2.webp', alt: 'Card 2' },
+                  { src: '/images/Card/card3.webp', alt: 'Card 3' },
+                  { src: '/images/Card/card4.webp', alt: 'Card 4' },
+                ]
+                const source = data.length >= 4
+                  ? data.slice(0, 4).map((s) => ({ src: `https://surabaya.go.id/uploads/${s.feature_image}`, alt: s.title || '' }))
+                  : fallback
+                return source.map((item, idx) => ({
+                  ...item,
+                  rotate: rotates[idx],
+                  translateY: translateYs[idx],
+                }))
+              })().map((card, idx) => (
                 <Box
                   key={idx}
                   sx={{

@@ -3,8 +3,16 @@ import { Box, Card, Typography, Grid, LinearProgress } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import InteractiveMapSurabaya from './map.surabaya.interactive'
+const demografiRaw = require('../data/demografi.surabaya.json') as Record<string, KecamatanData>
 
 interface Props { }
+
+interface KecamatanData {
+  kepadatan: { value: string; numericValue: number; subtext: string }
+  gender: { female: number; male: number }
+  usiaProduktif: { value: string; percentage: number; subtext: string }
+  pertumbuhan: { value: string; subtext: string }
+}
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -259,37 +267,48 @@ const DescriptionText = styled(Typography)(({ theme }) => ({
 
 const HomeSection3_5: React.FunctionComponent<Props> = () => {
   const { downSm } = React.useContext(BreakpointsContext)
+  const [selectedKecamatan, setSelectedKecamatan] = React.useState<string>('MULYOREJO')
+
+  // Demografi data loaded from data/demografi.surabaya.json — edit that file to update values
+  const kecamatanData = demografiRaw
+
+  const normalize = (name: string) =>
+    name.toUpperCase().replace(/_/g, ' ').trim()
+
+  const handleDistrictSelect = React.useCallback((district: string | null) => {
+    if (!district) return
+    const key = normalize(district)
+    if (kecamatanData[key]) setSelectedKecamatan(key)
+  }, [])
+
+  const activeData = kecamatanData[selectedKecamatan] ?? kecamatanData['MULYOREJO']
 
   const statisticsData = [
     {
-      title: 'Demografi Kec. Mulyorejo',
       label: 'Kepadatan Penduduk',
-      value: '7.388',
-      numericValue: 7388,
-      subtext: 'Jiwa/km2 (2024)',
-      icon: '📊',
+      value: activeData.kepadatan.value,
+      numericValue: activeData.kepadatan.numericValue,
+      subtext: activeData.kepadatan.subtext,
       isDensity: true,
     },
     {
       label: 'Rasio Gender',
-      value: '0.53:1',
-      female: { value: '50.9%', percentage: 50.9 },
-      male: { value: '49.05%', percentage: 49.05 },
-      icon: '👥',
+      value: '',
+      female: { percentage: activeData.gender.female },
+      male:   { percentage: activeData.gender.male },
       isGenderRatio: true,
     },
     {
       label: 'Usia Produktif',
-      value: '71,18%',
-      subtext: '15-64 Tahun',
-      percentage: 71.18,
-      icon: '📈',
+      value: activeData.usiaProduktif.value,
+      subtext: activeData.usiaProduktif.subtext,
+      percentage: activeData.usiaProduktif.percentage,
     },
     {
       label: 'Pertumbuhan Populasi',
-      value: '+0.75%',
-      subtext: 'Annual Growth',
-      icon: '📍',
+      value: activeData.pertumbuhan.value,
+      subtext: activeData.pertumbuhan.subtext,
+      percentage: undefined,
     },
   ]
 
@@ -311,7 +330,7 @@ const HomeSection3_5: React.FunctionComponent<Props> = () => {
       <ContainerBox>
         <MainCardBox>
           {/* Peta Interaktif Kecamatan - Layout Geografis */}
-          <InteractiveMapSurabaya />
+          <InteractiveMapSurabaya onSelect={handleDistrictSelect} />
 
           {/* Area Info Box */}
           <AreaInfoBox>
@@ -324,7 +343,9 @@ const HomeSection3_5: React.FunctionComponent<Props> = () => {
         <StatsWrapperBox>
           <StatsContainer>
             <DemographyTitleBox>
-              <DemographyTitle>Demografi Kec. Mulyorejo</DemographyTitle>
+              <DemographyTitle>
+                Demografi Kec. {selectedKecamatan.charAt(0) + selectedKecamatan.slice(1).toLowerCase()}
+              </DemographyTitle>
             </DemographyTitleBox>
 
             {statisticsData.map((stat, index) => (
