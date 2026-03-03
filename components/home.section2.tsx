@@ -47,8 +47,8 @@ const BoxStyled = styled(Box)(({ theme }) => ({
 }))
 
 const StatCard = styled(Box)(({ theme }) => ({
-  backgroundColor: '#fff',
-  border: '2px solid #176B87',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
+  border: `2px solid ${theme.palette.mode === 'dark' ? 'rgba(210, 182, 144, 0.35)' : '#176B87'}`,
   borderRadius: 16,
   padding: theme.spacing(1.8),
   display: 'flex',
@@ -59,7 +59,10 @@ const StatCard = styled(Box)(({ theme }) => ({
   minHeight: 120,
   transition: 'all 0.3s ease',
   '&:hover': {
-    boxShadow: '0 4px 12px rgba(23, 107, 135, 0.15)',
+    boxShadow:
+      theme.palette.mode === 'dark'
+        ? '0 6px 16px rgba(0, 0, 0, 0.35)'
+        : '0 4px 12px rgba(23, 107, 135, 0.15)',
   },
 }))
 
@@ -72,16 +75,16 @@ const StatContent = styled(Box)({
 const StatLabel = styled(Typography)(({ theme }) => ({
   fontSize: 11,
   fontWeight: 500,
-  color: theme.palette.text.secondary,
+  color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.78)' : theme.palette.text.secondary,
   marginBottom: theme.spacing(0.5),
 }))
 
-const StatValue = styled(Typography)({
+const StatValue = styled(Typography)(({ theme }) => ({
   fontSize: 21,
   fontWeight: 700,
-  color: '#000',
+  color: theme.palette.mode === 'dark' ? '#fff' : '#000',
   lineHeight: 1,
-})
+}))
 
 const StatSubtext = styled(Typography)(({ theme }) => ({
   fontSize: 10,
@@ -257,7 +260,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
               {/* Teks Vertikal */}
               <Box sx={{
                 // bgcolor: (theme) => theme.palette. background.paper,
-                backgroundColor: '#006462',
+                               backgroundColor: '#006462',
                 borderRadius: 5,
                 px: 2,
                 minWidth: 40,
@@ -281,15 +284,22 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                 borderRadius: 5,
                 px: 2.7,
                 py: 1.8,
-                // bgcolor: (theme) => `${theme.palette.text.primary}`,
-                backgroundColor: '#fff',
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
                 minHeight: 108,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
               }}>
                 {tentangSurabaya.icon}
-                <Typography variant="body2" sx={(theme) => ({ color: theme.palette.text.secondary, fontSize: 15, lineHeight: 1.6 })}>
+                <Typography
+                  variant="body2"
+                  sx={(theme) => ({
+                    color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.86)' : '#4b5563',
+                    fontSize: 15,
+                    lineHeight: 1.6,
+                  })}
+                >
                   {tentangSurabaya.desc}
                 </Typography>
               </Box>
@@ -340,8 +350,10 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                 </Box>
                 {/* Teks Vertikal */}
                 <Box sx={{
-                  bgcolor: '#fff',
-                  border: '2px solid #176B87',
+                  bgcolor: (theme) =>
+                    theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
+                  border: (theme) =>
+                    `2px solid ${theme.palette.mode === 'dark' ? 'rgba(210, 182, 144, 0.35)' : '#176B87'}`,
                   borderRadius: 5,
                   px: 2,
                   py: 4,
@@ -351,7 +363,8 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   justifyContent: 'center',
                   writingMode: 'vertical-rl',
                   textOrientation: 'mixed',
-                  color: (theme) => theme.palette.text.secondary,
+                  color: (theme) =>
+                    theme.palette.mode === 'dark' ? '#ffffff' : theme.palette.text.secondary,
                   fontWeight: 700,
                   fontSize: 16,
                   letterSpacing: 1,
@@ -373,7 +386,17 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   <StatLabel>{stat.label}</StatLabel>
                   <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
                     <StatValue>{stat.value}</StatValue>
-                    {stat.unit && <Typography sx={{ fontSize: 12, fontWeight: 500, color: '#666' }}>{stat.unit}</Typography>}
+                    {stat.unit && (
+                      <Typography
+                        sx={(theme) => ({
+                          fontSize: 12,
+                          fontWeight: 500,
+                          color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.72)' : '#666',
+                        })}
+                      >
+                        {stat.unit}
+                      </Typography>
+                    )}
                   </Box>
                   {stat.subtext && <StatSubtext>{stat.subtext}</StatSubtext>}
                 </StatContent>

@@ -30,7 +30,7 @@ export interface SliderType {
   viewed_count?: number
 }
 
-interface Props {}
+interface Props { }
 
 const StyledBox = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
@@ -51,7 +51,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     fontWeight: 900,
     textAlign: 'right',
     lineHeight: 1,
-     color:
+    color:
       theme.palette.mode == 'dark' ? theme.palette.background.paper : theme.palette.primary.main,
     WebkitTextStroke: `2px ${theme.palette.primary.main}`,
     WebkitTextFillColor:
@@ -107,11 +107,11 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
           pt={0}
         >
           <Box width="100%" maxWidth={700} textAlign="center" mb={downSm ? 4 : 1}>
-             <img
-        src="/images/icon/icon-text-surabaya.svg"
-        alt="Surabaya"
-        style={{ width: 400, marginBottom: 5, marginTop: 250 }}
-      />
+            <img
+              src="/images/icon/icon-text-surabaya.svg"
+              alt="Surabaya"
+              style={{ width: 400, marginBottom: 5, marginTop: 250 }}
+            />
             <Box className="wrapper-svg2" sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
             </Box>
             <Typography
@@ -161,10 +161,10 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
                 { src: '/images/Card/card4.webp', alt: 'Card 4', rotate: 22, translateY: 150 },
               ].map((card, idx) => (
                 <Box
-                  key={idx} 
+                  key={idx}
                   sx={{
                     width: downSm ? 156 : 253,
-                    height: downSm ? 234: 340,
+                    height: downSm ? 234 : 340,
                     position: 'relative',
                     borderRadius: '15px',
                     overflow: 'visible',
@@ -180,6 +180,7 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
                       transform: `rotateZ(0deg) translateY(${card.translateY - 40}px) scale(1.05)`,
                       boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
                       zIndex: 15,
+                      position: 'relative',
                       position: 'relative',
                     },
                   }}
