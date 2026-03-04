@@ -61,7 +61,7 @@ const AreaInfoBox = styled(Box)(({ theme }) => ({
   position: 'absolute',
   bottom: '20px',
   left: '20px',
-  background: '#ffffff',
+  background: theme.palette.mode === 'dark' ? 'rgba(8, 33, 33, 0.92)' : '#ffffff',
   borderRadius: '12px',
   padding: theme.spacing(2),
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
@@ -71,7 +71,7 @@ const AreaInfoBox = styled(Box)(({ theme }) => ({
 
 const AreaLabel = styled(Typography)(({ theme }) => ({
   fontSize: '12px',
-  color: '#666',
+  color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.75)' : '#666',
   marginBottom: theme.spacing(0.5),
   fontWeight: 500,
 }))
@@ -79,13 +79,13 @@ const AreaLabel = styled(Typography)(({ theme }) => ({
 const AreaValue = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   fontWeight: 600,
-  color: '#1a7a7a',
+  color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#1a7a7a',
 }))
 
 const DemographyTitleBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
-  background: '#ffffff',
-  border: '2px solid #1a7a7a',
+  background: theme.palette.mode === 'dark' ? 'rgba(8, 33, 33, 0.92)' : '#ffffff',
+  border: `2px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.24)' : '#1a7a7a'}`,
   borderRadius: '30px',
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
   marginBottom: theme.spacing(2),
@@ -94,7 +94,7 @@ const DemographyTitleBox = styled(Box)(({ theme }) => ({
 const DemographyTitle = styled(Typography)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 600,
-  color: '#1a7a7a',
+  color: theme.palette.mode === 'dark' ? theme.palette.secondary.main : '#1a7a7a',
   textAlign: 'center',
 }))
 
@@ -109,7 +109,7 @@ const StatsContainer = styled(Box)(({ theme }) => ({
 }))
 
 const StatsWrapperBox = styled(Box)(({ theme }) => ({
-  background: '#ffffff',
+  background: theme.palette.mode === 'dark' ? 'rgba(8, 33, 33, 0.92)' : '#ffffff',
   borderRadius: '20px',
   padding: theme.spacing(2),
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -122,9 +122,9 @@ const StatsWrapperBox = styled(Box)(({ theme }) => ({
 const StatCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(1.75),
   borderRadius: '16px',
-  border: '2px solid #1a7a7a',
+  border: `2px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.24)' : '#1a7a7a'}`,
   minWidth: '160px',
-  background: '#ffffff',
+  background: theme.palette.mode === 'dark' ? 'rgba(8, 33, 33, 0.92)' : '#ffffff',
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
   position: 'relative',
   [theme.breakpoints.down('md')]: {
@@ -158,7 +158,7 @@ const GenderIcon = styled('img')(({ theme }) => ({
 const GenderValue = styled(Typography)(({ theme }) => ({
   fontSize: '12px',
   fontWeight: 500,
-  color: '#1a1a1a',
+  color: theme.palette.mode === 'dark' ? '#ffffff' : '#1a1a1a',
 }))
 
 const KategoriLabel = styled(Typography)(({ theme }) => ({
@@ -202,7 +202,7 @@ const StatCardIconWrapper = styled(Box)(({ theme }) => ({
 
 const StatLabel = styled(Typography)(({ theme }) => ({
   fontSize: '18px',
-  color: '#374151',
+  color: theme.palette.mode === 'dark' ? '#ffffff' : '#374151',
   marginBottom: theme.spacing(0.5),
   fontWeight: 500,
 }))
@@ -210,20 +210,20 @@ const StatLabel = styled(Typography)(({ theme }) => ({
 const StatValue = styled(Typography)(({ theme }) => ({
   fontSize: '28px',
   fontWeight: 700,
-  color: '#1a1a1a',
+  color: theme.palette.mode === 'dark' ? '#ffffff' : '#1a1a1a',
   marginBottom: theme.spacing(1),
 }))
 
 const StatSubtext = styled(Typography)(({ theme }) => ({
   fontSize: '15px',
-  color: '#999',
+  color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : '#999',
   fontWeight: 500,
 }))
 
 const DescriptionCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: '20px',
-  background: '#ffffff',
+  background: theme.palette.mode === 'dark' ? 'rgba(8, 33, 33, 0.92)' : '#ffffff',
   maxWidth: '1200px',
   width: '100%',
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
@@ -259,7 +259,7 @@ const DescriptionIconWrapper = styled(Box)(({ theme }) => ({
 const DescriptionText = styled(Typography)(({ theme }) => ({
   fontSize: '18px',
   lineHeight: 1.6,
-  color: '#333',
+  color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.86)' : '#333',
   textAlign: 'justify',
   fontFamily: 'Inter, sans-serif',
   fontWeight: 500,  letterSpacing: '2px',  width: '100%',

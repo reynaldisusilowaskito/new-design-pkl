@@ -193,6 +193,7 @@ const HomeSection1: React.FunctionComponent<Props> = () => {
                       boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
                       zIndex: 15,
                       position: 'relative',
+                      position: 'relative',
                     },
                   }}
                 >

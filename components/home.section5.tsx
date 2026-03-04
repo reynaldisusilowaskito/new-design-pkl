@@ -110,7 +110,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
               <a key={i} href={v.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', width: '100%', display: 'block' }}>
                 <Box
                   tabIndex={0}
-                  sx={{
+                  sx={(theme) => ({
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -126,9 +126,12 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     '&:hover': {
                       transform: 'translateY(-8px)',
                       boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
-                      bgcolor: '#f8f9fa',
+                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.12)' : '#f8f9fa',
                     },
-                  }}
+                    '&:hover .service-title': {
+                      color: theme.palette.mode === 'dark' ? '#ffffff' : '#006462',
+                    },
+                  })}
                   onMouseEnter={(e) => textToSpeech(e, true)}
                 >
                   <Box
@@ -158,6 +161,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     />
                   </Box>
                   <Box
+                    className="service-title"
                     sx={{
                       color: theme => theme.palette.mode === 'light' ? '#006462' : '#ffffff',
                       fontWeight: 600,
@@ -182,6 +186,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
     </BoxStyled>
   )
 }
+
 
 HomeSection5.defaultProps = {}
 
