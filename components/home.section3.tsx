@@ -150,7 +150,7 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
             </Box>
           </Box>
           <Grid container spacing={downSm ? 0 : 4} alignItems="stretch" justifyContent="flex-start">
-            <Grid item xs={12} sm={6.4}>
+            <Grid item xs={12} sm={8}>
               {loading ? (
                 <Skeleton
                   variant="rectangular"
@@ -179,6 +179,9 @@ const HomeSection3: React.FunctionComponent<Props> = () => {
                   )}
                 </>
               )}
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <div id="gpr-kominfo-widget-container"></div>
             </Grid>
           </Grid>
         </BoxStyled>
