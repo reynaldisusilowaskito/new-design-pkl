@@ -115,7 +115,7 @@ const Home: NextPage<Props> = () => {
       <Head>
         <title>Pemerintah Kota Surabaya</title>
         <meta name="description" content="Pemerintah Kota Surabaya" />
-        <script type="text/javascript" src="https://widget.komdigi.go.id/gpr-widget-kominfo.min.js"></script>
+        <script async type="text/javascript" src="https://widget.komdigi.go.id/gpr-widget-kominfo.min.js"></script>
       </Head>
       {/* Remove margin and padding from header and main content */}
       <Box sx={{ m: 0, p: 0, position: 'relative', zIndex: 1, boxSizing: 'border-box' }}>
