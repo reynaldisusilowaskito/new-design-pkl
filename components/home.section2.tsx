@@ -142,20 +142,6 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
   const handlePrev = () => setCarouselIndex((i) => Math.max(0, i - 1))
   const handleNext = () => setCarouselIndex((i) => Math.min(maxIndex, i + 1))
 
-  console.log('Menu Ada Apa di Surabaya:', whatsInSurabaya)
-  // Handler untuk navigasi
-  const handleWisataClick = () => {
-    router.push('/wisata/')
-  }
-
-  const handleBisnisInvestasiClick = () => {
-    router.push('https://dpm-ptsp.surabaya.go.id/petapotensiinvestasi/html/interaktif/kecamatan.php')
-  }
-
-  const handleTransportasiClick = () => {
-    router.push('https://play.google.com/store/apps/details?id=com.dishub.gobissurabaya&hl=in&gl=US')
-  }
-
   // Placeholder data untuk deskripsi dan icon
   const tentangSurabaya = {
     title: 'TENTANG SURABAYA',
@@ -171,36 +157,6 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
       </Box>
     ),
   }
-
-  const apaDiSurabaya = [
-    {
-      icon: (
-        <Box sx={{ width: 40, height: 40, borderRadius: '10px', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/icon/Logo-Bisnis_Investasi.svg" alt="Bisnis dan Investasi" style={{ width: 50, height: 50 }} />
-        </Box>
-      ),
-      label: 'Bisnis dan Investasi',
-      onClick: handleBisnisInvestasiClick
-    },
-    {
-      icon: (
-        <Box sx={{ width: 40, height: 40, borderRadius: '10px', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/icon/Logo-Transportasi.svg" alt="Transportasi" style={{ width: 50, height: 50 }} />
-        </Box>
-      ),
-      label: 'Transportasi',
-      onClick: handleTransportasiClick
-    },
-    {
-      icon: (
-        <Box sx={{ width: 40, height: 40, borderRadius: '10px', mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/icon/Logo-Wisata.svg" alt="Wisata" style={{ width: 50, height: 50 }} />
-        </Box>
-      ),
-      label: 'Wisata',
-      onClick: handleWisataClick
-    },
-  ]
 
   const statisticsData = [
     {
