@@ -83,6 +83,8 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
             gap: 1,
             mb: 5,
             width: '100%',
+            justifyContent: 'left',
+            paddingLeft: 3.5,
           }}>
             <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
             <Box component="span" sx={(theme) => ({ color: theme.palette.mode === 'light' ? '#006462' : '#ffffff', fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
