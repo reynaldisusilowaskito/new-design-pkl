@@ -262,7 +262,8 @@ const DescriptionText = styled(Typography)(({ theme }) => ({
   color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.86)' : '#333',
   textAlign: 'justify',
   fontFamily: 'Inter, sans-serif',
-  fontWeight: 500,  letterSpacing: '2px',  width: '100%',
+  fontWeight: 500, 
+  width: '100%',
 }))
 
 const HomeSection3_5: React.FunctionComponent<Props> = () => {
