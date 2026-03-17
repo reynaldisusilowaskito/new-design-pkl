@@ -70,7 +70,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
         <Box sx={(theme) => ({
           bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0.7)' : '#fff',
           borderRadius: 6,
-          px: downSm ? 2 : 30,
+          px: downSm ? 2 : 20,
           py: downSm ? 2 : 10,
           boxShadow: 2,
           width: '97%',
@@ -83,6 +83,8 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
             gap: 1,
             mb: 5,
             width: '100%',
+            justifyContent: 'left',
+            paddingLeft: 3.5,
           }}>
             <img src="/images/icon/icon_batik_coklat_kiri.svg" alt="icon_batik" style={{ width: 32, height: 32, marginRight: 10, display: 'block' }} />
             <Box component="span" sx={(theme) => ({ color: theme.palette.mode === 'light' ? '#006462' : '#ffffff', fontSize: 28 + accessibility.fontSize * 2, fontWeight: 600, letterSpacing: 1, lineHeight: 1 })}>
@@ -96,9 +98,8 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
               display: 'grid',
               gridTemplateColumns: {
                 xs: 'repeat(2, 1fr)',
-                sm: 'repeat(3, 1fr)',
+                sm: 'repeat(2, 1fr)',
                 md: 'repeat(4, 1fr)',
-                lg: 'repeat(5, 1fr)',
               },
               gap: { xs: 4, sm: 5, md: 2.4 },
               width: '100%',
@@ -116,7 +117,7 @@ const HomeSection5: React.FunctionComponent<Props> = () => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     width: '100%',
-                    maxWidth: 216,
+                    maxWidth: 360,
                     mx: 'auto',
                     cursor: 'pointer',
                     outline: 'none',
