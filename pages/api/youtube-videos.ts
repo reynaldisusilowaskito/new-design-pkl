@@ -2,6 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const CHANNEL_URL = 'https://www.youtube.com/@BanggaSurabaya'
 
+const BROWSER_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  'Accept-Language': 'en-US,en;q=0.9',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  // Bypass YouTube consent gate so the real channel page is served
+  'Cookie': 'CONSENT=YES+; SOCS=CAI',
+}
+
 export interface YoutubeVideo {
   videoId: string
   title: string
@@ -12,11 +20,12 @@ export interface YoutubeVideo {
 /** Try several patterns YouTube uses to embed the channel ID in page HTML */
 function extractChannelId(html: string): string | null {
   const patterns = [
+    // Most reliable: the RSS <link> tag YouTube embeds in every channel page <head>
+    /feeds\/videos\.xml\?channel_id=(UC[\w-]+)/,
     /"channelId":"(UC[\w-]+)"/,
     /"externalId":"(UC[\w-]+)"/,
     /"browseId":"(UC[\w-]+)"/,
     /channel_id=(UC[\w-]+)/,
-    /"id":"(UC[\w-]+)"/,
     /\/channel\/(UC[\w-]+)/,
   ]
   for (const pat of patterns) {
@@ -28,18 +37,13 @@ function extractChannelId(html: string): string | null {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    // Try @handle page first, then /videos subpage as fallback
+    // Try @handle page first, then /videos and /about as fallbacks
     let channelId: string | null = null
-    const urls = [CHANNEL_URL, `${CHANNEL_URL}/videos`]
+    const urls = [CHANNEL_URL, `${CHANNEL_URL}/videos`, `${CHANNEL_URL}/about`]
 
     for (const url of urls) {
-      const pageRes = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        },
-      })
+      const pageRes = await fetch(url, { headers: BROWSER_HEADERS })
+      if (!pageRes.ok) continue
       const html = await pageRes.text()
       channelId = extractChannelId(html)
       if (channelId) break
@@ -49,7 +53,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Fetch RSS feed
     const rssRes = await fetch(
-      `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
+      `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
+      { headers: BROWSER_HEADERS }
     )
     if (!rssRes.ok) throw new Error(`RSS fetch failed: ${rssRes.status}`)
     const xml = await rssRes.text()
