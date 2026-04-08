@@ -144,7 +144,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
   // Placeholder data untuk deskripsi dan icon
   const tentangSurabaya = {
     title: 'TENTANG SURABAYA',
-    desc: 'Surabaya adalah ibu kota Provinsi Jawa Timur yang menjadi pusat pemerintahan dan perekonomian dari Provinsi Jawa Timur. Kota ini terbagi menjadi 31 kecamatan dan 154 kelurahan. Kota ini, yang dikenal dengan nilai kepahlawanan, memiliki sejarah panjang yang terkait dengan peristiwa heroik seperti peristiwa pertempuran 10 November 1945. Sebagai pelabuhan penting sejak zaman Majapahit hingga masa kolonial Belanda, Surabaya terus memainkan peran vital dalam perdagangan dan sejarah Indonesia.',
+    desc: 'Surabaya adalah ibu kota Provinsi Jawa Timur yang menjadi pusat pemerintahan dan perekonomian dari Provinsi Jawa Timur. Kota ini terbagi menjadi 31 kecamatan dan 153 kelurahan. Kota ini, yang dikenal dengan nilai kepahlawanan, memiliki sejarah panjang yang terkait dengan peristiwa heroik seperti peristiwa pertempuran 10 November 1945. Sebagai pelabuhan penting sejak zaman Majapahit hingga masa kolonial Belanda, Surabaya terus memainkan peran vital dalam perdagangan dan sejarah Indonesia.',
     icon: (
       <Box sx={{ display: 'flex', gap: 0.2, mb: 1 }}>
         <Box
@@ -213,7 +213,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
     {
       label: 'Total Kelurahan',
       value: '153',
-      subtext: 'Asd semua',
+      subtext: 'semua',
       bgColor: '#D4F1E6',
       icon: '/images/stat surabaya/totalkeluraha.png',
       isImage: true,
