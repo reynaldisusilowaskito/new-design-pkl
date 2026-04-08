@@ -14,7 +14,7 @@ import { BreakpointsContext } from 'contexts/breakpoints'
 import useTextToSpeech from 'hooks/useTextToSpeech'
 import schema from 'types/schemas'
 
-interface Props { }
+interface Props {}
 
 const BoxStyled = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -121,7 +121,6 @@ function findMenu(array: schema['schemas']['Menu'][], title: string) {
   return object
 }
 
-
 const HomeSection2: React.FunctionComponent<Props> = () => {
   const { downSm } = React.useContext(BreakpointsContext)
   const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
@@ -148,11 +147,39 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
     desc: 'Surabaya adalah ibu kota Provinsi Jawa Timur yang menjadi pusat pemerintahan dan perekonomian dari Provinsi Jawa Timur. Kota ini terbagi menjadi 31 kecamatan dan 154 kelurahan. Kota ini, yang dikenal dengan nilai kepahlawanan, memiliki sejarah panjang yang terkait dengan peristiwa heroik seperti peristiwa pertempuran 10 November 1945. Sebagai pelabuhan penting sejak zaman Majapahit hingga masa kolonial Belanda, Surabaya terus memainkan peran vital dalam perdagangan dan sejarah Indonesia.',
     icon: (
       <Box sx={{ display: 'flex', gap: 0.2, mb: 1 }}>
-        <Box sx={{ width: 32, height: 32, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/icon/icon_batik_coklat.svg" alt="Batik Icon" style={{ width: 24, height: 24 }} />
+        <Box
+          sx={{
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <img
+            src="/images/icon/icon_batik_coklat.svg"
+            alt="Batik Icon"
+            style={{ width: 24, height: 24 }}
+          />
         </Box>
-        <Box sx={{ width: 32, height: 32, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/icon/icon_batik_hijau.svg" alt="Batik Icon" style={{ width: 24, height: 24 }} />
+        <Box
+          sx={{
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <img
+            src="/images/icon/icon_batik_hijau.svg"
+            alt="Batik Icon"
+            style={{ width: 24, height: 24 }}
+          />
         </Box>
       </Box>
     ),
@@ -185,7 +212,7 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
     },
     {
       label: 'Total Kelurahan',
-      value: '154',
+      value: '153',
       subtext: 'Asd semua',
       bgColor: '#D4F1E6',
       icon: '/images/stat surabaya/totalkeluraha.png',
@@ -194,36 +221,57 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
   ]
 
   return (
-    <Box sx={(theme) => ({
-      bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0. 7)' : '#fff',
-      borderRadius: 6,
-      px: downSm ? 2 : 15,
-      py: downSm ? 2 : 10,
-      boxShadow: 2,
-      width: '100%',
-      mx: 'auto',
-      my: 0,
-    })}>
+    <Box
+      sx={(theme) => ({
+        bgcolor: theme.palette.mode === 'dark' ? 'rgba(2, 29, 29, 0. 7)' : '#fff',
+        borderRadius: 6,
+        px: downSm ? 2 : 15,
+        py: downSm ? 2 : 10,
+        boxShadow: 2,
+        width: '100%',
+        mx: 'auto',
+        my: 0,
+      })}
+    >
       <Grid container spacing={downSm ? 2 : 4} alignItems="stretch">
         {/* Kiri: Kartu Gambar */}
         <Grid item xs={12} md={3.2}>
-          <Box sx={{
-            // bgcolor: (theme) => theme.palette.background.paper,
-            backgroundColor: '#006462',
-            borderRadius: 5,
-            overflow: 'hidden',
-            height: downSm ? 260 : 520,
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            position: 'relative',
-            p: 0,
-          }}>
+          <Box
+            sx={{
+              // bgcolor: (theme) => theme.palette.background.paper,
+              backgroundColor: '#006462',
+              borderRadius: 5,
+              overflow: 'hidden',
+              height: downSm ? 260 : 520,
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              position: 'relative',
+              p: 0,
+            }}
+          >
             {/* Gambar utama */}
-            <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-              <img src="/images/photos/img_alun-alun.svg" alt="Alun Alun Surabaya" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.85)' }} />
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+            >
+              <img
+                src="/images/photos/img_alun-alun.svg"
+                alt="Alun Alun Surabaya"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'brightness(0.85)',
+                }}
+              />
             </Box>
           </Box>
         </Grid>
@@ -233,42 +281,46 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
           <Grid container direction="column" spacing={downSm ? 2 : 2.7}>
             {/* Atas: Tentang Surabaya */}
             <Grid item>
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2, }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2 }}>
                 {/* Teks Vertikal */}
-                <Box sx={{
-                  // bgcolor: (theme) => theme.palette. background.paper,
-                  backgroundColor: '#006462',
-                  borderRadius: 5,
-                  px: 2,
-                  minWidth: 40,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  writingMode: 'vertical-rl',
-                  textOrientation: 'mixed',
-                  color: (theme) => theme.palette.text.primary,
-                  fontWeight: 700,
-                  fontSize: 16,
-                  letterSpacing: 1,
-                  textAlign: 'center',
-                }}>
+                <Box
+                  sx={{
+                    // bgcolor: (theme) => theme.palette. background.paper,
+                    backgroundColor: '#006462',
+                    borderRadius: 5,
+                    px: 2,
+                    minWidth: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    writingMode: 'vertical-rl',
+                    textOrientation: 'mixed',
+                    color: (theme) => theme.palette.text.primary,
+                    fontWeight: 700,
+                    fontSize: 16,
+                    letterSpacing: 1,
+                    textAlign: 'center',
+                  }}
+                >
                   {tentangSurabaya.title}
                 </Box>
                 {/* Box Deskripsi */}
-                <Box sx={{
-                  flex: 1,
-                  border: (theme) => `2px solid ${theme.palette.background.paper}`,
-                  borderRadius: 5,
-                  px: 2.7,
-                  py: 1.8,
-                  // bgcolor: (theme) => `${theme.palette.text.primary}`,
-                  backgroundColor: (theme) =>
-                  theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
-                  minHeight: 108,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
+                <Box
+                  sx={{
+                    flex: 1,
+                    border: (theme) => `2px solid ${theme.palette.background.paper}`,
+                    borderRadius: 5,
+                    px: 2.7,
+                    py: 1.8,
+                    // bgcolor: (theme) => `${theme.palette.text.primary}`,
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
+                    minHeight: 108,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}
+                >
                   {tentangSurabaya.icon}
                   <Typography
                     variant="body2"
@@ -287,18 +339,20 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
             <Grid item>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: 2 }}>
                 {/* Box utama 3 kolom */}
-                <Box sx={{
-                  flex: 1,
-                  backgroundColor: '#006462',
-                  borderRadius: 5,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  px: 0.5,
-                  py: downSm ? 2 : 2.7,
-                  minHeight: 108,
-                  overflow: 'hidden',
-                }}>
+                <Box
+                  sx={{
+                    flex: 1,
+                    backgroundColor: '#006462',
+                    borderRadius: 5,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    px: 0.5,
+                    py: downSm ? 2 : 2.7,
+                    minHeight: 108,
+                    overflow: 'hidden',
+                  }}
+                >
                   {/* Prev button */}
                   <IconButton
                     onClick={handlePrev}
@@ -310,7 +364,16 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                   </IconButton>
 
                   {/* Visible items */}
-                  <Box sx={{ flex: 1, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch', overflow: 'hidden' }}>
+                  <Box
+                    sx={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'stretch',
+                      overflow: 'hidden',
+                    }}
+                  >
                     {visibleItems.map((item, idx) => (
                       <Box
                         key={carouselIndex + idx}
@@ -326,17 +389,30 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                           px: 1,
                           cursor: item.url ? 'pointer' : 'default',
                           transition: 'transform 0.2s, opacity 0.2s',
-                          '&:hover': item.url ? {
-                            transform: 'scale(1.05)',
-                            opacity: 0.8,
-                          } : {}
+                          '&:hover': item.url
+                            ? {
+                                transform: 'scale(1.05)',
+                                opacity: 0.8,
+                              }
+                            : {},
                         })}
                       >
                         <img
                           src={`https://surabaya.go.id/uploads/images/icons/menu/${_.snakeCase(item.title)}.svg`}
                           alt={item.title}
-                          style={{ width: 40, height: 40, marginBottom: 8 }} />
-                        <Typography variant="subtitle1" sx={(theme) => ({ fontWeight: 400, fontSize: 16, textAlign: 'center', color: theme.palette.text.primary })}>{item.title}</Typography>
+                          style={{ width: 40, height: 40, marginBottom: 8 }}
+                        />
+                        <Typography
+                          variant="subtitle1"
+                          sx={(theme) => ({
+                            fontWeight: 400,
+                            fontSize: 16,
+                            textAlign: 'center',
+                            color: theme.palette.text.primary,
+                          })}
+                        >
+                          {item.title}
+                        </Typography>
                       </Box>
                     ))}
                   </Box>
@@ -346,33 +422,39 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                     onClick={handleNext}
                     disabled={carouselIndex >= maxIndex}
                     size="small"
-                    sx={{ color: '#fff', opacity: carouselIndex >= maxIndex ? 0.3 : 1, flexShrink: 0 }}
+                    sx={{
+                      color: '#fff',
+                      opacity: carouselIndex >= maxIndex ? 0.3 : 1,
+                      flexShrink: 0,
+                    }}
                   >
                     <ArrowForwardIosIcon fontSize="small" />
                   </IconButton>
                 </Box>
                 {/* Teks Vertikal */}
-                <Box sx={{
-                  bgcolor: (theme) =>
-                    theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
-                  border: (theme) =>
-                    `2px solid ${theme.palette.mode === 'dark' ? 'rgba(210, 182, 144, 0.35)' : '#176B87'}`,
-                  borderRadius: 5,
-                  px: 2,
-                  py: 4,
-                  minWidth: 40,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  writingMode: 'vertical-rl',
-                  textOrientation: 'mixed',
-                  color: (theme) =>
-                    theme.palette.mode === 'dark' ? '#ffffff' : theme.palette.text.secondary,
-                  fontWeight: 700,
-                  fontSize: 16,
-                  letterSpacing: 1,
-                  textAlign: 'center',
-                }}>
+                <Box
+                  sx={{
+                    bgcolor: (theme) =>
+                      theme.palette.mode === 'dark' ? 'rgba(9, 35, 35, 0.95)' : '#fff',
+                    border: (theme) =>
+                      `2px solid ${theme.palette.mode === 'dark' ? 'rgba(210, 182, 144, 0.35)' : '#176B87'}`,
+                    borderRadius: 5,
+                    px: 2,
+                    py: 4,
+                    minWidth: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    writingMode: 'vertical-rl',
+                    textOrientation: 'mixed',
+                    color: (theme) =>
+                      theme.palette.mode === 'dark' ? '#ffffff' : theme.palette.text.secondary,
+                    fontWeight: 700,
+                    fontSize: 16,
+                    letterSpacing: 1,
+                    textAlign: 'center',
+                  }}
+                >
                   ADA APA DI SURABAYA
                 </Box>
               </Box>
@@ -405,7 +487,11 @@ const HomeSection2: React.FunctionComponent<Props> = () => {
                 </StatContent>
                 <StatIconBox sx={{ backgroundColor: stat.bgColor }}>
                   {stat.isImage ? (
-                    <img src={stat.icon} alt={stat.label} style={{ width: 32, height: 32, objectFit: 'contain' }} />
+                    <img
+                      src={stat.icon}
+                      alt={stat.label}
+                      style={{ width: 32, height: 32, objectFit: 'contain' }}
+                    />
                   ) : (
                     <Typography sx={{ fontSize: 21 }}>{stat.icon}</Typography>
                   )}
