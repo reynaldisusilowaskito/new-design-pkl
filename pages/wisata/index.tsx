@@ -1,7 +1,9 @@
 import React from 'react'
 import { Box } from '@mui/material'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { BreakpointsContext } from 'contexts/breakpoints'
 import WisataContent from 'components/wisata'
+import { getOrganization } from 'utils/services/organization'
 
 const WisataPage: React. FunctionComponent = () => {
   const { downSm } = React.useContext(BreakpointsContext)
@@ -27,6 +29,17 @@ const WisataPage: React. FunctionComponent = () => {
       <WisataContent />
     </Box>
   )
+}
+
+export const getServerSideProps = async () => {
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(['contents'], async () => await getOrganization())
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
 }
 
 export default WisataPage
