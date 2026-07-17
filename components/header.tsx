@@ -63,10 +63,18 @@ export const Logo = React.memo(() => {
         },
       }}
     >
+      <img
+        src={`/images/logo/icon_bangga_surabaya.png`}
+        height={28}
+        style={{
+          marginRight: 3,
+          filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+        }}
+      />
       <img src={`/images/logo/mark-fire.png`} height={36} />
-      <img 
-        src={`/images/logo/logo-navbar.svg`} 
-        height={36} 
+      <img
+        src={`/images/logo/logo-navbar.svg`}
+        height={36}
         style={{
           filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
         }}
@@ -149,7 +157,7 @@ const Header: React.FunctionComponent<Props> = (props: Props) => {
   const { textToSpeech } = useTextToSpeech()
   const { data: contents } = useQuery<schema['schemas']['Organization']>(['contents'])
   const menu = React.useMemo(() => contents?.menu || [], [contents])
-  
+
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState(null)
   const [menuSelected, setMenuSelected] = React.useState([])
