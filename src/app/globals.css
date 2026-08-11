@@ -1,0 +1,20 @@
+:root {
+  --ice: #edf2f7;
+  --paper: #fff7f6;
+  --blush: #fbe1e1;
+  --rose: #f4c5c8;
+  --lavender: #c5b3d2;
+  --ink: #182438;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: 'Manrope Variable', Manrope, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { min-width: 320px; margin: 0; overflow-x: clip; background: var(--paper); }
+button, input, textarea, select { font: inherit; }
+img, video, svg { display: block; max-width: 100%; }
+a { color: inherit; }

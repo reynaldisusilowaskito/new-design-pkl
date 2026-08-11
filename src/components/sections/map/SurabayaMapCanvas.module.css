@@ -1,0 +1,45 @@
+.map {
+  width: 100%;
+  height: 100%;
+  min-height: 650px;
+  background: #101b2b;
+}
+
+.map :global(.maplibregl-ctrl-group) {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 13px;
+  background: rgba(247, 240, 237, .92);
+  box-shadow: 0 12px 28px rgba(8, 15, 28, .22);
+  backdrop-filter: blur(12px);
+}
+
+.map :global(.maplibregl-ctrl-group button) {
+  width: 34px;
+  height: 34px;
+}
+
+.map :global(.maplibregl-ctrl-attrib) {
+  color: rgba(24, 36, 56, .7);
+  background: rgba(255, 247, 246, .8);
+  font-size: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.map :global(.maplibregl-user-location-dot::before) {
+  background-color: #e17c8d;
+}
+
+.map :global(.maplibregl-user-location-dot::after) {
+  border-color: #fff;
+  background-color: #e17c8d;
+}
+
+@media (max-width: 900px) {
+  .map { min-height: 590px; }
+}
+
+@media (max-width: 620px) {
+  .map { min-height: 570px; }
+  .map :global(.maplibregl-ctrl-top-right) { top: 4px; right: 4px; }
+}
