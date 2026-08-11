@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { heroParticles, heroServices, heroWords } from '@/data/heroContent'
 import MainNavbar from '@/components/navigation/MainNavbar'
+import { useExperience } from '@/context/ExperienceContext'
 import styles from './HeroSection.module.css'
 
 const characters = '/assets/redesign/hero/suro-boyo-3d.png'
@@ -14,6 +15,7 @@ const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
 const splashWordmark = '/assets/redesign/hero/surabaya-wordmark-black-transparent.png'
 
 function HeroSection({ navigation }) {
+  const { t } = useExperience()
   const heroRef = useRef(null)
   const [activeWord, setActiveWord] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
@@ -170,27 +172,27 @@ function HeroSection({ navigation }) {
 
         <div className={styles.content}>
           <h1>
-            <span>KOTA YANG</span>
+            <span>{t('KOTA YANG')}</span>
             <span className={styles.wordWindow}>
               {heroWords.map((word, index) => (
-                <strong className={index === activeWord ? styles.wordActive : ''} key={word}>{word}</strong>
+                <strong className={index === activeWord ? styles.wordActive : ''} key={word}>{t(word)}</strong>
               ))}
             </span>
           </h1>
-          <p className={styles.slogan}>GOTONG ROYONG MENUJU KOTA DUNIA YANG MAJU,<br />HUMANIS, DAN BERKELANJUTAN</p>
+          <p className={styles.slogan}>{t('GOTONG ROYONG MENUJU KOTA DUNIA YANG MAJU,')}<br />{t('HUMANIS, DAN BERKELANJUTAN')}</p>
         </div>
 
         <div className={styles.serviceStage} id="akses-cepat">
           <div className={styles.serviceIntro}>
-            <span>AKSES CEPAT WARGA</span>
-            <h2>Mulai dari sini.</h2>
+            <span>{t('AKSES CEPAT WARGA')}</span>
+            <h2>{t('Mulai dari sini.')}</h2>
           </div>
           <div className={styles.searchSupport}>
           <form className={styles.searchBox} onSubmit={handleSearch} role="search">
             <span aria-hidden="true">⌕</span>
             <input
-              aria-label="Cari layanan Pemerintah Kota Surabaya"
-              placeholder="Cari layanan warga..."
+              aria-label={t('Cari layanan Pemerintah Kota Surabaya')}
+              placeholder={t('Cari layanan warga...')}
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
             />

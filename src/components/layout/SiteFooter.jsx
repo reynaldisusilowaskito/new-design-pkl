@@ -1,43 +1,23 @@
+'use client'
+
 import Image from 'next/image'
+import { useExperience } from '@/context/ExperienceContext'
 import styles from './SiteFooter.module.css'
 
+const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
+const characters = '/assets/redesign/hero/suro-boyo-3d.png'
 const navigation = [
-  {
-    title: 'Jelajahi',
-    links: [
-      ['Tentang Surabaya', '#tentang'],
-      ['Layanan warga', '#layanan'],
-      ['Kabar kota', '#kabar'],
-      ['Video kota', '#video'],
-      ['Agenda kota', '#agenda-kota'],
-    ],
-  },
-  {
-    title: 'Layanan publik',
-    links: [
-      ['WargaKu', 'https://wargaku.surabaya.go.id/'],
-      ['PPID Kota Surabaya', 'https://ppid.surabaya.go.id/'],
-      ['Satu Data Surabaya', 'https://satudata.surabaya.go.id/'],
-      ['JDIH Surabaya', 'https://jdih.surabaya.go.id/'],
-      ['LPSE Surabaya', 'https://lpse.surabaya.go.id/'],
-    ],
-  },
+  ['Tentang Surabaya', '#tentang'], ['Layanan warga', '#layanan'], ['Kabar kota', '#kabar'],
+  ['Video kota', '#video'], ['Kalender Surabaya', '#agenda-kota'],
 ]
-
-function ExternalLink({ href, children }) {
-  const external = href.startsWith('http')
-  return <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>{children}{external && <span aria-hidden="true">↗</span>}</a>
-}
-
 const validUrl = (value, fallback) => value?.startsWith('http') ? value : fallback
 
 /** @param {{ organization: import('@/lib/surabaya-api').Organization }} props */
 export default function SiteFooter({ organization }) {
+  const { t } = useExperience()
   const phone = organization.phone_number || '(031) 531 2144'
-  const phoneHref = `tel:${phone.replace(/[^\d+]/g, '')}`
   const socials = [
     ['Instagram', validUrl(organization.instagram, 'https://www.instagram.com/surabaya/')],
-    ['Facebook', validUrl(organization.facebook, 'https://www.facebook.com/sapawargakotasurabaya/')],
     ['YouTube', validUrl(organization.youtube, 'https://www.youtube.com/@BanggaSurabaya')],
     ['TikTok', validUrl(organization.tiktok, 'https://www.tiktok.com/@pidibaya')],
   ]
@@ -45,53 +25,43 @@ export default function SiteFooter({ organization }) {
   return (
     <footer className={styles.footer}>
       <div className={styles.shell}>
-        <section className={styles.callout} aria-labelledby="footer-title">
-          <div>
-            <p className={styles.eyebrow}>PORTAL WARGA SURABAYA</p>
-            <h2 id="footer-title">Masih mencari layanan atau informasi kota?</h2>
-            <p className={styles.calloutCopy}>Kami bantu menghubungkan kebutuhanmu dengan kanal resmi Pemerintah Kota Surabaya.</p>
+        <div className={styles.glow} aria-hidden="true" />
+        <section className={styles.hero} aria-labelledby="footer-title">
+          <div className={styles.heroCopy}>
+            <div className={styles.identity}>
+              <Image src={mandatoryMarks} alt={t('Identitas resmi Kota Surabaya')} width={134} height={51} sizes="92px" />
+              <span>{t('PORTAL RESMI KOTA')}</span>
+            </div>
+            <h2 id="footer-title">{t('Masih mencari layanan atau informasi kota?')}</h2>
+            <p>{t('Kami bantu menghubungkan kebutuhanmu dengan kanal resmi Pemerintah Kota Surabaya.')}</p>
+            <div className={styles.actions}>
+              <a className={styles.primaryAction} href="#layanan">{t('Jelajahi layanan')} <span>→</span></a>
+              <a className={styles.secondaryAction} href="https://wargaku.surabaya.go.id/" target="_blank" rel="noreferrer">{t('Sampaikan pengaduan')} <span>↗</span></a>
+            </div>
           </div>
-          <div className={styles.actions}>
-            <a className={styles.primaryAction} href="#layanan">Jelajahi layanan <span>→</span></a>
-            <a className={styles.secondaryAction} href="https://wargaku.surabaya.go.id/" target="_blank" rel="noreferrer">Sampaikan pengaduan <span>↗</span></a>
+          <div className={styles.visual} aria-hidden="true">
+            <span className={styles.cityType}>SBY</span><i className={styles.orbit} /><i className={styles.pedestal} />
+            <Image src={characters} alt="" width={1538} height={1022} sizes="(max-width: 650px) 230px, 330px" />
           </div>
         </section>
-
-        <div className={styles.content}>
-          <div className={styles.brand}>
-            <div className={styles.brandImages}>
-              <Image className={styles.wordmark} src="/assets/redesign/hero/surabaya-wordmark-white-transparent.png" alt="Surabaya" width={2155} height={730} sizes="(max-width: 680px) 170px, 200px" />
-              <Image className={styles.marks} src="/assets/redesign/hero/surabaya-mandatory-marks.png" alt="Identitas resmi Pemerintah Kota Surabaya" width={134} height={51} sizes="(max-width: 680px) 88px, 94px" />
-            </div>
-            <p>Portal informasi dan pelayanan publik resmi untuk warga Kota Surabaya.</p>
-            <a className={styles.officialSite} href="https://surabaya.go.id/" target="_blank" rel="noreferrer">surabaya.go.id <span>↗</span></a>
+        <div className={styles.infoBar}>
+          <nav className={styles.navigation} aria-label={t('Jelajahi')}>
+            {navigation.map(([label, href]) => <a href={href} key={label}>{t(label)}</a>)}
+          </nav>
+          <address className={styles.contact}>
+            <span>{t('PEMERINTAH KOTA')}</span>
+            <p>{organization.address || 'Jl. Jimerto No. 25–27 · Surabaya'}</p>
+            <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a>
+          </address>
+          <div className={styles.socials} aria-label={t('Sosial Media')}>
+            {socials.map(([label, href]) => <a href={href} target="_blank" rel="noreferrer" key={label}>{label} <span>↗</span></a>)}
           </div>
-
-          {navigation.map((group) => (
-            <nav className={styles.linkGroup} aria-label={group.title} key={group.title}>
-              <h3>{group.title}</h3>
-              <ul>{group.links.map(([label, href]) => <li key={label}><ExternalLink href={href}>{label}</ExternalLink></li>)}</ul>
-            </nav>
-          ))}
-
-          <section className={styles.contact} aria-labelledby="contact-title">
-            <p className={styles.contactLabel}>KONTAK PEMERINTAH KOTA</p>
-            <h3 id="contact-title">Kami siap membantu.</h3>
-            <address>{organization.address || 'Jl. Jimerto No. 25–27, Surabaya, Jawa Timur 60272'}</address>
-            <a href={phoneHref}>{phone}</a>
-            <a href="mailto:dinkominfo@surabaya.go.id">dinkominfo@surabaya.go.id</a>
-            <p className={styles.hours}>Senin–Kamis 07.30–16.00<br />Jumat 07.30–15.00 WIB</p>
-          </section>
         </div>
-
-        <div className={styles.socialRow}>
-          <p>Ikuti kabar Surabaya</p>
-          <div>{socials.map(([label, href]) => <a href={href} target="_blank" rel="noreferrer" key={label}>{label} <span>↗</span></a>)}</div>
-          <a className={styles.backToTop} href="#beranda" aria-label="Kembali ke bagian atas">Kembali ke atas <span>↑</span></a>
+        <div className={styles.bottomBar}>
+          <p>© 2026 {t('Pemerintah Kota Surabaya')}</p>
+          <a href="https://surabaya.go.id/" target="_blank" rel="noreferrer">surabaya.go.id ↗</a>
+          <a href="#beranda" aria-label={t('Kembali ke bagian atas')}>{t('Kembali ke atas')} ↑</a>
         </div>
-
-        <div className={styles.cityName} aria-hidden="true">SURABAYA</div>
-        <div className={styles.bottomBar}><p>© 2026 Pemerintah Kota Surabaya</p><p>Dikelola oleh Dinas Komunikasi dan Informatika Kota Surabaya</p></div>
       </div>
     </footer>
   )

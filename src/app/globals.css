@@ -10,11 +10,89 @@
   font-family: 'Manrope Variable', Manrope, Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --ice: #0b1422;
+  --paper: #101827;
+  --blush: #3a2934;
+  --rose: #d99ca7;
+  --lavender: #82718f;
+  --ink: #f8f2ef;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { min-width: 320px; margin: 0; overflow-x: clip; background: var(--paper); }
+body { min-width: 320px; margin: 0; overflow-x: clip; background: var(--paper); transition:color .3s ease,background-color .3s ease; }
 button, input, textarea, select { font: inherit; }
 img, video, svg { display: block; max-width: 100%; }
 a { color: inherit; }
+
+:root[data-theme='dark'] #beranda,
+:root[data-theme='dark'] #tentang,
+:root[data-theme='dark'] #peta-surabaya,
+:root[data-theme='dark'] #kabar,
+:root[data-theme='dark'] #layanan,
+:root[data-theme='dark'] #video,
+:root[data-theme='dark'] #agenda-kota {
+  color:#f8f2ef;
+  background-color:#101827;
+}
+
+:root[data-theme='dark'] [class*='stickyScene'],
+:root[data-theme='dark'] [class*='newsIntro'],
+:root[data-theme='dark'] [class*='collectionPanel'],
+:root[data-theme='dark'] [class*='calendar'] { background-color:#101827; }
+
+:root[data-theme='dark'] [class*='catalog'],
+:root[data-theme='dark'] [class*='playerWindow'],
+:root[data-theme='dark'] [class*='listTile'],
+:root[data-theme='dark'] [class*='sourceTile'],
+:root[data-theme='dark'] [class*='contact'] {
+  color:#f8f2ef;
+  background-color:#182438;
+  border-color:rgba(255,255,255,.13);
+}
+
+:root[data-theme='dark'] [class*='serviceGrid'] a,
+:root[data-theme='dark'] [class*='cityLinks'] a,
+:root[data-theme='dark'] [class*='suggestions'] button,
+:root[data-theme='dark'] [class*='filterRail'] button {
+  color:#f8f2ef;
+  background-color:rgba(255,255,255,.055);
+  border-color:rgba(255,255,255,.12);
+}
+
+:root[data-theme='dark'] [class*='megaMenu'] {
+  color:#f8f2ef;
+  background:rgba(16,24,39,.98);
+  border-color:rgba(255,255,255,.14);
+}
+
+:root[data-theme='dark'] [class*='megaMenu'] [class*='categoryRail'] button { color:rgba(248,242,239,.76); }
+:root[data-theme='dark'] [class*='megaMenu'] [class*='categoryRail'] button:hover,
+:root[data-theme='dark'] [class*='megaMenu'] [class*='activeCategory'] { color:#fff; background:rgba(255,255,255,.11); }
+:root[data-theme='dark'] [class*='megaMenu'] [class*='linkPanel'] > p,
+:root[data-theme='dark'] [class*='megaMenu'] [class*='cityLinks'] small { color:rgba(248,242,239,.68); }
+:root[data-theme='dark'] input { color:#f8f2ef; }
+:root[data-theme='dark'] input::placeholder { color:rgba(248,242,239,.52); }
+
+:root[data-theme='dark'] #peta-surabaya { background:radial-gradient(circle at 82% 18%,rgba(111,91,132,.2),transparent 29%),linear-gradient(180deg,#101827,#151f33) !important; }
+:root[data-theme='dark'] #kabar { background:#101827 !important; }
+:root[data-theme='dark'] #kabar [class*='transitionHero'] { background:radial-gradient(circle at 50% 74%,rgba(164,87,107,.2),transparent 31%),#101827; }
+:root[data-theme='dark'] #kabar [class*='dailyLabel'],
+:root[data-theme='dark'] #kabar h2,
+:root[data-theme='dark'] #kabar p { color:#f8f2ef; }
+:root[data-theme='dark'] #video { background:linear-gradient(145deg,#0c1524,#1b2638) !important; }
+:root[data-theme='dark'] #video [class*='collectionPanel'] { color:#f8f2ef; background:#182438; border-color:rgba(255,255,255,.13); }
+:root[data-theme='dark'] #video [class*='panelHead'] p { color:rgba(248,242,239,.62); }
+:root[data-theme='dark'] #video [class*='headerActions'] button { color:#f8f2ef; border-color:rgba(255,255,255,.2); }
+:root[data-theme='dark'] #agenda-kota { --dark:#f8f2ef; --paper:#101827; background:linear-gradient(145deg,#0b1422,#141e30 48%,#292132) !important; }
+:root[data-theme='dark'] #agenda-kota [class*='monthTile'] { color:#182438; }
+:root[data-theme='dark'] #agenda-kota [class*='listTile'],
+:root[data-theme='dark'] #agenda-kota [class*='sourceTile'] { color:#f8f2ef; background:#182438; }
+:root[data-theme='dark'] #agenda-kota [class*='listTile'] a { color:#f8f2ef; border-color:rgba(255,255,255,.13); }
+:root[data-theme='dark'] #tentang [class*='summary'],
+:root[data-theme='dark'] #tentang [class*='quickFacts'] { border-color:rgba(255,255,255,.14); }

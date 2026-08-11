@@ -48,6 +48,23 @@
   pointer-events: none;
 }
 
+.cloudField::before,
+.cloudField::after { content:''; position:absolute; opacity:0; transition:opacity .6s ease; }
+
+:global(:root[data-theme='dark']) .hero { background:linear-gradient(180deg,#091323 0%,#101a2d 44%,#172138 72%,#25233b 100%); }
+:global(:root[data-theme='dark']) .stickyScene { background:radial-gradient(circle at 74% 22%,rgba(117,126,178,.2),transparent 28%),radial-gradient(circle at 18% 36%,rgba(51,72,110,.35),transparent 36%),linear-gradient(145deg,#081221 0%,#111b2d 52%,#211d35 100%); }
+:global(:root[data-theme='dark']) .stickyScene::before { opacity:.22; background-image:linear-gradient(rgba(222,229,247,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(222,229,247,.055) 1px,transparent 1px); }
+:global(:root[data-theme='dark']) .cloudField i { display:none; }
+:global(:root[data-theme='dark']) .cloudField::before { z-index:2; top:8%; right:10%; width:clamp(82px,10vw,150px); aspect-ratio:1; border-radius:50%; opacity:1; background:radial-gradient(circle at 38% 35%,#fffdf0 0 7%,#f4efd7 45%,#d8d7d8 72%,#a5abc1 100%); box-shadow:0 0 28px rgba(240,236,211,.35),0 0 85px rgba(185,190,225,.2); }
+:global(:root[data-theme='dark']) .cloudField::after { z-index:1; inset:2% 4% 20%; opacity:.8; background-image:radial-gradient(circle at 8% 17%,#fff 0 1px,transparent 2px),radial-gradient(circle at 21% 48%,#dce5ff 0 1.5px,transparent 2.5px),radial-gradient(circle at 34% 12%,#fff 0 1px,transparent 2px),radial-gradient(circle at 48% 31%,#f3dcec 0 1px,transparent 2px),radial-gradient(circle at 61% 8%,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle at 72% 50%,#dce5ff 0 1px,transparent 2px),radial-gradient(circle at 87% 28%,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle at 94% 67%,#f3dcec 0 1px,transparent 2px),radial-gradient(circle at 13% 78%,#fff 0 1px,transparent 2px),radial-gradient(circle at 43% 71%,#dce5ff 0 1px,transparent 2px); animation:starPulse 4s ease-in-out infinite alternate; }
+:global(:root[data-theme='dark']) .content { color:#f8f2ef; }
+:global(:root[data-theme='dark']) .slogan { color:rgba(248,242,239,.72); }
+:global(:root[data-theme='dark']) .wordWindow { -webkit-text-stroke-color:#f8f2ef; }
+:global(:root[data-theme='dark']) .monumentScene { filter:brightness(.76) saturate(.78) drop-shadow(0 0 34px rgba(214,208,170,.12)); }
+:global(:root[data-theme='dark']) .cityCharacters { filter:brightness(.72) saturate(.8) drop-shadow(0 25px 30px rgba(0,0,0,.34)); }
+:global(:root[data-theme='dark']) .lowerLandscape { filter:brightness(.5) saturate(.65) hue-rotate(8deg); }
+:global(:root[data-theme='dark']) .introSplash { background:radial-gradient(circle at 80% 18%,rgba(130,113,143,.24),transparent 32%),#0d1625; }
+
 .cloudField i {
   position: absolute;
   top: var(--cloud-top);
@@ -731,6 +748,8 @@
   from { transform: translate3d(calc(100vw + 100%), 0, 0); }
   to { transform: translate3d(-100%, 0, 0); }
 }
+
+@keyframes starPulse { from { opacity:.5; filter:brightness(.8); } to { opacity:1; filter:brightness(1.35); } }
 
 @media (min-width: 1500px) {
   .content {
