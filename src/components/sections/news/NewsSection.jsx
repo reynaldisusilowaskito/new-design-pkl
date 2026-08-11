@@ -19,8 +19,9 @@ function formatDate(value) {
 }
 
 function NewsImage({ item, sizes }) {
-  if (!item.image) return <span aria-hidden="true" />
-  return <Image src={item.image} alt="" fill sizes={sizes} />
+  const [failed, setFailed] = useState(false)
+  if (!item.image || failed) return <span aria-hidden="true" />
+  return <Image src={item.image} alt="" fill sizes={sizes} onError={() => setFailed(true)} />
 }
 
 /** @param {{ items?: import('@/lib/surabaya-api').NewsItem[] }} props */
@@ -47,7 +48,7 @@ export default function NewsSection({ items = [] }) {
       frame = requestAnimationFrame(() => {
         const bounds = transition.getBoundingClientRect()
         const distance = Math.max(1, bounds.height - window.innerHeight * 0.2)
-        const progress = Math.min(1, Math.max(0, -bounds.top / distance))
+        const progress = Math.min(0.68, Math.max(0, -bounds.top / distance))
         transition.style.setProperty('--news-progress', progress.toFixed(4))
       })
     }
