@@ -221,7 +221,7 @@
   .section { padding-top: 110px; }
   .heading { grid-template-columns: 1fr; align-items: start; gap: 35px; }
   .intro { max-width: 540px; }
-  .mapShell { grid-template-columns: 1fr; }
+  .mapShell { grid-template-columns: minmax(0,1fr); }
   .sidebar { display: grid; grid-template-columns: minmax(210px, .85fr) 1.5fr; gap: 18px; }
   .selectedPlace { align-self: start; }
   .stats { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 0; border-top: 0; }
@@ -237,6 +237,7 @@
   .heading h2 { font-size: clamp(48px, 14vw, 68px); }
   .heading h2 em { -webkit-text-stroke-width: 1px; }
   .mapShell { border-radius: 24px; }
+  .mapViewport { min-height: 540px; }
   .sidebar { display: block; padding: 18px; }
   .stats { margin-top: 15px; }
   .stats article:nth-child(odd) { margin-right: 10px; }

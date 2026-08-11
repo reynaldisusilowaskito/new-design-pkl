@@ -33,15 +33,22 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
 
   useEffect(() => {
     if (!mapContainer.current || mapInstance.current) return undefined
-    const map = new maplibregl.Map({
-      container: mapContainer.current,
-      style: MAP_STYLE,
-      center: CENTER, zoom: 12.35, pitch: 48, bearing: -12,
-      minZoom: 10.2, maxZoom: 17, maxBounds: BOUNDS,
-      cooperativeGestures: true,
-      canvasContextAttributes: { antialias: true },
-      attributionControl: false,
-    })
+    let map
+    try {
+      map = new maplibregl.Map({
+        container: mapContainer.current,
+        style: MAP_STYLE,
+        center: CENTER, zoom: 12.35, pitch: 48, bearing: -12,
+        minZoom: 10.2, maxZoom: 17, maxBounds: BOUNDS,
+        cooperativeGestures: true,
+        canvasContextAttributes: { antialias: true },
+        attributionControl: false,
+      })
+    } catch (error) {
+      console.error('Gagal membuka MapLibre:', error)
+      onError?.()
+      return undefined
+    }
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right')
     map.addControl(new maplibregl.GeolocateControl({
@@ -54,7 +61,7 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
     })
 
     let hoveredId = null
-    let selectedId = '026'
+    let selectedId = null
     map.once('load', () => {
       try {
       map.addSource(BASE_SOURCE, {
@@ -80,7 +87,7 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
           'line-opacity': 0.58,
         },
       })
-      map.addSource(SOURCE, { type: 'geojson', data: '/data/kecamatan.geojson', promoteId: 'kd_kecamatan' })
+      map.addSource(SOURCE, { type: 'geojson', data: '/data/surabaya-kecamatan-2026.geojson', promoteId: 'code' })
       map.addLayer({ id: FILL, type: 'fill', source: SOURCE, paint: {
         'fill-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#f2bdc7', ['boolean', ['feature-state', 'hover'], false], '#c5b3d2', '#7ba9b5'],
         'fill-opacity': ['case', ['boolean', ['feature-state', 'selected'], false], .66, ['boolean', ['feature-state', 'hover'], false], .5, .2],
@@ -98,10 +105,9 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
         'line-width': ['case', ['boolean', ['feature-state', 'selected'], false], 3, ['boolean', ['feature-state', 'hover'], false], 2, 1],
       }})
       map.addLayer({ id: LABEL, type: 'symbol', source: SOURCE, minzoom: 11.4, layout: {
-        'text-field': ['get', 'nm_kecamatan'], 'text-font': ['noto_sans_regular'],
+        'text-field': ['get', 'name'], 'text-font': ['noto_sans_regular'],
         'text-size': ['interpolate', ['linear'], ['zoom'], 11.4, 9, 14, 12], 'text-letter-spacing': .05,
       }, paint: { 'text-color': '#fff', 'text-halo-color': 'rgba(19,31,48,.9)', 'text-halo-width': 1.5 }})
-      map.setFeatureState({ source: SOURCE, id: selectedId }, { selected: true })
       onReady?.()
       map.on('mousemove', FILL, (event) => {
         const id = event.features?.[0]?.id; map.getCanvas().style.cursor = 'pointer'
@@ -114,11 +120,11 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
         hoveredId = null
       })
       map.on('click', FILL, (event) => {
-        const name = event.features?.[0]?.properties?.nm_kecamatan
+        const name = event.features?.[0]?.properties?.name
         const district = name ? districtByName[normalize(name)] : null
         const id = event.features?.[0]?.id
         if (!district || id == null) return
-        map.setFeatureState({ source: SOURCE, id: selectedId }, { selected: false })
+        if (selectedId != null) map.setFeatureState({ source: SOURCE, id: selectedId }, { selected: false })
         selectedId = id; map.setFeatureState({ source: SOURCE, id: selectedId }, { selected: true }); onSelectDistrict(district)
       })
       map.easeTo({ center: CENTER, zoom: 12.35, pitch: 48, bearing: -12, duration: 900 })
@@ -127,8 +133,10 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
         onError?.()
       }
     })
+    const resizeObserver = new ResizeObserver(() => map.resize())
+    resizeObserver.observe(mapContainer.current)
     mapInstance.current = map
-    return () => { map.remove(); mapInstance.current = null }
+    return () => { resizeObserver.disconnect(); map.remove(); mapInstance.current = null }
   }, [districtByName, onError, onReady, onSelectDistrict])
 
   return <div className={styles.map} ref={mapContainer} aria-label="Peta interaktif tiga dimensi 31 kecamatan Kota Surabaya" />
