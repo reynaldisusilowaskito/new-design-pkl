@@ -1,18 +1,19 @@
+'use client'
+
 import Image from 'next/image'
+import { useExperience } from '@/context/ExperienceContext'
 import styles from './CityAgendaSection.module.css'
 
 const AGENDA_URL = 'https://surabaya.go.id/id/agenda'
-const monthFormatter = new Intl.DateTimeFormat('id-ID', { month: 'short', timeZone: 'Asia/Jakarta' })
-const fullDateFormatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })
 
-function getDateParts(value) {
+function getDateParts(value, language) {
   const parsed = new Date(value)
   const date = Number.isNaN(parsed.getTime()) ? new Date() : parsed
   return {
     day: String(date.getUTCDate()).padStart(2, '0'),
-    month: monthFormatter.format(date).replace('.', '').toUpperCase(),
+    month: new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'id-ID', {month:'short'}).format(date).replace('.', '').toUpperCase(),
     year: String(date.getUTCFullYear()),
-    full: fullDateFormatter.format(date),
+    full: new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'id-ID', {day:'numeric',month:'long',year:'numeric'}).format(date),
   }
 }
 
@@ -25,11 +26,12 @@ const Arrow = () => <span aria-hidden="true">↗</span>
 
 /** @param {{ events?: import('@/lib/surabaya-api').CityAgendaItem[] }} props */
 export default function CityAgendaSection({ events = [] }) {
+  const { t, language } = useExperience()
   if (!events.length) return null
   const [featured, training = featured, independence = featured, finalists = featured, finalEvent = featured] = events
-  const featuredDate = getDateParts(featured.publishedAt)
-  const trainingDate = getDateParts(training.publishedAt)
-  const finalDate = getDateParts(finalEvent.publishedAt)
+  const featuredDate = getDateParts(featured.publishedAt, language)
+  const trainingDate = getDateParts(training.publishedAt, language)
+  const finalDate = getDateParts(finalEvent.publishedAt, language)
   const listEvents = [independence, finalists, finalEvent]
 
   return (
@@ -50,7 +52,7 @@ export default function CityAgendaSection({ events = [] }) {
         <a className={`${styles.tile} ${styles.heroTile}`} href={featured.url} target="_blank" rel="noreferrer">
           <div className={styles.fan} aria-hidden="true">{Array.from({ length: 12 }).map((_, index) => <i style={{ '--ray': index }} key={index} />)}</div>
           <AgendaImage item={featured} sizes="(max-width: 980px) 90vw, 55vw" />
-          <div className={styles.heroCopy}><span>{featured.status}</span><h3>{featured.title}</h3><p>{featuredDate.full} · {featured.location}</p></div>
+          <div className={styles.heroCopy}><span>{t(featured.status)}</span><h3>{t(featured.title)}</h3><p>{featuredDate.full} · {t(featured.location)}</p></div>
         </a>
 
         <article className={`${styles.tile} ${styles.monthTile}`}>
@@ -59,14 +61,14 @@ export default function CityAgendaSection({ events = [] }) {
 
         <a className={`${styles.tile} ${styles.photoTile}`} href={training.url} target="_blank" rel="noreferrer">
           <AgendaImage item={training} sizes="(max-width: 980px) 65vw, 38vw" />
-          <div><span>{training.category}</span><h3>{training.title}</h3><p>{trainingDate.full} · {training.location}</p></div>
+          <div><span>{t(training.category)}</span><h3>{t(training.title)}</h3><p>{trainingDate.full} · {t(training.location)}</p></div>
         </a>
 
         <article className={`${styles.tile} ${styles.listTile}`} id="agenda-list">
           <div className={styles.listHead}><span>Informasi berikutnya</span><small>{featuredDate.year}</small></div>
           {listEvents.map((event, index) => {
-            const date = getDateParts(event.publishedAt)
-            return <a href={event.url} target="_blank" rel="noreferrer" key={event.id}><span>0{index + 1}</span><time><strong>{date.day}</strong><small>{date.month}</small></time><div><h3>{event.title}</h3><p>{event.location}</p></div><Arrow /></a>
+            const date = getDateParts(event.publishedAt, language)
+            return <a href={event.url} target="_blank" rel="noreferrer" key={event.id}><span>0{index + 1}</span><time><strong>{date.day}</strong><small>{date.month}</small></time><div><h3>{t(event.title)}</h3><p>{t(event.location)}</p></div><Arrow /></a>
           })}
         </article>
 
@@ -77,7 +79,7 @@ export default function CityAgendaSection({ events = [] }) {
 
         <a className={`${styles.tile} ${styles.finalTile}`} href={finalEvent.url} target="_blank" rel="noreferrer">
           <div className={styles.dateBlock}><span>{finalDate.month}</span><strong>{finalDate.day}</strong></div>
-          <div><p>Agenda pilihan</p><h3>{finalEvent.title}</h3><small>{finalEvent.location}</small></div><Arrow />
+          <div><p>{t('Agenda pilihan')}</p><h3>{t(finalEvent.title)}</h3><small>{t(finalEvent.location)}</small></div><Arrow />
         </a>
 
         <article className={`${styles.tile} ${styles.sourceTile}`}>

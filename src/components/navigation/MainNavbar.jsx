@@ -18,11 +18,11 @@ function InteractiveLabel({ children }) {
   )
 }
 
+/** @param {{ navigation?: import('@/lib/surabaya-api').NavigationItem[] }} props */
 export default function MainNavbar({ navigation = [] }) {
   const { language, setLanguage, theme, toggleTheme, t } = useExperience()
   const menu = useMemo(() => sortMenu(navigation), [navigation])
   const [isOpen, setIsOpen] = useState(false)
-  const [preferencesOpen, setPreferencesOpen] = useState(false)
   const [activeTopIndex, setActiveTopIndex] = useState(0)
   const [activeGroupIndex, setActiveGroupIndex] = useState(0)
   const activeTop = menu[activeTopIndex] || menu[0]
@@ -37,7 +37,6 @@ export default function MainNavbar({ navigation = [] }) {
     const closeOnEscape = (event) => {
       if (event.key === 'Escape') {
         setIsOpen(false)
-        setPreferencesOpen(false)
       }
     }
     window.addEventListener('keydown', closeOnEscape)
@@ -68,18 +67,14 @@ export default function MainNavbar({ navigation = [] }) {
         ) : <a href={safeHref(item)} key={item.title}><InteractiveLabel>{t(item.title)}</InteractiveLabel></a>)}
       </nav>
       <div className={styles.preferences}>
-        <button className={styles.preferenceTrigger} type="button" onClick={() => setPreferencesOpen((value) => !value)} aria-label={t('Pengaturan tampilan')} aria-expanded={preferencesOpen} aria-controls="display-preferences">
-          <span className={styles.preferenceIcon} aria-hidden="true"><i /><i /><i /></span>
-        </button>
-        <div id="display-preferences" className={`${styles.preferencePanel} ${preferencesOpen ? styles.preferencePanelOpen : ''}`} aria-hidden={!preferencesOpen}>
-          <p>{t('Pengaturan tampilan')}</p>
-          <button type="button" onClick={() => setLanguage(language === 'id' ? 'en' : 'id')} aria-label={t('Ganti bahasa')}>
-            <span className={styles.optionIcon} aria-hidden="true">文</span><span><b>{t('Ganti bahasa')}</b><small>{language === 'id' ? 'Indonesia' : 'English'}</small></span><strong>{language === 'id' ? 'ID' : 'EN'}</strong>
-          </button>
-          <button type="button" onClick={toggleTheme} aria-label={theme === 'light' ? t('Aktifkan mode gelap') : t('Aktifkan mode terang')}>
-            <span className={styles.optionIcon} aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span><span><b>{theme === 'light' ? t('Aktifkan mode gelap') : t('Aktifkan mode terang')}</b><small>{theme === 'light' ? 'Light' : 'Dark'}</small></span><strong className={styles.switchTrack}><i /></strong>
-          </button>
+        <div className={`${styles.languageSwitch} ${language === 'en' ? styles.languageEnglish : ''}`} role="group" aria-label="Pilih bahasa / Choose language">
+          <i aria-hidden="true" />
+          <button className={language === 'id' ? styles.activeLanguage : ''} type="button" onClick={() => setLanguage('id')} aria-pressed={language === 'id'} aria-label="Gunakan Bahasa Indonesia">ID</button>
+          <button className={language === 'en' ? styles.activeLanguage : ''} type="button" onClick={() => setLanguage('en')} aria-pressed={language === 'en'} aria-label="Use English">EN</button>
         </div>
+        <button className={styles.quickPreference} type="button" onClick={toggleTheme} aria-label={theme === 'light' ? t('Aktifkan mode gelap') : t('Aktifkan mode terang')} title={theme === 'light' ? t('Aktifkan mode gelap') : t('Aktifkan mode terang')}>
+          <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span><strong>{theme === 'light' ? 'Dark' : 'Light'}</strong>
+        </button>
       </div>
       <button className={styles.menuButton} type="button" aria-label={t(isOpen ? 'Tutup menu' : 'Buka menu')}
         aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><span /><span /></button>

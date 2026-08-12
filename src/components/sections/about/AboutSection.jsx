@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useExperience } from '@/context/ExperienceContext'
 import styles from './AboutSection.module.css'
 
 const featureSprites = '/assets/redesign/about/surabaya-feature-sprites.png'
@@ -61,7 +62,7 @@ const cityCards = [
     color: '#f3c867',
     ink: '#172337',
     sprite: '50% 100%',
-    href: 'https://tiketwisata.surabaya.go.id',
+    href: '/wisata',
   },
   {
     kicker: 'Infrastruktur kota',
@@ -76,6 +77,7 @@ const cityCards = [
 ]
 
 function AboutSection() {
+  const { t } = useExperience()
   const sectionRef = useRef(null)
   const [activeCard, setActiveCard] = useState(0)
 
@@ -109,33 +111,28 @@ function AboutSection() {
   return (
     <section className={styles.about} id="tentang" aria-labelledby="about-title" ref={sectionRef}>
       <div className={styles.topLine}>
-        <p><span>02</span> Mengenal Surabaya</p>
+        <p><span>02</span> {t('Mengenal Surabaya')}</p>
         <p>07° 09′–07° 21′ LS&nbsp;&nbsp; / &nbsp;&nbsp;112° 36′–112° 54′ BT</p>
       </div>
 
       <div className={styles.headingRow}>
         <div>
-          <p className={styles.eyebrow}>Tentang kota</p>
-          <h2 id="about-title">Kota Pahlawan,<br /><em>gerbang Jawa Timur.</em></h2>
+          <p className={styles.eyebrow}>{t('Tentang kota')}</p>
+          <h2 id="about-title">{t('Kota Pahlawan,')}<br /><em>{t('gerbang Jawa Timur.')}</em></h2>
         </div>
 
         <div className={styles.summary}>
-          <p>
-            Surabaya adalah ibu kota Provinsi Jawa Timur sekaligus pusat pemerintahan
-            dan perekonomian provinsi. Tumbuh sebagai kota pelabuhan, Surabaya
-            membawa semangat kepahlawanan ke dalam gerak kota yang maju, humanis,
-            dan berkelanjutan.
-          </p>
+          <p>{t('Surabaya adalah ibu kota Provinsi Jawa Timur sekaligus pusat pemerintahan dan perekonomian provinsi. Tumbuh sebagai kota pelabuhan, Surabaya membawa semangat kepahlawanan ke dalam gerak kota yang maju, humanis, dan berkelanjutan.')}</p>
           <a href="https://surabaya.go.id/page/0/76094/sekilas-kota-surabaya" target="_blank" rel="noreferrer">
-            Baca profil resmi <span aria-hidden="true">↗</span>
+            {t('Baca profil resmi')} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
 
       <div className={styles.quickFacts} aria-label="Data administratif Kota Surabaya">
         <div className={styles.factsIntro}>
-          <span>Surabaya dalam angka</span>
-          <small>Data administratif kota</small>
+          <span>{t('Surabaya dalam angka')}</span>
+          <small>{t('Data administratif kota')}</small>
         </div>
         {cityFacts.map((fact, index) => (
           <p key={fact.label}>
@@ -146,10 +143,10 @@ function AboutSection() {
               aria-hidden="true"
             />
             <strong>{fact.value}{fact.unit && <em> {fact.unit}</em>}</strong>
-            <span>{fact.label}</span>
+            <span>{t(fact.label)}</span>
           </p>
         ))}
-        <small className={styles.factSource}>Sumber: Pemerintah Kota Surabaya</small>
+        <small className={styles.factSource}>{t('Sumber: Pemerintah Kota Surabaya')}</small>
       </div>
 
       <div className={styles.scrollMarquee} aria-hidden="true">
@@ -180,10 +177,10 @@ function AboutSection() {
             key={card.title}
           >
             <div className={styles.cardCopy}>
-              <p className={styles.cardKicker}><span>0{index + 1}</span>{card.kicker}</p>
-              <h3>{card.title}</h3>
-              <p className={styles.cardText}>{card.text}</p>
-              <p className={styles.cardFact}>{card.fact} <span aria-hidden="true">↗</span></p>
+              <p className={styles.cardKicker}><span>0{index + 1}</span>{t(card.kicker)}</p>
+              <h3>{t(card.title)}</h3>
+              <p className={styles.cardText}>{t(card.text)}</p>
+              <p className={styles.cardFact}>{t(card.fact)} <span aria-hidden="true">↗</span></p>
             </div>
             <div
               className={styles.cardObject}
@@ -195,13 +192,6 @@ function AboutSection() {
         ))}
       </div>
 
-      <div className={styles.contextStrip}>
-        <p>Berbatasan dengan <strong>Selat Madura</strong> di utara dan timur</p>
-        <span />
-        <p><strong>Kabupaten Sidoarjo</strong> di selatan</p>
-        <span />
-        <p><strong>Kabupaten Gresik</strong> di barat</p>
-      </div>
     </section>
   )
 }

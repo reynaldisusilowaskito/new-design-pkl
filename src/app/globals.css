@@ -27,6 +27,7 @@
 html { width:100%; scroll-behavior: smooth; }
 body { width:100%; min-width: 320px; margin: 0; overflow-x: clip; background: var(--paper); transition:color .3s ease,background-color .3s ease; }
 main, header, footer, section, nav, aside { min-width:0; }
+main > section:not(:first-child), main > footer { content-visibility:auto; contain-intrinsic-size:auto 900px; }
 button, input, textarea, select { font: inherit; }
 img, video, svg { display: block; max-width: 100%; }
 a { color: inherit; }

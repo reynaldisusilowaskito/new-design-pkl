@@ -2,17 +2,18 @@
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import { useExperience } from '@/context/ExperienceContext'
 import styles from './VideoShowcaseSection.module.css'
 
 const CHANNEL_URL = 'https://www.youtube.com/@BanggaSurabaya'
-const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })
-const formatDate = (value) => {
+const localizedDate = (value, language) => {
   const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? 'Terbaru' : dateFormatter.format(date)
+  if (Number.isNaN(date.getTime())) return language === 'en' ? 'Latest' : 'Terbaru'
+  return new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'id-ID', { day:'numeric', month:'long', year:'numeric', timeZone:'Asia/Jakarta' }).format(date)
 }
-
 /** @param {{ videos?: import('@/lib/youtube-api').CityVideo[] }} props */
 export default function VideoShowcaseSection({ videos = [] }) {
+  const { t, language } = useExperience()
   const trackRef = useRef(null)
   const [selected, setSelected] = useState(videos[1] || videos[0])
   const [isPlayerOpen, setIsPlayerOpen] = useState(false)
@@ -42,7 +43,7 @@ export default function VideoShowcaseSection({ videos = [] }) {
                 <Image src={video.image} alt="" width={480} height={360} sizes="(max-width: 780px) 78vw, 322px" unoptimized />
                 <span className={styles.cardShade} />
                 <div className={styles.cardIndex}>{String(index + 1).padStart(2, '0')}</div>
-                <div className={styles.cardCopy}><small>{video.category}</small><h3>{video.title}</h3><p>Bangga Surabaya · {formatDate(video.publishedAt)}</p></div>
+                <div className={styles.cardCopy}><small>{t(video.category)}</small><h3>{t(video.title)}</h3><p>Bangga Surabaya · {localizedDate(video.publishedAt, language)}</p></div>
                 <span className={styles.miniPlay} aria-hidden="true">▶</span>
               </button>
               <div className={styles.cardStatus}>{video.id === selected.id ? 'SIAP DITONTON' : 'PILIH VIDEO'} <span>→</span></div>

@@ -2,7 +2,7 @@
   position: relative;
   z-index: 40;
   display: grid;
-  grid-template-columns: auto minmax(0,1fr);
+  grid-template-columns: auto minmax(0,1fr) auto;
   align-items: center;
   width: min(1440px, calc(100% - 48px));
   min-height: 76px;
@@ -36,17 +36,17 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:clamp(7px,1.15vw,18px);
+  gap:clamp(3px,.65vw,10px);
   margin:0 auto;
 }
 .navbar nav a,.megaTrigger {
   position:relative;
-  padding:12px 13px;
+  padding:12px 10px;
   border:0;
   border-radius:999px;
   color:rgba(255,250,248,.78);
   background:none;
-  font:780 11.5px/1.2 inherit;
+  font:780 10.5px/1.2 inherit;
   letter-spacing:.055em;
   text-decoration:none;
   text-transform:uppercase;
@@ -79,7 +79,19 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,.86);
 }
 .mandatoryMarks img { width:124px; height:auto; filter:drop-shadow(0 4px 8px rgba(50,53,73,.1)); }
-.preferences { position:absolute; z-index:3; top:calc(100% + 11px); right:14px; display:flex; align-items:center; }
+.preferences { position:relative; z-index:3; display:flex; align-items:center; justify-content:flex-end; gap:7px; margin-left:14px; padding-left:14px; border-left:1px solid rgba(255,255,255,.13); }
+.quickPreference { display:flex; min-width:38px; height:38px; padding:0 8px; align-items:center; justify-content:center; gap:5px; border:1px solid rgba(255,255,255,.2); border-radius:999px; color:#fffaf8; background:rgba(255,255,255,.07); font:700 8px/1 inherit; cursor:pointer; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
+.quickPreference span { font-size:13px; line-height:1; }
+.quickPreference strong { font-size:8px; letter-spacing:.04em; }
+.quickPreference:hover { border-color:rgba(244,197,200,.6); background:rgba(255,255,255,.14); transform:translateY(-1px); }
+.quickPreference { min-width:58px; }
+.languageSwitch { position:relative; isolation:isolate; display:grid; grid-template-columns:repeat(2,34px); height:38px; align-items:center; padding:3px; border:1px solid rgba(255,255,255,.22); border-radius:999px; background:rgba(8,16,30,.2); box-shadow:inset 0 1px 0 rgba(255,255,255,.05); }
+.languageSwitch > i { position:absolute; z-index:-1; top:3px; left:3px; width:34px; height:30px; border-radius:999px; background:#fff7f6; box-shadow:0 5px 14px rgba(5,10,22,.24); transition:transform .32s cubic-bezier(.16,1,.3,1); }
+.languageEnglish > i { transform:translateX(34px); }
+.languageSwitch button { position:relative; display:grid; width:34px; height:30px; padding:0; place-items:center; border:0; border-radius:999px; color:rgba(255,255,255,.6); background:transparent; font:800 8px/1 inherit; letter-spacing:.06em; cursor:pointer; transition:color .25s ease,transform .2s ease; }
+.languageSwitch button:hover { color:#fff; transform:translateY(-1px); }
+.languageSwitch .activeLanguage { color:#182438; }
+.languageSwitch button:focus-visible { outline:2px solid #f4c5c8; outline-offset:2px; }
 .preferences .preferenceTrigger { display:grid; width:40px; height:40px; padding:0; place-items:center; border:1px solid rgba(255,255,255,.2); border-radius:50%; color:#fffaf8; background:rgba(24,36,56,.9); box-shadow:0 10px 24px rgba(24,36,56,.18); font:800 10px/1 inherit; cursor:pointer; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
 .preferences .preferenceTrigger:hover,.preferences .preferenceTrigger[aria-expanded='true'] { border-color:rgba(244,197,200,.6); background:rgba(255,255,255,.16); transform:translateY(-2px); }
 .preferences button:focus-visible { outline:2px solid #f4c5c8; outline-offset:2px; }
@@ -167,10 +179,16 @@
   .navbar nav { gap:2px; }
   .navbar nav a,.megaTrigger { padding:10px 7px; font-size:9.5px; letter-spacing:.035em; }
   .preferences .preferenceTrigger { width:36px; height:36px; }
+  .quickPreference { min-width:36px; padding-inline:7px; }
+  .quickPreference strong { display:none; }
+  .languageSwitch { grid-template-columns:repeat(2,30px); height:36px; }
+  .languageSwitch > i { width:30px; height:28px; }
+  .languageEnglish > i { transform:translateX(30px); }
+  .languageSwitch button { width:30px; height:28px; }
 }
 @media (max-width:1050px) { .megaMenu { grid-template-columns:230px 1fr; } .linkPanel { padding:30px 27px; } }
 @media (max-width:1080px) {
-  .navbar { grid-template-columns:1fr auto; width:calc(100% - 24px); min-height:64px; margin-top:10px; padding:10px 12px; }
+  .navbar { grid-template-columns:1fr auto auto; width:calc(100% - 24px); min-height:64px; margin-top:10px; padding:10px 12px; }
   .navbar nav { display:none; }
   .brand { gap:8px; padding:6px 9px; }
   .brandMarks { width:62px; }
@@ -178,7 +196,13 @@
   .brand > i { height:28px; }
   .menuButton { display:grid; width:43px; height:43px; padding:0; place-content:center; gap:6px; border:1px solid rgba(255,255,255,.25); border-radius:50%; background:rgba(255,255,255,.08); }
   .menuButton span { width:16px; height:1px; background:#fff; transition:.2s; }
-  .preferences { right:7px; }
+  .preferences { padding-left:0; padding-right:7px; }
+  .quickPreference { min-width:38px; width:38px; height:38px; padding:0; }
+  .quickPreference strong { display:none; }
+  .languageSwitch { grid-template-columns:repeat(2,29px); height:34px; }
+  .languageSwitch > i { width:29px; height:26px; }
+  .languageEnglish > i { transform:translateX(29px); }
+  .languageSwitch button { width:29px; height:26px; }
   .preferences .preferenceTrigger { width:38px; height:38px; }
   .preferencePanel { right:0; width:min(286px,calc(100vw - 24px)); }
   .menuButton[aria-expanded='true'] span:first-child { transform:translateY(3.5px) rotate(45deg); }
@@ -196,5 +220,14 @@
   .cityLinks { grid-template-columns:1fr; }
   .denseLinks { grid-template-columns:1fr; max-height:none; overflow:visible; }
   .visualPanel { display:none; }
+}
+@media (max-width:480px) {
+  .brandMarks { width:50px; }
+  .brandWordmark { width:102px; }
+  .brand { gap:6px; padding-inline:4px; }
+  .brand > i { height:24px; }
+  .preferences { gap:4px; padding-right:3px; }
+  .quickPreference { min-width:34px; width:34px; height:34px; }
+  .menuButton { width:38px; height:38px; }
 }
 @media (prefers-reduced-motion:reduce) { .navbar { opacity:1; animation:none; } .megaMenu,.visualPanel > img,.linkPanel,.menuLabel > span,.menuLabel::after { transition:none; animation:none; } }

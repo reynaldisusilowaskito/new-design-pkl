@@ -8,7 +8,7 @@ import { useExperience } from '@/context/ExperienceContext'
 import styles from './HeroSection.module.css'
 
 const characters = '/assets/redesign/hero/suro-boyo-3d.png'
-const lowerBackground = '/assets/redesign/hero/monument-illustration-2d-wide.webp'
+const lowerBackground = '/assets/redesign/hero/kota-lama-surabaya-2d-full.png'
 const searchSupporters = '/assets/redesign/hero/search-supporters-2d.png'
 const monument = '/assets/redesign/hero/tugu-pahlawan-3d.png'
 const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
@@ -153,7 +153,7 @@ function HeroSection({ navigation }) {
         </div>
 
         <div className={styles.lowerLandscape} aria-hidden="true">
-          <Image src={lowerBackground} alt="" width={1385} height={759} sizes="100vw" />
+          <Image src={lowerBackground} alt="" width={1920} height={1280} sizes="100vw" />
         </div>
 
         <div className={styles.mandate}>PORTAL RESMI PEMERINTAH KOTA SURABAYA <span>•</span> KOTA PAHLAWAN</div>
