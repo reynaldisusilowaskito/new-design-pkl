@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { useExperience } from '@/context/ExperienceContext'
 import ServiceIcon from './ServiceIcon'
 import styles from './GovernmentServicesSection.module.css'
 
@@ -8,6 +9,7 @@ const categories = ['Semua', 'Warga', 'Informasi', 'Usaha', 'Pendidikan']
 
 /** @param {{ services?: import('@/lib/surabaya-api').ServiceItem[] }} props */
 export default function GovernmentServicesSection({ services = [] }) {
+  const { t } = useExperience()
   const [category, setCategory] = useState('Semua')
   const [query, setQuery] = useState('')
   const visibleServices = useMemo(() => {
@@ -37,7 +39,7 @@ export default function GovernmentServicesSection({ services = [] }) {
               {visibleServices.map((service, index) => (
                 <a href={service.url} target="_blank" rel="noreferrer" key={service.id}>
                   <span className={`${styles.serviceIcon} ${styles[`tone${index % 5}`]}`}><ServiceIcon code={service.iconCode} /></span>
-                  <div><strong>{service.title}</strong><small>{service.description}</small></div>
+                  <div><strong>{t(service.title)}</strong><small>{t(service.description)}</small></div>
                   <i aria-hidden="true">↗</i>
                 </a>
               ))}
@@ -49,7 +51,7 @@ export default function GovernmentServicesSection({ services = [] }) {
             <div className={styles.filters}>
               {categories.map((item, index) => (
                 <button className={`${category === item ? styles.activeFilter : ''} ${styles[`filter${index}`]}`} key={item} type="button" onClick={() => setCategory(item)}>
-                  <b>{item === 'Semua' ? services.length : services.filter((service) => service.category === item).length}</b><span>{item}</span>
+                  <b>{item === 'Semua' ? services.length : services.filter((service) => service.category === item).length}</b><span>{t(item)}</span>
                 </button>
               ))}
             </div>
@@ -62,7 +64,7 @@ export default function GovernmentServicesSection({ services = [] }) {
             {popularServices.map((service) => (
               <a href={service.url} target="_blank" rel="noreferrer" key={service.id}>
                 <span className={styles.popularIcon}><ServiceIcon code={service.iconCode} /></span>
-                <div><strong>{service.title}</strong><small>{service.description}</small></div>
+                <div><strong>{t(service.title)}</strong><small>{t(service.description)}</small></div>
                 <i aria-hidden="true">↗</i>
               </a>
             ))}

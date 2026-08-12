@@ -17,8 +17,8 @@
 .ticker { position: relative; z-index: 2; overflow: hidden; border-block: 1px solid rgba(24,36,56,.17); background: #f7f0ed; }
 .ticker p { width: max-content; margin: 0; padding: 15px 0; font-size: 9px; font-weight: 700; animation: tickerMove 28s linear infinite; }
 .ticker span { margin: 0 22px; color: #d06f82; font-size: 7px; }
-.content { position: relative; z-index: 1; padding: 34px max(36px,calc((100% - 1400px)/2)) 74px; }
-.sectionTop,.headingRow,.filters,.newsLayout,.sourceNote { width: 100%; max-width: 1400px; margin-inline: auto; }
+.content { position: relative; z-index: 1; padding: 34px max(36px,calc((100% - 1400px)/2)) 38px; }
+.sectionTop,.headingRow,.filters,.newsLayout { width: 100%; max-width: 1400px; margin-inline: auto; }
 .sectionTop { display: flex; justify-content: space-between; padding-bottom: 24px; border-bottom: 1px solid rgba(24,36,56,.14); color: rgba(24,36,56,.46); font-size: 8px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
 .sectionTop p { display: flex; align-items: center; gap: 9px; margin: 0; }
 .sectionTop p:first-child span { margin-right: 13px; color: #a26d7b; }
@@ -56,10 +56,6 @@
 .newsList .meta span { color: #9b6675; }
 .listCopy h3 { display: -webkit-box; overflow: hidden; margin: 9px 0 0; font-size: clamp(14px,1.2vw,17px); font-weight: 650; line-height: 1.38; letter-spacing: -.02em; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 .newsList > a > span:last-child { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(24,36,56,.17); border-radius: 50%; }
-.sourceNote { display: flex; justify-content: space-between; margin-top: 50px; padding-top: 22px; border-top: 1px solid rgba(24,36,56,.13); color: rgba(24,36,56,.43); font-size: 8px; }
-.sourceNote > span { color: #9b6675; font-weight: 750; letter-spacing: .14em; }
-.sourceNote p { margin: 0; }
-.sourceNote a { color: var(--ink); font-weight: 700; }
 .emptyState { max-width: 1400px; margin: 0 auto; padding: 48px; border: 1px solid rgba(24,36,56,.14); border-radius: 24px; color: rgba(24,36,56,.65); background: rgba(255,255,255,.35); text-align: center; }
 @keyframes tickerMove { to { transform: translateX(-50%); } }
 @keyframes scrollLine { 0% { transform: translateX(-100%); } 60%,100% { transform: translateX(100%); } }

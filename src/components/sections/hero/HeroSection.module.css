@@ -62,7 +62,9 @@
 :global(:root[data-theme='dark']) .wordWindow { -webkit-text-stroke-color:#f8f2ef; }
 :global(:root[data-theme='dark']) .monumentScene { filter:brightness(.76) saturate(.78) drop-shadow(0 0 34px rgba(214,208,170,.12)); }
 :global(:root[data-theme='dark']) .cityCharacters { filter:brightness(.72) saturate(.8) drop-shadow(0 25px 30px rgba(0,0,0,.34)); }
-:global(:root[data-theme='dark']) .lowerLandscape { filter:brightness(.5) saturate(.65) hue-rotate(8deg); }
+:global(:root[data-theme='dark']) .lowerLandscape { opacity:.82; filter:brightness(.78) saturate(.78) contrast(1.08); }
+:global(:root[data-theme='dark']) .lowerLandscape::after { background:transparent; }
+:global(:root[data-theme='dark']) .lowerLandscape::before { opacity:1; }
 :global(:root[data-theme='dark']) .introSplash { background:radial-gradient(circle at 80% 18%,rgba(130,113,143,.24),transparent 32%),#0d1625; }
 
 .cloudField i {
@@ -270,21 +272,53 @@
   inset: 0 7px 7px;
   overflow: hidden;
   border-radius: 0 0 34px 34px;
-  opacity: .82;
+  opacity: .8;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.12) 5%, rgba(0,0,0,.58) 14%, rgba(0,0,0,.9) 25%, #000 36%);
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.12) 5%, rgba(0,0,0,.58) 14%, rgba(0,0,0,.9) 25%, #000 36%);
   pointer-events: none;
   transform: translateY(var(--landmark-y));
   will-change: transform;
 }
 
+.lowerLandscape::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+.lowerLandscape::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 7.2% 41%, rgba(255,246,184,1) 0 2px, rgba(255,205,83,.9) 3px, rgba(255,190,54,.36) 9px, transparent 32px),
+    radial-gradient(ellipse at 7.2% 88%, rgba(255,188,57,.22), transparent 7%),
+    radial-gradient(circle at 89.2% 52%, rgba(255,241,170,.95) 0 1px, rgba(255,192,58,.42) 4px, transparent 18px),
+    radial-gradient(circle at 96.3% 50%, rgba(255,241,170,.9) 0 1px, rgba(255,192,58,.38) 4px, transparent 16px);
+  mix-blend-mode: screen;
+  transition: opacity .55s ease;
+  pointer-events: none;
+}
+
 .lowerLandscape img {
   position: absolute;
-  bottom: -2px;
-  left: 50%;
-  width: calc(100vw - 14px);
-  height: auto;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   max-width: none;
-  filter: saturate(.76) contrast(.95) drop-shadow(0 22px 28px rgba(46, 46, 55, .09));
-  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: center bottom;
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: saturate(.68) contrast(1.02) brightness(1.02) drop-shadow(0 22px 28px rgba(46, 46, 55, .06));
+  transform: none;
 }
 
 .monumentGlow {
@@ -403,7 +437,8 @@
 
 .slogan {
   max-width: 980px;
-  margin: 34px auto 0;
+  margin: 12px auto 0;
+  transform: translateY(-24px);
   color: rgba(24, 36, 56, .78);
   font-size: clamp(15px, 1.3vw, 20px);
   font-weight: 800;
@@ -759,7 +794,7 @@
   }
 
   .content h1 { font-size: clamp(126px, 7.7vw, 154px); }
-  .slogan { max-width: 980px; margin-top: 34px; font-size: 18px; }
+  .slogan { max-width:980px; margin-top:12px; font-size:18px; transform:translateY(-30px); }
 
   .cityIdentity { width: min(33vw, 510px); }
   .cityCharacters { right: 0; bottom: -20%; width: min(31vw, 500px); }
@@ -792,7 +827,7 @@
   .content h1 > span:first-child,
   .wordWindow { transform: none; }
   .wordWindow { margin-top: .09em; }
-  .slogan { margin-left: 0; }
+  .slogan { margin-left:0; transform:translateY(-22px); }
   .monumentScene { left: 80%; height: 180vh; }
   .serviceStage { left: 20px; width: min(560px, calc(100% - 40px)); }
 }
@@ -806,7 +841,7 @@
   .content { top: 21%; left: 12px; width: 91vw; }
   .content h1 { font-size: clamp(48px, 13vw, 64px); line-height: .82; }
   .wordWindow { -webkit-text-stroke-width: 1px; }
-  .slogan { margin-top: 24px; font-size: 10px; letter-spacing: .17em; }
+  .slogan { max-width:72vw; margin-top:18px; font-size:10px; letter-spacing:.17em; transform:translateY(-12px); }
   .monumentScene { top: 16vh; left: 84%; height: 162vh; }
   .serviceStage { bottom: 14px; width: calc(100% - 24px); }
   .serviceStage { left: 12px; }
@@ -826,7 +861,7 @@
   .serviceBubbles { inset: 65px 0 0; }
   .serviceBubble:nth-child(1), .serviceBubble:nth-child(4) { display: none; }
   .cloudField i:nth-child(4), .cloudField i:nth-child(6) { display: none; }
-  .lowerLandscape img { left: 50%; width: 165vw; }
+  .lowerLandscape img { left:0; width:100%; object-position:left bottom; -webkit-mask-image:none; mask-image:none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

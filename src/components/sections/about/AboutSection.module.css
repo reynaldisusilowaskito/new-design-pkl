@@ -2,7 +2,7 @@
   --scroll-progress: 0;
   position: relative;
   overflow: hidden;
-  padding: 34px max(36px, calc((100% - 1400px) / 2)) 54px;
+  padding: 34px max(36px, calc((100% - 1400px) / 2)) 24px;
   color: #f8f2ee;
   background: #172337;
 }
