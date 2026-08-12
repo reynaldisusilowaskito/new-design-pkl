@@ -18,7 +18,7 @@ function getDateParts(value) {
 
 function AgendaImage({ item, sizes }) {
   if (!item.image) return null
-  return <Image src={item.image} alt="" width={900} height={675} sizes={sizes} />
+  return <Image src={item.image} alt="" width={900} height={675} sizes={sizes} unoptimized />
 }
 
 const Arrow = () => <span aria-hidden="true">↗</span>

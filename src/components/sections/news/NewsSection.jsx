@@ -21,7 +21,16 @@ function formatDate(value) {
 function NewsImage({ item, sizes }) {
   const [failed, setFailed] = useState(false)
   if (!item.image || failed) return <span aria-hidden="true" />
-  return <Image src={item.image} alt="" fill sizes={sizes} onError={() => setFailed(true)} />
+  return (
+    <Image
+      src={item.image}
+      alt=""
+      fill
+      sizes={sizes}
+      unoptimized
+      onError={() => setFailed(true)}
+    />
+  )
 }
 
 /** @param {{ items?: import('@/lib/surabaya-api').NewsItem[] }} props */
