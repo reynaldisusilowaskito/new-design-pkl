@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRef } from 'react'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './TourismLanding.module.css'
 import guide from './TourismGuide.module.css'
@@ -9,27 +10,41 @@ import guide from './TourismGuide.module.css'
 /** @param {{ destinations?: import('@/lib/tourism-api').TourismItem[], culinaries?: import('@/lib/tourism-api').TourismItem[], hotels?: import('@/lib/tourism-api').TourismItem[] }} props */
 export default function TourismLanding({ destinations = [], culinaries = [], hotels = [] }) {
   const { language, t } = useExperience()
+  const heroRef = useRef(null)
   const groups = [
     ['Destinasi', '/wisata/destinations', destinations, 'Ruang, sejarah, dan cerita kota yang selalu bergerak.'],
     ['Wisata Kuliner', '/wisata/culinaries', culinaries, 'Rasa khas yang membawa kita lebih dekat dengan Surabaya.'],
     ['Hotel Terdekat', '/wisata/hotels', hotels, 'Tempat singgah untuk melanjutkan perjalananmu.'],
   ]
   const name = (item) => language === 'en' ? item.nameEn : item.nameId
+  const handlePointerMove = (event) => {
+    const hero = heroRef.current
+    if (!hero) return
+    const bounds = hero.getBoundingClientRect()
+    hero.style.setProperty('--pointer-x', `${((event.clientX - bounds.left) / bounds.width - .5) * 2}`)
+    hero.style.setProperty('--pointer-y', `${((event.clientY - bounds.top) / bounds.height - .5) * 2}`)
+  }
+  const resetPointer = () => {
+    heroRef.current?.style.setProperty('--pointer-x', '0')
+    heroRef.current?.style.setProperty('--pointer-y', '0')
+  }
 
   return (
     <section className={styles.wrap}>
-      <header className={styles.intro}>
+      <header className={styles.intro} ref={heroRef} onPointerMove={handlePointerMove} onPointerLeave={resetPointer}>
+        <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.introMeta}><span>08 / JELAJAHI KOTA</span><span>WISATA SURABAYA</span></div>
         <div className={styles.introCopy}>
           <p>EXPLORE SURABAYA</p>
-          <h1>{t('Temukan Surabaya,')}<br /><em>{t('satu pengalaman sekaligus.')}</em></h1>
+          <h1>{t('Surabaya,')}<br />{t('satu pengalaman')}<br /><em>{t('sekaligus.')}</em></h1>
           <span>{t('Pilihan destinasi, kuliner, dan hotel untuk memulai perjalananmu.')}</span>
+          <div className={styles.heroActions}><Link href="/wisata/destinations">{t('Mulai jelajahi')}</Link><Link href="#destinasi">{t('Lihat pilihan')}</Link></div>
         </div>
-        <nav className={styles.introRail} aria-label={t('Kategori wisata')}>
-          {groups.map(([title, href, items], index) => (
-            <Link href={href} key={href}><b>0{index + 1}</b><span>{t(title)}</span><i>{items.length}</i><em aria-hidden="true">↗</em></Link>
-          ))}
-        </nav>
+        <div className={styles.heroVisual} aria-hidden="true">
+          <span className={`${styles.decoration} ${styles.decorationOne}`}>✦</span><span className={`${styles.decoration} ${styles.decorationTwo}`}>✿</span><span className={`${styles.decoration} ${styles.decorationThree}`}>✦</span>
+          <span className={styles.glassOrb} /><span className={styles.glassRing} /><span className={styles.glassBlock} />
+        </div>
+        <div className={styles.heroBottom}><span>{t('MENJELAJAHI CERITA, RASA, DAN RUANG DI SURABAYA.')}</span><Link href="#destinasi">{t('Explore more')}</Link></div>
       </header>
 
       <section className={guide.guideHero}>
@@ -44,7 +59,7 @@ export default function TourismLanding({ destinations = [], culinaries = [], hot
       </section>
 
       {groups.map(([title, href, items, description], groupIndex) => (
-        <section className={styles.group} key={href}>
+        <section className={styles.group} id={groupIndex === 0 ? 'destinasi' : groupIndex === 1 ? 'kuliner' : 'hotel'} key={href}>
           <div className={styles.groupHead}><span>0{groupIndex + 1} / CURATED IN SURABAYA</span><h2>{t(title)}</h2><p>{t(description)}</p><Link href={href}>{t('Lihat lebih banyak')} <b aria-hidden="true">→</b></Link></div>
           <div className={styles.cards}>
             {items.slice(0, 3).map((item, index) => (
