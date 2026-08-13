@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './MainNavbar.module.css'
@@ -8,7 +9,25 @@ import styles from './MainNavbar.module.css'
 const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
 const navbarWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.png'
 const sortMenu = (items = []) => [...items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-const safeHref = (item) => item?.url?.trim() || '#'
+/**
+ * Keep legacy Surabaya URLs inside the redesign while leaving third-party
+ * service links untouched. This lets the API remain the navigation source.
+ */
+const safeHref = (item) => {
+  const href = item?.url?.trim() || '#'
+  if (href.startsWith('/') || href.startsWith('#')) return href
+
+  try {
+    const url = new URL(href)
+    if (['surabaya.go.id', 'www.surabaya.go.id'].includes(url.hostname)) {
+      return `${url.pathname}${url.search}${url.hash}`
+    }
+  } catch {
+    // Non-URL values intentionally retain the original navigation behavior.
+  }
+
+  return href
+}
 
 function InteractiveLabel({ children }) {
   return (
@@ -51,11 +70,11 @@ export default function MainNavbar({ navigation = [] }) {
 
   return (
     <header className={styles.navbar} onMouseLeave={() => setIsOpen(false)}>
-      <a className={styles.brand} href="#beranda" aria-label={t('Surabaya, kembali ke beranda')}>
+      <Link className={styles.brand} href="/#beranda" aria-label={t('Surabaya, kembali ke beranda')}>
         <Image className={styles.brandMarks} src={mandatoryMarks} alt={t('Identitas resmi Kota Surabaya')} width={134} height={51} sizes="(max-width: 900px) 62px, 88px" />
         <i aria-hidden="true" />
         <Image className={styles.brandWordmark} src={navbarWordmark} alt="Surabaya" width={2155} height={730} sizes="(max-width: 900px) 126px, 160px" />
-      </a>
+      </Link>
       <nav aria-label={t('Navigasi utama')}>
         {menu.map((item, index) => item.child?.length ? (
           <button className={styles.megaTrigger} type="button" key={item.title}

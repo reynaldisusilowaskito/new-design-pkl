@@ -94,6 +94,14 @@ export type CityAgendaItem = {
   status: string
 }
 
+export type LegacyPage = {
+  id: string
+  slug: string
+  title: string
+  content: string
+  updatedAt?: string
+}
+
 const fallbackNavigation = fallbackMenu as NavigationItem[]
 const apiBase = process.env.BASE_API_URL?.replace(/\/$/, '')
 const slug = process.env.SURABAYA_SLUG
@@ -155,6 +163,77 @@ export const getOrganization = async (): Promise<Organization> => {
     twitter: data?.twitter ?? null,
     facebook: data?.facebook ?? null,
     tiktok: data?.tiktok ?? null,
+  }
+}
+
+type RawLegacyPage = {
+  id?: number | string
+  title?: string
+  slug?: string
+  content?: string
+  details?: Array<{ content?: string }>
+  updatedAt?: string
+  updated_at?: string
+}
+
+const legacyPageFallbacks: Record<string, Pick<LegacyPage, 'title' | 'content'>> = {
+  'cek-status-penonaktifan-nik': {
+    title: 'Cek Status Penonaktifan NIK',
+    content: '<p>Gunakan layanan resmi administrasi kependudukan untuk memeriksa status NIK Anda dan memperoleh panduan tindak lanjut.</p>',
+  },
+  'news-about-child-friendly-initiative': {
+    title: 'Child Friendly City Initiative',
+    content: '<p>Surabaya terus mengembangkan ruang, layanan, dan kebijakan yang mendukung tumbuh kembang anak secara aman, setara, dan partisipatif.</p>',
+  },
+  'peringatan-atas-pembangunan-jaringan-utilitas-tanpa-identitas-di-lokasi-jl-gubernur-suryo-no-1-3-surabaya': {
+    title: 'Peringatan atas Pembangunan Jaringan Utilitas Tanpa Identitas',
+    content: '<p>Informasi resmi Pemerintah Kota Surabaya mengenai penataan jaringan utilitas di ruang kota.</p>',
+  },
+  'sekilas-kota-surabaya': {
+    title: 'Sekilas Kota Surabaya',
+    content: '<p>Surabaya adalah kota metropolitan di Jawa Timur yang bertumbuh melalui semangat gotong royong, inovasi, dan pelayanan publik untuk warganya.</p>',
+  },
+  'kedudukan-dan-alamat-pemerintah-kota-surabaya': {
+    title: 'Kedudukan dan Alamat Pemerintah Kota Surabaya',
+    content: '<p>Pemerintah Kota Surabaya melayani warga dari pusat pemerintahan di Jalan Jimerto No. 25–27, Surabaya.</p>',
+  },
+  'visi-misi-kota-surabaya': {
+    title: 'Visi dan Misi Kota Surabaya',
+    content: '<p>Arah pembangunan Kota Surabaya berfokus pada kota yang maju, humanis, dan berkelanjutan.</p>',
+  },
+  'profil-pimpinan-kota-surabaya': {
+    title: 'Profil Pimpinan Kota Surabaya',
+    content: '<p>Informasi profil dan kepemimpinan Pemerintah Kota Surabaya.</p>',
+  },
+}
+
+const pageContent = (page?: RawLegacyPage | null) => page?.content
+  || page?.details?.map((detail) => detail.content || '').join('')
+  || ''
+
+/**
+ * Adapts the legacy CMS page endpoint for the new App Router screens.
+ * A concise local fallback makes an old URL usable even if its CMS request
+ * is temporarily unavailable.
+ */
+export const getLegacyPage = async (id: string, slugValue: string): Promise<LegacyPage> => {
+  const fromId = await apiFetch<RawLegacyPage | { data?: RawLegacyPage }>(`page-detail?id=${encodeURIComponent(id)}`, 300)
+  const first = fromId && 'data' in fromId ? fromId.data : fromId
+  const fromSlug = !pageContent(first)
+    ? await apiFetch<RawLegacyPage | { data?: RawLegacyPage }>(`page-detail?id=${encodeURIComponent(slugValue)}`, 300)
+    : null
+  const resolved = fromSlug && 'data' in fromSlug ? fromSlug.data : fromSlug || first
+  const fallback = legacyPageFallbacks[slugValue] || {
+    title: slugValue.split('-').filter(Boolean).map((word) => word[0]?.toUpperCase() + word.slice(1)).join(' ') || 'Informasi Kota Surabaya',
+    content: '<p>Konten halaman ini sedang disiapkan. Silakan gunakan menu navigasi untuk menjelajahi informasi Kota Surabaya lainnya.</p>',
+  }
+
+  return {
+    id: String(resolved?.id || id),
+    slug: resolved?.slug || slugValue,
+    title: resolved?.title || fallback.title,
+    content: pageContent(resolved) || fallback.content,
+    updatedAt: resolved?.updatedAt || resolved?.updated_at,
   }
 }
 

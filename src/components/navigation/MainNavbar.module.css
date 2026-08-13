@@ -79,16 +79,15 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,.86);
 }
 .mandatoryMarks img { width:124px; height:auto; filter:drop-shadow(0 4px 8px rgba(50,53,73,.1)); }
-.preferences { position:relative; z-index:3; display:flex; align-items:center; justify-content:flex-end; gap:7px; margin-left:14px; padding-left:14px; border-left:1px solid rgba(255,255,255,.13); }
-.quickPreference { display:flex; min-width:38px; height:38px; padding:0 8px; align-items:center; justify-content:center; gap:5px; border:1px solid rgba(255,255,255,.2); border-radius:999px; color:#fffaf8; background:rgba(255,255,255,.07); font:700 8px/1 inherit; cursor:pointer; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
+.preferences { position:relative; z-index:3; display:flex; flex:0 0 auto; align-items:center; justify-content:flex-end; gap:3px; margin-left:10px; padding:3px; border:1px solid rgba(255,255,255,.18); border-radius:999px; background:rgba(8,16,30,.2); box-shadow:inset 0 1px 0 rgba(255,255,255,.05); }
+.quickPreference { display:flex; min-width:50px; height:32px; padding:0 9px; align-items:center; justify-content:center; gap:5px; border:0; border-radius:999px; color:#fffaf8; background:rgba(255,255,255,.07); font:700 8px/1 inherit; cursor:pointer; transition:transform .2s ease,background .2s ease,border-color .2s ease; }
 .quickPreference span { font-size:13px; line-height:1; }
 .quickPreference strong { font-size:8px; letter-spacing:.04em; }
 .quickPreference:hover { border-color:rgba(244,197,200,.6); background:rgba(255,255,255,.14); transform:translateY(-1px); }
-.quickPreference { min-width:58px; }
-.languageSwitch { position:relative; isolation:isolate; display:grid; grid-template-columns:repeat(2,34px); height:38px; align-items:center; padding:3px; border:1px solid rgba(255,255,255,.22); border-radius:999px; background:rgba(8,16,30,.2); box-shadow:inset 0 1px 0 rgba(255,255,255,.05); }
-.languageSwitch > i { position:absolute; z-index:-1; top:3px; left:3px; width:34px; height:30px; border-radius:999px; background:#fff7f6; box-shadow:0 5px 14px rgba(5,10,22,.24); transition:transform .32s cubic-bezier(.16,1,.3,1); }
-.languageEnglish > i { transform:translateX(34px); }
-.languageSwitch button { position:relative; display:grid; width:34px; height:30px; padding:0; place-items:center; border:0; border-radius:999px; color:rgba(255,255,255,.6); background:transparent; font:800 8px/1 inherit; letter-spacing:.06em; cursor:pointer; transition:color .25s ease,transform .2s ease; }
+.languageSwitch { position:relative; isolation:isolate; display:grid; grid-template-columns:repeat(2,29px); height:32px; align-items:center; padding:2px; border:0; border-radius:999px; background:transparent; }
+.languageSwitch > i { position:absolute; z-index:-1; top:2px; left:2px; width:29px; height:28px; border-radius:999px; background:#fff7f6; box-shadow:0 5px 14px rgba(5,10,22,.24); transition:transform .32s cubic-bezier(.16,1,.3,1); }
+.languageEnglish > i { transform:translateX(29px); }
+.languageSwitch button { position:relative; display:grid; width:29px; height:28px; padding:0; place-items:center; border:0; border-radius:999px; color:rgba(255,255,255,.6); background:transparent; font:800 7.5px/1 inherit; letter-spacing:.06em; cursor:pointer; transition:color .25s ease,transform .2s ease; }
 .languageSwitch button:hover { color:#fff; transform:translateY(-1px); }
 .languageSwitch .activeLanguage { color:#182438; }
 .languageSwitch button:focus-visible { outline:2px solid #f4c5c8; outline-offset:2px; }
@@ -178,13 +177,10 @@
   .brand > i { height:30px; }
   .navbar nav { gap:2px; }
   .navbar nav a,.megaTrigger { padding:10px 7px; font-size:9.5px; letter-spacing:.035em; }
+  .preferences { margin-left:6px; }
   .preferences .preferenceTrigger { width:36px; height:36px; }
-  .quickPreference { min-width:36px; padding-inline:7px; }
+  .quickPreference { min-width:32px; width:32px; padding:0; }
   .quickPreference strong { display:none; }
-  .languageSwitch { grid-template-columns:repeat(2,30px); height:36px; }
-  .languageSwitch > i { width:30px; height:28px; }
-  .languageEnglish > i { transform:translateX(30px); }
-  .languageSwitch button { width:30px; height:28px; }
 }
 @media (max-width:1050px) { .megaMenu { grid-template-columns:230px 1fr; } .linkPanel { padding:30px 27px; } }
 @media (max-width:1080px) {
@@ -196,13 +192,13 @@
   .brand > i { height:28px; }
   .menuButton { display:grid; width:43px; height:43px; padding:0; place-content:center; gap:6px; border:1px solid rgba(255,255,255,.25); border-radius:50%; background:rgba(255,255,255,.08); }
   .menuButton span { width:16px; height:1px; background:#fff; transition:.2s; }
-  .preferences { padding-left:0; padding-right:7px; }
+  .preferences { gap:2px; margin-left:4px; padding:3px; border-left:1px solid rgba(255,255,255,.18); }
   .quickPreference { min-width:38px; width:38px; height:38px; padding:0; }
   .quickPreference strong { display:none; }
-  .languageSwitch { grid-template-columns:repeat(2,29px); height:34px; }
-  .languageSwitch > i { width:29px; height:26px; }
-  .languageEnglish > i { transform:translateX(29px); }
-  .languageSwitch button { width:29px; height:26px; }
+  .languageSwitch { grid-template-columns:repeat(2,27px); height:32px; }
+  .languageSwitch > i { width:27px; height:28px; }
+  .languageEnglish > i { transform:translateX(27px); }
+  .languageSwitch button { width:27px; height:28px; }
   .preferences .preferenceTrigger { width:38px; height:38px; }
   .preferencePanel { right:0; width:min(286px,calc(100vw - 24px)); }
   .menuButton[aria-expanded='true'] span:first-child { transform:translateY(3.5px) rotate(45deg); }
@@ -226,7 +222,11 @@
   .brandWordmark { width:102px; }
   .brand { gap:6px; padding-inline:4px; }
   .brand > i { height:24px; }
-  .preferences { gap:4px; padding-right:3px; }
+  .preferences { gap:1px; padding:2px; }
+  .languageSwitch { grid-template-columns:repeat(2,24px); }
+  .languageSwitch > i { width:24px; }
+  .languageEnglish > i { transform:translateX(24px); }
+  .languageSwitch button { width:24px; }
   .quickPreference { min-width:34px; width:34px; height:34px; }
   .menuButton { width:38px; height:38px; }
 }

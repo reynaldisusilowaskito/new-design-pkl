@@ -62,8 +62,13 @@
 :global(:root[data-theme='dark']) .wordWindow { -webkit-text-stroke-color:#f8f2ef; }
 :global(:root[data-theme='dark']) .monumentScene { filter:brightness(.76) saturate(.78) drop-shadow(0 0 34px rgba(214,208,170,.12)); }
 :global(:root[data-theme='dark']) .cityCharacters { filter:brightness(.72) saturate(.8) drop-shadow(0 25px 30px rgba(0,0,0,.34)); }
-:global(:root[data-theme='dark']) .lowerLandscape { opacity:.82; filter:brightness(.78) saturate(.78) contrast(1.08); }
-:global(:root[data-theme='dark']) .lowerLandscape::after { background:transparent; }
+:global(:root[data-theme='dark']) .lowerLandscape { opacity:.96; filter:none; }
+:global(:root[data-theme='dark']) .lowerLandscape img { filter:brightness(.35) saturate(.62) contrast(1.2) hue-rotate(4deg) drop-shadow(0 25px 34px rgba(0,0,0,.34)); }
+:global(:root[data-theme='dark']) .lowerLandscape::after {
+  background:
+    linear-gradient(180deg,rgba(5,12,25,.16),rgba(5,10,22,.68)),
+    radial-gradient(ellipse at 50% 74%,rgba(23,35,59,.12),rgba(4,9,20,.52) 78%);
+}
 :global(:root[data-theme='dark']) .lowerLandscape::before { opacity:1; }
 :global(:root[data-theme='dark']) .introSplash { background:radial-gradient(circle at 80% 18%,rgba(130,113,143,.24),transparent 32%),#0d1625; }
 
@@ -296,11 +301,32 @@
   inset: 0;
   opacity: 0;
   background:
-    radial-gradient(circle at 7.2% 41%, rgba(255,246,184,1) 0 2px, rgba(255,205,83,.9) 3px, rgba(255,190,54,.36) 9px, transparent 32px),
-    radial-gradient(ellipse at 7.2% 88%, rgba(255,188,57,.22), transparent 7%),
-    radial-gradient(circle at 89.2% 52%, rgba(255,241,170,.95) 0 1px, rgba(255,192,58,.42) 4px, transparent 18px),
-    radial-gradient(circle at 96.3% 50%, rgba(255,241,170,.9) 0 1px, rgba(255,192,58,.38) 4px, transparent 16px);
+    linear-gradient(#ffe7ae,#e99a35) 13.8% 58.7% / .36% 1.85% no-repeat,
+    linear-gradient(#f4bd64,#d8822b) 17.7% 59.1% / .36% 1.78% no-repeat,
+    linear-gradient(#ffe7ae,#eca440) 21.6% 59.1% / .36% 1.78% no-repeat,
+    linear-gradient(#f5c36a,#d98731) 25.4% 59.1% / .36% 1.78% no-repeat,
+    linear-gradient(#ffe9b8,#eea845) 29.3% 55.2% / .38% 2.03% no-repeat,
+    linear-gradient(#f3bb5e,#d68129) 32.4% 55.2% / .38% 2.03% no-repeat,
+    linear-gradient(#ffe8b2,#eca23d) 35.5% 55.2% / .38% 2.03% no-repeat,
+    linear-gradient(#f6c46d,#d98730) 38.6% 55.2% / .38% 2.03% no-repeat,
+    linear-gradient(#ffe9b8,#eda640) 29.3% 65.2% / .38% 1.9% no-repeat,
+    linear-gradient(#f4bd64,#d7822a) 32.4% 65.2% / .38% 1.9% no-repeat,
+    linear-gradient(#ffe8b2,#eca33e) 35.5% 65.2% / .38% 1.9% no-repeat,
+    linear-gradient(#f6c46d,#d98730) 38.6% 65.2% / .38% 1.9% no-repeat,
+    linear-gradient(#ffe9b8,#eca641) 46% 58.2% / .39% 1.92% no-repeat,
+    linear-gradient(#f2ba5d,#d47e27) 49.2% 58.2% / .39% 1.92% no-repeat,
+    linear-gradient(#ffe7ae,#eba03a) 52.4% 58.2% / .39% 1.92% no-repeat,
+    linear-gradient(#f6c46b,#d98730) 55.6% 58.2% / .39% 1.92% no-repeat,
+    linear-gradient(#ffe9b8,#eda642) 46% 68.4% / .39% 1.84% no-repeat,
+    linear-gradient(#f3bb60,#d7822b) 49.2% 68.4% / .39% 1.84% no-repeat,
+    linear-gradient(#ffe8b3,#eca33d) 52.4% 68.4% / .39% 1.84% no-repeat,
+    linear-gradient(#f5c268,#d8862e) 55.6% 68.4% / .39% 1.84% no-repeat,
+    linear-gradient(#ffe7ae,#ea9e38) 61.8% 60.1% / .35% 1.66% no-repeat,
+    linear-gradient(#f5c26a,#d8852d) 64.5% 60.1% / .35% 1.66% no-repeat,
+    linear-gradient(#ffe9b6,#eca440) 67.2% 60.1% / .35% 1.66% no-repeat,
+    linear-gradient(#f2b95c,#d37d27) 69.9% 60.1% / .35% 1.66% no-repeat;
   mix-blend-mode: screen;
+  filter:drop-shadow(0 0 3px rgba(255,184,65,.72));
   transition: opacity .55s ease;
   pointer-events: none;
 }
