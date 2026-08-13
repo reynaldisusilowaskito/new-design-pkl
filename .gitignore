@@ -5,3 +5,4 @@
 !.env.example
 *.log
 *.tsbuildinfo
+next-env.d.ts

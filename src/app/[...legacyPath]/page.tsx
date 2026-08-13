@@ -1,29 +1,36 @@
-import { notFound } from 'next/navigation'
 import LegacyPageTemplate from '@/components/legacy/LegacyPageTemplate'
-import { getLegacyPage, getOrganization } from '@/lib/surabaya-api'
+import ContentDetailPage from '@/components/content/ContentDetailPage'
+import NewsIndexPage from '@/components/content/NewsIndexPage'
+import AgendaIndexPage from '@/components/content/AgendaIndexPage'
+import { getCityAgenda, getLegacyRoutePage, getNews, getOrganization } from '@/lib/surabaya-api'
 
 export const revalidate = 300
 
 type LegacyRouteProps = { params: Promise<{ legacyPath: string[] }> }
 
-const isLegacyCmsPath = (path: string[]) => (
-  (path[0] === 'page' && path[1] === '0')
-  || (path[0] === 'id' && path[1] === 'page' && path[2] === '0')
-)
-
 export default async function LegacyCmsPage({ params }: LegacyRouteProps) {
   const { legacyPath } = await params
-  if (!isLegacyCmsPath(legacyPath)) notFound()
+  const isNewsIndex = legacyPath.join('/') === 'id/berita' || legacyPath.join('/') === 'berita'
+  const isAgendaIndex = legacyPath.join('/') === 'id/agenda' || legacyPath.join('/') === 'agenda'
 
-  const idIndex = legacyPath[0] === 'id' ? 3 : 2
-  const id = legacyPath[idIndex]
-  const slug = legacyPath.slice(idIndex + 1).join('-')
-  if (!id || !slug) notFound()
+  if (isNewsIndex) {
+    const [organization, news] = await Promise.all([getOrganization(), getNews('berita', 24)])
+    return <NewsIndexPage navigation={organization.menu} organization={organization} items={news} />
+  }
+
+  if (isAgendaIndex) {
+    const [organization, agenda] = await Promise.all([getOrganization(), getCityAgenda(36)])
+    return <AgendaIndexPage navigation={organization.menu} organization={organization} items={agenda} />
+  }
 
   const [organization, page] = await Promise.all([
     getOrganization(),
-    getLegacyPage(id, slug),
+    getLegacyRoutePage(legacyPath),
   ])
+
+  if (page.kind === 'news' || page.kind === 'agenda') {
+    return <ContentDetailPage navigation={organization.menu} organization={organization} page={page} />
+  }
 
   return <LegacyPageTemplate navigation={organization.menu} organization={organization} page={page} pathname={`/${legacyPath.join('/')}`} />
 }

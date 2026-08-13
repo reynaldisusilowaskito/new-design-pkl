@@ -1,11 +1,12 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './NewsSection.module.css'
 
-const NEWS_URL = 'https://www.surabaya.go.id/id/berita'
+const NEWS_URL = '/id/berita'
 function formatDate(value, language) {
   if (!value) return 'Terbaru'
   const date = new Date(value)
@@ -14,15 +15,15 @@ function formatDate(value, language) {
 
 function NewsImage({ item, sizes }) {
   const [failed, setFailed] = useState(false)
-  if (!item.image || failed) return <span aria-hidden="true" />
+  const source = !item.image || failed ? '/assets/redesign/hero/kota-lama-surabaya-2d-full.png' : item.image
   return (
     <Image
-      src={item.image}
+      src={source}
       alt=""
       fill
       sizes={sizes}
       unoptimized
-      onError={() => setFailed(true)}
+      onError={() => { if (!failed) setFailed(true) }}
     />
   )
 }
@@ -95,7 +96,7 @@ export default function NewsSection({ items = [] }) {
           <div><p className={styles.eyebrow}>{t('Berita terbaru')}</p><h2 id="news-title">{t('Yang terjadi')}<br /><em>{t('di Surabaya.')}</em></h2></div>
           <div className={styles.headingCopy}>
             <p>{t('Informasi aktual tentang kebijakan, pembangunan, pelayanan publik, dan kehidupan warga.')}</p>
-            <a href={NEWS_URL} target="_blank" rel="noreferrer">{t('Lihat seluruh berita')} <span aria-hidden="true">↗</span></a>
+            <Link href={NEWS_URL}>{t('Lihat seluruh berita')} <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
 
@@ -109,7 +110,7 @@ export default function NewsSection({ items = [] }) {
 
         {featured ? (
           <div className={styles.newsLayout}>
-            <a className={styles.featured} href={featured.url} target="_blank" rel="noreferrer">
+            <Link className={styles.featured} href={featured.url}>
               <div className={styles.featuredImage}><NewsImage item={featured} sizes="(max-width: 980px) 100vw, 55vw" /><span className={styles.imageIndex}>01 / UTAMA</span></div>
               <div className={styles.featuredBody}>
                 <div className={styles.meta}><span>{t(featured.category)}</span><time>{formatDate(featured.publishedAt, language)}</time></div>
@@ -117,15 +118,15 @@ export default function NewsSection({ items = [] }) {
                 {featured.excerpt && <p>{t(featured.excerpt)}</p>}
                 <div className={styles.readMore}>{t('Baca selengkapnya')} <span aria-hidden="true">↗</span></div>
               </div>
-            </a>
+            </Link>
             <div className={styles.newsList}>
               {moreNews.map((item, index) => (
-                <a href={item.url} target="_blank" rel="noreferrer" key={item.id}>
+                <Link href={item.url} key={item.id}>
                   <span className={styles.listIndex}>{String(index + 2).padStart(2, '0')}</span>
                   <div className={styles.listImage}><NewsImage item={item} sizes="132px" /></div>
                   <div className={styles.listCopy}><div className={styles.meta}><span>{t(item.category)}</span><time>{formatDate(item.publishedAt, language)}</time></div><h3>{t(item.title)}</h3></div>
                   <span aria-hidden="true">↗</span>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

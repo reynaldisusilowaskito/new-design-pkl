@@ -51,6 +51,17 @@ type RawPost = {
   Categories?: Array<{ name?: string; value?: string; title?: string }>
   description?: string
   excerpt?: string
+  viewsCount?: number
+  postDetails?: Array<{ page?: number; content?: string }>
+}
+
+type RawWebDisplayPost = {
+  id?: number | string
+  title?: string
+  feature_image?: string
+  created_at?: string
+  viewed_count?: number
+  content?: string
 }
 
 export type NewsItem = {
@@ -100,7 +111,33 @@ export type LegacyPage = {
   title: string
   content: string
   updatedAt?: string
+  image?: string
+  publishedAt?: string
+  viewCount?: number
+  kind?: 'page' | 'news' | 'agenda' | 'media'
 }
+
+const displayTitle = (value: string) => value
+  .split('-')
+  .filter(Boolean)
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(' ')
+
+const normalizePostImage = (post: RawPost, id: string) => post.featureImageUrl
+  ? post.featureImageUrl.startsWith('http') || post.featureImageUrl.startsWith('/images/') || post.featureImageUrl.startsWith('/assets/')
+    ? post.featureImageUrl
+    : post.featureImageUrl.includes('pictures/')
+      ? `https://surabaya.go.id/uploads/${post.featureImageUrl.replace(/^\/?uploads\//, '')}`
+      : `https://surabaya.go.id/uploads/images/posts/post_${id}/${post.featureImageUrl}`
+  : ''
+
+const normalizePostDate = (post: RawPost) => typeof post.publishDate === 'string'
+  ? post.publishDate
+  : post.publishDate?.Valid ? post.publishDate.Time || '' : ''
+
+const normalizeOfficialHtml = (value = '') => value
+  .replaceAll('src="../../', 'src="https://surabaya.go.id/')
+  .replaceAll('href="../../', 'href="https://surabaya.go.id/')
 
 const fallbackNavigation = fallbackMenu as NavigationItem[]
 const apiBase = process.env.BASE_API_URL?.replace(/\/$/, '')
@@ -211,6 +248,12 @@ const pageContent = (page?: RawLegacyPage | null) => page?.content
   || page?.details?.map((detail) => detail.content || '').join('')
   || ''
 
+const unwrapLegacyPage = (value: RawLegacyPage | { data?: RawLegacyPage } | null): RawLegacyPage | null => {
+  if (!value) return null
+  if ('data' in value) return value.data || null
+  return value as RawLegacyPage
+}
+
 /**
  * Adapts the legacy CMS page endpoint for the new App Router screens.
  * A concise local fallback makes an old URL usable even if its CMS request
@@ -218,13 +261,13 @@ const pageContent = (page?: RawLegacyPage | null) => page?.content
  */
 export const getLegacyPage = async (id: string, slugValue: string): Promise<LegacyPage> => {
   const fromId = await apiFetch<RawLegacyPage | { data?: RawLegacyPage }>(`page-detail?id=${encodeURIComponent(id)}`, 300)
-  const first = fromId && 'data' in fromId ? fromId.data : fromId
+  const first = unwrapLegacyPage(fromId)
   const fromSlug = !pageContent(first)
     ? await apiFetch<RawLegacyPage | { data?: RawLegacyPage }>(`page-detail?id=${encodeURIComponent(slugValue)}`, 300)
     : null
-  const resolved = fromSlug && 'data' in fromSlug ? fromSlug.data : fromSlug || first
+  const resolved = unwrapLegacyPage(fromSlug) || first
   const fallback = legacyPageFallbacks[slugValue] || {
-    title: slugValue.split('-').filter(Boolean).map((word) => word[0]?.toUpperCase() + word.slice(1)).join(' ') || 'Informasi Kota Surabaya',
+    title: displayTitle(slugValue) || 'Informasi Kota Surabaya',
     content: '<p>Konten halaman ini sedang disiapkan. Silakan gunakan menu navigasi untuk menjelajahi informasi Kota Surabaya lainnya.</p>',
   }
 
@@ -234,6 +277,78 @@ export const getLegacyPage = async (id: string, slugValue: string): Promise<Lega
     title: resolved?.title || fallback.title,
     content: pageContent(resolved) || fallback.content,
     updatedAt: resolved?.updatedAt || resolved?.updated_at,
+  }
+}
+
+const legacyIndexCopy: Record<string, string> = {
+  berita: 'Temukan kabar terbaru, kebijakan, dan aktivitas Pemerintah Kota Surabaya.',
+  agenda: 'Informasi agenda dan pengumuman resmi Kota Surabaya.',
+  videos: 'Kumpulan video resmi Kota Surabaya.',
+  photos: 'Dokumentasi foto kegiatan Kota Surabaya.',
+  podcasts: 'Kumpulan podcast dan siaran informasi Kota Surabaya.',
+  infografis: 'Data dan infografis Kota Surabaya.',
+}
+
+/** One adapter for preserved legacy URLs; static redesign routes take precedence. */
+export const getLegacyRoutePage = async (path: string[]): Promise<LegacyPage> => {
+  const isCms = (path[0] === 'page' && path[1] === '0') || (path[0] === 'id' && path[1] === 'page' && path[2] === '0')
+  if (isCms) {
+    const idIndex = path[0] === 'id' ? 3 : 2
+    return getLegacyPage(path[idIndex], path.slice(idIndex + 1).join('-'))
+  }
+
+  const offset = path[0] === 'id' ? 1 : 0
+  const category = path[offset] || 'informasi'
+  const id = path[offset + 1]
+  const slugValue = path.slice(offset + 2).join('-')
+  const indexCopy = legacyIndexCopy[category]
+
+  if (id && slugValue && ['berita', 'agenda', 'videos', 'photos', 'podcasts', 'infografis'].includes(category) && slug) {
+    const apiCategory = category === 'agenda' ? 'info' : category
+    const response = await apiFetch<{ data?: RawPost }>(`public/${slug}/post/${apiCategory}/${encodeURIComponent(slugValue)}`, 300)
+    const post = response?.data
+    if (post) {
+      const postId = String(post.id || id)
+      return {
+        id: postId,
+        slug: post.slug || slugValue,
+        title: post.title || displayTitle(slugValue),
+        content: normalizeOfficialHtml(post.postDetails?.map((detail) => detail.content || '').join('') || post.description || post.excerpt || '<p>Konten informasi ini sedang disiapkan.</p>'),
+        image: normalizePostImage(post, postId),
+        publishedAt: normalizePostDate(post),
+        viewCount: post.viewsCount,
+        kind: category === 'berita' ? 'news' : category === 'agenda' ? 'agenda' : 'media',
+      }
+    }
+
+    if (category === 'agenda') {
+      const webAgenda = await webdisplayFetch<RawWebDisplayPost | { data?: RawWebDisplayPost }>(`agenda-detail?id=${encodeURIComponent(id)}`, 300)
+      let item: RawWebDisplayPost | undefined
+      if (webAgenda) item = 'data' in webAgenda ? webAgenda.data : webAgenda as RawWebDisplayPost
+      if (item?.title || item?.content) {
+        const imageValue = item.feature_image || ''
+        return {
+          id: String(item.id || id),
+          slug: slugValue,
+          title: item.title || displayTitle(slugValue),
+          content: normalizeOfficialHtml(item.content || '<p>Konten agenda sedang disiapkan.</p>'),
+          image: imageValue.startsWith('http') ? imageValue : imageValue ? `https://webdisplay.surabaya.go.id${imageValue.startsWith('/') ? '' : '/'}${imageValue}` : '',
+          publishedAt: item.created_at || '',
+          viewCount: item.viewed_count,
+          kind: 'agenda',
+        }
+      }
+    }
+  }
+
+  return {
+    id: id || category,
+    slug: slugValue || category,
+    title: id && slugValue ? displayTitle(slugValue) : displayTitle(category),
+    content: `<p>${indexCopy || 'Informasi resmi Pemerintah Kota Surabaya tersedia melalui kanal ini.'}</p>`,
+    kind: id && slugValue
+      ? category === 'berita' ? 'news' : category === 'agenda' ? 'agenda' : 'page'
+      : 'page',
   }
 }
 
@@ -253,38 +368,33 @@ const normalizePost = (post: RawPost): NewsItem => {
     id,
     title: post.title || 'Kabar terbaru Kota Surabaya',
     slug,
-    image: post.featureImageUrl
-      ? post.featureImageUrl.startsWith('http') || post.featureImageUrl.startsWith('/images/')
-        ? post.featureImageUrl
-        : post.featureImageUrl.includes('pictures/')
-          ? `https://surabaya.go.id/uploads/${post.featureImageUrl.replace(/^\/uploads\//, '')}`
-          : `https://surabaya.go.id/uploads/images/posts/post_${id}/${post.featureImageUrl}`
-      : '',
+    image: normalizePostImage(post, id),
     publishedAt: rawDate || '',
     category,
     excerpt: post.excerpt || post.description || '',
-    url: `https://www.surabaya.go.id/id/berita/${id}/${slug}`,
+    url: `/id/berita/${id}/${slug}`,
   }
 }
 
 const fallbackAgenda: CityAgendaItem[] = [
-  { id: '25474', title: 'Pengumuman Perpanjangan Seleksi Direksi dan Komisaris BUMD PT. RPH Perseroda', publishedAt: '2026-08-03T14:01:51Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25474/blob_1331_0.jpg', url: 'https://surabaya.go.id/id/agenda/25474/pengumuman-perpanjangan-seleksi-direksi-dan-komisaris-bumd-pt-rph-perseroda', category: 'Pengumuman Kota', location: 'Kota Surabaya', status: 'Informasi terbaru' },
-  { id: '25470', title: 'Pengumuman Hasil Seleksi Anggota Direksi Perumda Air Minum Surya Sembada', publishedAt: '2026-08-03T13:53:18Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25470/blob_1855_0.jpg', url: 'https://surabaya.go.id/id/agenda/25470/pengumuman-hasil-seleksi-anggota-direksi-perusahaan-umum-daerah-air-minum-surya-sembada-kota-surabaya', category: 'Agenda Kota', location: 'Kota Surabaya', status: 'Informasi terbaru' },
-  { id: '25469', title: 'Pengumuman Perpanjangan Seleksi Direksi dan Komisaris BUMD PT. BPR SAU', publishedAt: '2026-08-03T12:41:39Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25469/blob_1369_0.jpg', url: 'https://surabaya.go.id/id/agenda/25469/pengumuman-perpanjangan-seleksi-direksi-dan-komisaris-bumd-pt-bpr-sau', category: 'Pengumuman Kota', location: 'Kota Surabaya', status: 'Agenda berikutnya' },
-  { id: '25365', title: 'SE Wali Kota Tentang Pembatasan Pemungutan Iuran di Lingkungan RT dan RW', publishedAt: '2026-07-13T02:29:40Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25365/blob_8197_0.jpg', url: 'https://surabaya.go.id/id/agenda/25365/se-walikota-tentang-pembatasan-pemungutan-iuran-kepada-masyarakat-di-lingkungan-rt-dan-rw-di-wilayah-kota-surabaya', category: 'Informasi Warga', location: 'Kota Surabaya', status: 'Agenda berikutnya' },
-  { id: '25362', title: 'Seleksi Direksi dan Komisaris BUMD PT. RPH Perseroda', publishedAt: '2026-07-13T02:17:56Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25362/blob_6640_0.jpg', url: 'https://surabaya.go.id/id/agenda/25362/seleksi-direksi-dan-komisaris-bumd-pt-rph-perseroda', category: 'Agenda Kota', location: 'Kota Surabaya', status: 'Agenda pilihan' },
+  { id: '25474', title: 'Pengumuman Perpanjangan Seleksi Direksi dan Komisaris BUMD PT. RPH Perseroda', publishedAt: '2026-08-03T14:01:51Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25474/blob_1331_0.jpg', url: '/id/agenda/25474/pengumuman-perpanjangan-seleksi-direksi-dan-komisaris-bumd-pt-rph-perseroda', category: 'Pengumuman Kota', location: 'Kota Surabaya', status: 'Informasi terbaru' },
+  { id: '25470', title: 'Pengumuman Hasil Seleksi Anggota Direksi Perumda Air Minum Surya Sembada', publishedAt: '2026-08-03T13:53:18Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25470/blob_1855_0.jpg', url: '/id/agenda/25470/pengumuman-hasil-seleksi-anggota-direksi-perusahaan-umum-daerah-air-minum-surya-sembada-kota-surabaya', category: 'Agenda Kota', location: 'Kota Surabaya', status: 'Informasi terbaru' },
+  { id: '25469', title: 'Pengumuman Perpanjangan Seleksi Direksi dan Komisaris BUMD PT. BPR SAU', publishedAt: '2026-08-03T12:41:39Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25469/blob_1369_0.jpg', url: '/id/agenda/25469/pengumuman-perpanjangan-seleksi-direksi-dan-komisaris-bumd-pt-bpr-sau', category: 'Pengumuman Kota', location: 'Kota Surabaya', status: 'Agenda berikutnya' },
+  { id: '25365', title: 'SE Wali Kota Tentang Pembatasan Pemungutan Iuran di Lingkungan RT dan RW', publishedAt: '2026-07-13T02:29:40Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25365/blob_8197_0.jpg', url: '/id/agenda/25365/se-walikota-tentang-pembatasan-pemungutan-iuran-kepada-masyarakat-di-lingkungan-rt-dan-rw-di-wilayah-kota-surabaya', category: 'Informasi Warga', location: 'Kota Surabaya', status: 'Agenda berikutnya' },
+  { id: '25362', title: 'Seleksi Direksi dan Komisaris BUMD PT. RPH Perseroda', publishedAt: '2026-07-13T02:17:56Z', image: 'https://surabaya.go.id/uploads/images/posts/post_25362/blob_6640_0.jpg', url: '/id/agenda/25362/seleksi-direksi-dan-komisaris-bumd-pt-rph-perseroda', category: 'Agenda Kota', location: 'Kota Surabaya', status: 'Agenda pilihan' },
 ]
 
 const fallbackNews: NewsItem[] = [
-  { id:'25117', title:'SITS dan Layanan Digital Terintegrasi Perkuat Transformasi Smart City Surabaya', slug:'sits-dan-layanan-digital-terintegrasi-perkuat-transformasi-smart-city-surabaya', image:'', publishedAt:'2026-02-18T08:00:00+07:00', category:'Pemerintahan', excerpt:'Pemerintah Kota Surabaya terus memperkuat layanan publik berbasis digital yang terintegrasi.', url:'https://www.surabaya.go.id/id/berita/25117/sits-dan-layanan-digital-terintegrasi-perkuat-transformasi-smart-city-surabaya' },
-  { id:'9491', title:'Pemkot Surabaya Tata Jaringan Kabel Utilitas di Kawasan Kota Lama', slug:'tata-jaringan-kabel-utilitas-di-kawasan-kota-lama', image:'', publishedAt:'2026-02-12T08:00:00+07:00', category:'Pembangunan', excerpt:'Penataan utilitas dilakukan untuk meningkatkan keamanan dan kualitas ruang kota.', url:'https://www.surabaya.go.id/id/berita/9491/tata-jaringan-kabel-utilitas-di-kawasan-kota-lama-pemkot-surabaya-lakukan-pemotongan-kabel' },
-  { id:'layanan-digital', title:'Layanan Digital Kota Surabaya Semakin Mudah Diakses Warga', slug:'layanan-digital-kota-surabaya', image:'', publishedAt:'2026-02-08T08:00:00+07:00', category:'Pelayanan Publik', excerpt:'Berbagai kebutuhan administrasi dan pengaduan warga tersedia melalui kanal resmi pemerintah kota.', url:'https://www.surabaya.go.id/id/berita' },
-  { id:'ruang-publik', title:'Ruang Publik Surabaya Terus Diperkuat untuk Aktivitas Warga', slug:'ruang-publik-surabaya', image:'', publishedAt:'2026-02-04T08:00:00+07:00', category:'Kota', excerpt:'Ruang kota yang aman dan nyaman mendukung interaksi serta kegiatan kreatif masyarakat.', url:'https://www.surabaya.go.id/id/berita' },
+  { id:'25117', title:'SITS dan Layanan Digital Terintegrasi Perkuat Transformasi Smart City Surabaya', slug:'sits-dan-layanan-digital-terintegrasi-perkuat-transformasi-smart-city-surabaya', image:'/assets/redesign/hero/kota-lama-surabaya-2d-full.png', publishedAt:'2026-02-18T08:00:00+07:00', category:'Pemerintahan', excerpt:'Pemerintah Kota Surabaya terus memperkuat layanan publik berbasis digital yang terintegrasi.', url:'/id/berita/25117/sits-dan-layanan-digital-terintegrasi-perkuat-transformasi-smart-city-surabaya' },
+  { id:'9491', title:'Pemkot Surabaya Tata Jaringan Kabel Utilitas di Kawasan Kota Lama', slug:'tata-jaringan-kabel-utilitas-di-kawasan-kota-lama', image:'/assets/redesign/hero/alun-alun-surabaya.jpg', publishedAt:'2026-02-12T08:00:00+07:00', category:'Pembangunan', excerpt:'Penataan utilitas dilakukan untuk meningkatkan keamanan dan kualitas ruang kota.', url:'/id/berita/9491/tata-jaringan-kabel-utilitas-di-kawasan-kota-lama-pemkot-surabaya-lakukan-pemotongan-kabel' },
+  { id:'layanan-digital', title:'Layanan Digital Kota Surabaya Semakin Mudah Diakses Warga', slug:'layanan-digital-kota-surabaya', image:'/assets/redesign/hero/tugu-pahlawan-3d.png', publishedAt:'2026-02-08T08:00:00+07:00', category:'Pelayanan Publik', excerpt:'Berbagai kebutuhan administrasi dan pengaduan warga tersedia melalui kanal resmi pemerintah kota.', url:'/id/berita/layanan-digital/layanan-digital-kota-surabaya' },
+  { id:'ruang-publik', title:'Ruang Publik Surabaya Terus Diperkuat untuk Aktivitas Warga', slug:'ruang-publik-surabaya', image:'/assets/redesign/hero/monument-illustration-2d-wide.webp', publishedAt:'2026-02-04T08:00:00+07:00', category:'Kota', excerpt:'Ruang kota yang aman dan nyaman mendukung interaksi serta kegiatan kreatif masyarakat.', url:'/id/berita/ruang-publik/ruang-publik-surabaya' },
 ]
 
 export const getCityAgenda = async (limit = 6): Promise<CityAgendaItem[]> => {
   type WebAgenda = { id?:number|string; title?:string; name?:string; slug?:string; publish_date?:string; date?:string; feature_image?:string; feature_image_url?:string; image?:string; location?:string; address?:string }
-  const publicAgenda = await webdisplayFetch<{ data?: WebAgenda[] | { data?: WebAgenda[] } }>(`agenda?per_page=${limit}&page=1`, 300)
+  const publicAgenda = await apiFetch<{ data?: WebAgenda[] | { data?: WebAgenda[] } }>(`agenda?per_page=${limit}&page=1`, 300)
+    || await webdisplayFetch<{ data?: WebAgenda[] | { data?: WebAgenda[] } }>(`agenda?per_page=${limit}&page=1`, 300)
   const agendaPayload = Array.isArray(publicAgenda?.data) ? publicAgenda.data
     : publicAgenda?.data && 'data' in publicAgenda.data && Array.isArray(publicAgenda.data.data) ? publicAgenda.data.data : []
   if (agendaPayload.length) return agendaPayload.slice(0, limit).map((item, index) => {
@@ -297,7 +407,7 @@ export const getCityAgenda = async (limit = 6): Promise<CityAgendaItem[]> => {
     return {
       id, title:item.title || item.name || 'Agenda Kota Surabaya', publishedAt:item.publish_date || item.date || '',
       image,
-      url:`https://www.surabaya.go.id/id/agenda/${id}/${agendaSlug}`, category:'Agenda Kota',
+      url:`/id/agenda/${id}/${agendaSlug}`, category:'Agenda Kota',
       location:item.location || item.address || 'Kota Surabaya', status:index < 2 ? 'Informasi terbaru' : 'Agenda berikutnya',
     }
   })
@@ -320,7 +430,7 @@ export const getCityAgenda = async (limit = 6): Promise<CityAgendaItem[]> => {
       title: post.title || 'Informasi Kota Surabaya',
       publishedAt,
       image,
-      url: `https://surabaya.go.id/id/agenda/${id}/${postSlug}`,
+      url: `/id/agenda/${id}/${postSlug}`,
       category: index % 2 ? 'Agenda Kota' : 'Pengumuman Kota',
       location: 'Kota Surabaya',
       status: index < 2 ? 'Informasi terbaru' : 'Agenda berikutnya',

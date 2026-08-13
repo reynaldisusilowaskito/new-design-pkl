@@ -36,3 +36,13 @@ Nama class CSS, struktur layout, dan animasi boleh diubah. Nama field kontrak di
 - Jangan memanggil API resmi dari komponen client jika data diperlukan saat render awal. Ambil di Server Component agar data masuk ke HTML SSR.
 
 Dengan batas ini, sumber data nanti dapat diganti ke database cukup dengan mengganti implementasi adapter sambil mempertahankan tipe keluarannya.
+
+## Aturan route dan tombol
+
+- URL resmi lama tetap dipertahankan secara lokal, misalnya `/id/berita/:id/:slug`, `/id/agenda/:id/:slug`, dan `/id/page/0/:id/:slug`.
+- Route lama yang belum mempunyai layar khusus ditangani oleh `src/app/[...legacyPath]/page.tsx` agar tidak kembali ke desain situs lama.
+- Tautan internal memakai `next/link` dan tidak membuka tab baru. Tautan ke layanan/domain eksternal tetap memakai elemen `a`, `target="_blank"`, serta `rel="noreferrer"`.
+- Detail berita mengambil kategori API `berita`; detail agenda mengikuti kontrak lama dengan kategori `info`, lalu mencoba `agenda-detail` dari WebDisplay sebagai fallback.
+- Komponen tidak membentuk URL gambar resmi sendiri. Seluruh variasi path gambar dinormalisasi di `src/lib/surabaya-api.ts`, sedangkan UI menyediakan gambar lokal bila sumber resmi kosong atau gagal dimuat.
+
+Dengan pola ini, migrasi ke backend/database baru cukup mengganti isi fungsi adapter. Kontrak props dan route publik tidak perlu dirombak.

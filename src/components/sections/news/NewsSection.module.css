@@ -28,8 +28,9 @@
 .headingRow h2 { margin: 0; font-size: clamp(54px,6.7vw,104px); font-weight: 550; line-height: .94; letter-spacing: -.065em; }
 .headingRow h2 em { color: transparent; font-style: normal; -webkit-text-stroke: 1px rgba(24,36,56,.62); }
 .headingCopy > p { margin: 0 0 25px; color: rgba(24,36,56,.61); font-size: 12px; line-height: 1.8; }
-.headingCopy a { display: inline-flex; align-items: center; gap: 21px; padding-bottom: 7px; border-bottom: 1px solid; color: var(--ink); font-size: 10px; font-weight: 750; text-decoration: none; }
-.headingCopy a span { color: #a26d7b; }
+.headingCopy a { display: inline-flex; align-items: center; gap: 20px; min-height: 48px; padding: 0 9px 0 19px; border: 1px solid rgba(24,36,56,.18); border-radius: 999px; color: var(--ink); background: rgba(255,255,255,.58); box-shadow: 0 12px 28px rgba(24,36,56,.07); font-size: 11px; font-weight: 800; text-decoration: none; transition: transform .2s,box-shadow .2s; }
+.headingCopy a:hover { transform: translateY(-2px); box-shadow: 0 17px 34px rgba(24,36,56,.12); }
+.headingCopy a span { display:grid; width:31px; height:31px; place-items:center; border-radius:50%; color:#fff; background:#182438; }
 .filters { display: flex; gap: 8px; margin-bottom: 30px; overflow-x: auto; scrollbar-width: none; }
 .filters button { padding: 10px 17px; border: 1px solid rgba(24,36,56,.15); border-radius: 999px; color: rgba(24,36,56,.58); background: rgba(255,255,255,.3); font-size: 9px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .filters .activeFilter { border-color: var(--ink); color: #fff; background: var(--ink); }

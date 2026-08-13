@@ -69,7 +69,7 @@ export default function MainNavbar({ navigation = [] }) {
   }
 
   return (
-    <header className={styles.navbar} onMouseLeave={() => setIsOpen(false)}>
+    <header className={styles.navbar}>
       <Link className={styles.brand} href="/#beranda" aria-label={t('Surabaya, kembali ke beranda')}>
         <Image className={styles.brandMarks} src={mandatoryMarks} alt={t('Identitas resmi Kota Surabaya')} width={134} height={51} sizes="(max-width: 900px) 62px, 88px" />
         <i aria-hidden="true" />
@@ -79,8 +79,7 @@ export default function MainNavbar({ navigation = [] }) {
         {menu.map((item, index) => item.child?.length ? (
           <button className={styles.megaTrigger} type="button" key={item.title}
             aria-expanded={isOpen && activeTopIndex === index} aria-controls="surabaya-mega-menu"
-            onClick={() => isOpen && activeTopIndex === index ? setIsOpen(false) : openGroup(index)}
-            onMouseEnter={() => openGroup(index)} onFocus={() => openGroup(index)}>
+            onClick={() => isOpen && activeTopIndex === index ? setIsOpen(false) : openGroup(index)}>
             <InteractiveLabel>{t(item.title)}</InteractiveLabel>
           </button>
         ) : <a href={safeHref(item)} key={item.title}><InteractiveLabel>{t(item.title)}</InteractiveLabel></a>)}
@@ -98,7 +97,7 @@ export default function MainNavbar({ navigation = [] }) {
       <button className={styles.menuButton} type="button" aria-label={t(isOpen ? 'Tutup menu' : 'Buka menu')}
         aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><span /><span /></button>
       <section id="surabaya-mega-menu" className={`${styles.megaMenu} ${isOpen ? styles.megaMenuOpen : ''}`}
-        aria-label={t(activeTop?.title || 'Navigasi Surabaya')} aria-hidden={!isOpen} onMouseEnter={() => setIsOpen(true)}>
+        aria-label={t(activeTop?.title || 'Navigasi Surabaya')} aria-hidden={!isOpen}>
         <div className={styles.mobileLinks}>
           {menu.map((item, index) => item.child?.length
             ? <button type="button" onClick={() => openGroup(index)} key={item.title}>{t(item.title)}</button>
@@ -108,7 +107,7 @@ export default function MainNavbar({ navigation = [] }) {
           <p>{t(activeTop?.title || 'Jelajahi kota')}</p>
           {groups.map((group, index) => (
             <button className={index === activeGroupIndex ? styles.activeCategory : ''} type="button"
-              onClick={() => setActiveGroupIndex(index)} onMouseEnter={() => setActiveGroupIndex(index)} key={group.title}>
+              onClick={() => setActiveGroupIndex(index)} key={group.title}>
               <span aria-hidden="true" />{group.title}<b aria-hidden="true">↗</b>
             </button>
           ))}

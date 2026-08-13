@@ -5,6 +5,7 @@ import { useExperience } from '@/context/ExperienceContext'
 import styles from './SiteFooter.module.css'
 
 const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
+const footerWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.png'
 const characters = '/assets/redesign/hero/suro-boyo-3d.png'
 const navigation = [
   ['Tentang Surabaya', '#tentang'], ['Layanan warga', '#layanan'], ['Kabar kota', '#kabar'],
@@ -29,8 +30,9 @@ export default function SiteFooter({ organization }) {
         <section className={styles.hero} aria-labelledby="footer-title">
           <div className={styles.heroCopy}>
             <div className={styles.identity}>
-              <Image src={mandatoryMarks} alt={t('Identitas resmi Kota Surabaya')} width={134} height={51} sizes="92px" />
-              <span>{t('PORTAL RESMI KOTA')}</span>
+              <Image className={styles.mandatoryMarks} src={mandatoryMarks} alt={t('Identitas resmi Kota Surabaya')} width={134} height={51} sizes="(max-width: 650px) 72px, 92px" />
+              <span className={styles.identityDivider} aria-hidden="true" />
+              <Image className={styles.footerWordmark} src={footerWordmark} alt={t('Surabaya')} width={780} height={260} sizes="(max-width: 650px) 125px, 165px" />
             </div>
             <h2 id="footer-title">{t('Masih mencari layanan atau informasi kota?')}</h2>
             <p>{t('Kami bantu menghubungkan kebutuhanmu dengan kanal resmi Pemerintah Kota Surabaya.')}</p>

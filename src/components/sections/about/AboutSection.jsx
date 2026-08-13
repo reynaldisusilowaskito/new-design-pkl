@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './AboutSection.module.css'
 
@@ -123,9 +124,9 @@ function AboutSection() {
 
         <div className={styles.summary}>
           <p>{t('Surabaya adalah ibu kota Provinsi Jawa Timur sekaligus pusat pemerintahan dan perekonomian provinsi. Tumbuh sebagai kota pelabuhan, Surabaya membawa semangat kepahlawanan ke dalam gerak kota yang maju, humanis, dan berkelanjutan.')}</p>
-          <a href="https://surabaya.go.id/page/0/76094/sekilas-kota-surabaya" target="_blank" rel="noreferrer">
+          <Link href="/page/0/76094/sekilas-kota-surabaya">
             {t('Baca profil resmi')} <span aria-hidden="true">↗</span>
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -171,9 +172,7 @@ function AboutSection() {
                 setActiveCard(index)
               }
             }}
-            href={card.href}
-            target="_blank"
-            rel="noreferrer"
+            href={card.href.replace(/^https:\/\/(?:www\.)?surabaya\.go\.id/, '')}
             key={card.title}
           >
             <div className={styles.cardCopy}>
