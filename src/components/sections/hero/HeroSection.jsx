@@ -7,12 +7,13 @@ import MainNavbar from '@/components/navigation/MainNavbar'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './HeroSection.module.css'
 
-const characters = '/assets/redesign/hero/suro-boyo-3d.png'
-const lowerBackground = '/assets/redesign/hero/kota-lama-surabaya-2d-full.png'
-const searchSupporters = '/assets/redesign/hero/search-supporters-2d.png'
-const monument = '/assets/redesign/hero/tugu-pahlawan-3d.png'
-const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
-const splashWordmark = '/assets/redesign/hero/surabaya-wordmark-black-transparent.png'
+const characters = '/assets/redesign/hero/suro-boyo-3d.webp'
+const lowerBackgroundDay = '/assets/redesign/hero/kota-lama-day.webp'
+const lowerBackgroundNight = '/assets/redesign/hero/kota-lama-night-windows.webp'
+const searchSupporters = '/assets/redesign/hero/suro-boyo-chroma.webp'
+const monument = '/assets/redesign/hero/tugu-pahlawan-3d.webp'
+const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.webp'
+const splashWordmark = '/assets/redesign/hero/surabaya-wordmark-black-transparent.webp'
 
 function HeroSection({ navigation }) {
   const { t } = useExperience()
@@ -153,14 +154,15 @@ function HeroSection({ navigation }) {
         </div>
 
         <div className={styles.lowerLandscape} aria-hidden="true">
-          <Image src={lowerBackground} alt="" width={1920} height={1280} sizes="100vw" />
+          <Image className={styles.dayLandscape} src={lowerBackgroundDay} alt="" width={1920} height={1080} sizes="100vw" />
+          <Image className={styles.nightLandscape} src={lowerBackgroundNight} alt="" width={1920} height={1080} sizes="100vw" />
         </div>
 
         <div className={styles.mandate}>PORTAL RESMI PEMERINTAH KOTA SURABAYA <span>•</span> KOTA PAHLAWAN</div>
 
         <div className={styles.monumentScene} aria-hidden="true">
           <div className={styles.monumentGlow} />
-          <Image src={monument} alt="" width={1024} height={1536} sizes="(max-width: 900px) 45vw, 34vw" fetchPriority="high" />
+          <Image src={monument} alt="" width={1024} height={1536} sizes="(max-width: 900px) 100vw, 70vw" fetchPriority="high" quality={95} />
         </div>
 
         <div className={styles.cityIdentity} aria-label="Identitas Kota Surabaya">

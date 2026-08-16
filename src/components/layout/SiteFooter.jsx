@@ -4,9 +4,9 @@ import Image from 'next/image'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './SiteFooter.module.css'
 
-const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
-const footerWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.png'
-const characters = '/assets/redesign/hero/suro-boyo-3d.png'
+const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.webp'
+const footerWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.webp'
+const characters = '/assets/redesign/hero/suro-boyo-3d.webp'
 const navigation = [
   ['Tentang Surabaya', '#tentang'], ['Layanan warga', '#layanan'], ['Kabar kota', '#kabar'],
   ['Video kota', '#video'], ['Kalender Surabaya', '#agenda-kota'],

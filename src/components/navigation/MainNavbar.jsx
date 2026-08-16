@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './MainNavbar.module.css'
 
-const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.png'
-const navbarWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.png'
+const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.webp'
+const navbarWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.webp'
 const sortMenu = (items = []) => [...items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 /**
  * Keep legacy Surabaya URLs inside the redesign while leaving third-party

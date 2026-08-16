@@ -102,3 +102,20 @@ a { color: inherit; }
 :root[data-theme='dark'] #agenda-kota [class*='listTile'] a { color:#f8f2ef; border-color:rgba(255,255,255,.13); }
 :root[data-theme='dark'] #tentang [class*='summary'],
 :root[data-theme='dark'] #tentang [class*='quickFacts'] { border-color:rgba(255,255,255,.14); }
+/* Shared back navigation for the redesigned news and agenda indexes. */
+.content-index-back {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 10px;
+  margin-bottom: -18px;
+  color: rgba(24, 36, 56, .72);
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.content-index-back span { display:grid; width:34px; height:34px; place-items:center; border:1px solid rgba(24,36,56,.2); border-radius:50%; background:rgba(255,255,255,.52); transition:transform .2s,background .2s; }
+.content-index-back:hover span { transform:translateX(-3px); background:#fff; }
+:root[data-theme='dark'] .content-index-back { color:rgba(248,242,239,.82); }
+:root[data-theme='dark'] .content-index-back span { border-color:rgba(255,255,255,.2); background:rgba(255,255,255,.07); }

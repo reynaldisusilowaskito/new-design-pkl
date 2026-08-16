@@ -8,7 +8,7 @@ import SiteFooter from '@/components/layout/SiteFooter'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './NewsIndexPage.module.css'
 
-const fallbackImage = '/assets/redesign/hero/kota-lama-surabaya-2d-full.png'
+const fallbackImage = '/assets/redesign/hero/kota-lama-surabaya-2d-full.webp'
 
 function formatDate(value, language) {
   const date = new Date(value)
@@ -42,6 +42,7 @@ export default function NewsIndexPage({ navigation, organization, items }) {
     <main className={styles.page}>
       <MainNavbar navigation={navigation} />
       <header className={styles.hero}>
+        <Link className="content-index-back" href="/#kabar"><span aria-hidden="true">←</span> {t('Kembali ke beranda')}</Link>
         <div><span>BERITA RESMI / SURABAYA</span><h1>{t('Kabar kota,')}<br /><em>{t('langsung dari sumbernya.')}</em></h1></div>
         <p>{t('Kebijakan, pembangunan, pelayanan publik, dan aktivitas warga dalam satu ruang yang mudah dijelajahi.')}</p>
       </header>

@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './AboutSection.module.css'
 
-const featureSprites = '/assets/redesign/about/surabaya-feature-sprites.png'
-const statSprites = '/assets/redesign/about/surabaya-stat-sprites.png'
+const featureSprites = '/assets/redesign/about/surabaya-feature-sprites.webp'
+const statSprites = '/assets/redesign/about/surabaya-stat-sprites.webp'
 
 const cityFacts = [
   { value: '31', label: 'Kecamatan', sprite: '0% 50%' },

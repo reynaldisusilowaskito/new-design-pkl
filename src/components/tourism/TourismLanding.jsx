@@ -54,7 +54,7 @@ export default function TourismLanding({ destinations = [], culinaries = [], hot
             const item = items[0]
             return <Link href={href} className={`${guide.orbitCard} ${guide[`orbit${index + 1}`]}`} key={href}><i style={item?.image ? { backgroundImage: `url("${item.image}")` } : undefined} /><span>{t(title)}</span></Link>
           })}
-          <Image src="/assets/redesign/tourism/tourism-guide-3d.png" alt="" fill sizes="(max-width: 900px) 100vw, 58vw" />
+          <Image src="/assets/redesign/tourism/tourism-guide-3d.webp" alt="" fill sizes="(max-width: 900px) 100vw, 58vw" />
         </div>
       </section>
 

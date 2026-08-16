@@ -47,5 +47,12 @@
 .srOnly { position:absolute; overflow:hidden; width:1px; height:1px; clip:rect(0,0,0,0); white-space:nowrap; }
 @media (max-width:1050px) { .catalog { grid-template-columns:1fr 270px; } .serviceGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } .filters { grid-template-columns:repeat(3,1fr); } }
 @media (max-width:780px) { .services { padding:48px 10px; } .sectionHead { align-items:flex-start; flex-direction:column; } .searchBox { width:100%; grid-template-columns:16px 1fr 28px; } .catalog { display:block; border-radius:21px; } .mainCatalog { padding:25px 15px 0; } .categoryArea { margin-inline:-15px; padding-inline:15px; } .popularPanel { border-top:1px solid rgba(24,36,56,.08); border-left:0; } }
-@media (max-width:520px) { .serviceGrid { grid-template-columns:1fr; } .filters { grid-template-columns:repeat(2,1fr); } .catalogLabel small { display:none; } }
+@media (max-width:520px) { .serviceGrid { grid-template-columns:1fr; max-height:none; overflow:visible; } .serviceGrid a { display:grid; } .filters { grid-template-columns:repeat(2,1fr); } .catalogLabel small { display:none; } }
 @media (prefers-reduced-motion:reduce) { .serviceGrid a,.filters button,.serviceGrid i { transition:none; } }
+:global(:root[data-theme='dark']) .catalog { color:#f8f2ef; background:#182438; }
+:global(:root[data-theme='dark']) .mainCatalog,:global(:root[data-theme='dark']) .popularPanel { background:#182438; }
+:global(:root[data-theme='dark']) .popularPanel { border-color:rgba(255,255,255,.11); background:#111b2c; }
+:global(:root[data-theme='dark']) .catalogLabel,:global(:root[data-theme='dark']) .categoryArea,:global(:root[data-theme='dark']) .popularHead,:global(:root[data-theme='dark']) .popularList a { border-color:rgba(255,255,255,.12); }
+:global(:root[data-theme='dark']) .serviceGrid a,:global(:root[data-theme='dark']) .popularList a,:global(:root[data-theme='dark']) .allServices { color:#f8f2ef; }
+:global(:root[data-theme='dark']) .serviceGrid a:hover,:global(:root[data-theme='dark']) .serviceGrid a:focus-visible { background:rgba(255,255,255,.07); }
+:global(:root[data-theme='dark']) .catalogLabel small,:global(:root[data-theme='dark']) .serviceGrid small,:global(:root[data-theme='dark']) .popularHead p,:global(:root[data-theme='dark']) .popularList small,:global(:root[data-theme='dark']) .emptyState span { color:rgba(248,242,239,.65); }

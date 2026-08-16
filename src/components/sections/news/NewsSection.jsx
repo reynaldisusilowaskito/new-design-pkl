@@ -15,7 +15,7 @@ function formatDate(value, language) {
 
 function NewsImage({ item, sizes }) {
   const [failed, setFailed] = useState(false)
-  const source = !item.image || failed ? '/assets/redesign/hero/kota-lama-surabaya-2d-full.png' : item.image
+  const source = !item.image || failed ? '/assets/redesign/hero/kota-lama-surabaya-2d-full.webp' : item.image
   return (
     <Image
       src={source}
