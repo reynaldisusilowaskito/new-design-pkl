@@ -7,6 +7,7 @@ import MainNavbar from '@/components/navigation/MainNavbar'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './ContentDetailPage.module.css'
+import canvas from './DefaultContentCanvas.module.css'
 
 function formatDate(value, language) {
   if (!value) return null
@@ -24,7 +25,7 @@ export default function ContentDetailPage({ navigation, organization, page }) {
   const homeSectionHref = agenda ? '/#agenda-kota' : '/#kabar'
 
   return (
-    <main className={`${styles.page} ${agenda ? styles.agenda : styles.news}`}>
+    <main className={`${styles.page} ${canvas.page} ${agenda ? styles.agenda : styles.news}`}>
       <MainNavbar navigation={navigation} />
 
       <article className={styles.article}>

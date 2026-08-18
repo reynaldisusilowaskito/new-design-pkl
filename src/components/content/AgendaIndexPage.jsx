@@ -7,6 +7,7 @@ import MainNavbar from '@/components/navigation/MainNavbar'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './AgendaIndexPage.module.css'
+import canvas from './DefaultContentCanvas.module.css'
 
 const fallbackImage = '/assets/redesign/hero/alun-alun-surabaya.jpg'
 
@@ -37,9 +38,9 @@ export default function AgendaIndexPage({ navigation, organization, items }) {
     return items.filter((item) => (category === 'Semua' || item.category === category) && (!keyword || `${item.title} ${item.location} ${item.category}`.toLocaleLowerCase(language === 'en' ? 'en' : 'id-ID').includes(keyword)))
   }, [category, items, language, query])
 
-  return <main className={styles.page}>
+  return <main className={`${styles.page} ${canvas.page}`}>
     <MainNavbar navigation={navigation} />
-    <header className={styles.hero}><Link className="content-index-back" href="/#agenda-kota"><span aria-hidden="true">←</span> {t('Kembali ke beranda')}</Link><div><span>KALENDER RESMI / SURABAYA</span><h1>{t('Agenda kota,')}<br/><em>{t('jelas dalam satu tempat.')}</em></h1></div><p>{t('Pengumuman, kegiatan pemerintah, dan informasi penting warga yang tersusun agar mudah ditemukan.')}</p></header>
+    <header className={`${styles.hero} ${canvas.hero}`}><Link className="content-index-back" href="/#agenda-kota"><span aria-hidden="true">←</span> {t('Kembali ke beranda')}</Link><div><span>KALENDER RESMI / SURABAYA</span><h1>{t('Agenda kota,')}<br/><em>{t('jelas dalam satu tempat.')}</em></h1></div><p>{t('Pengumuman, kegiatan pemerintah, dan informasi penting warga yang tersusun agar mudah ditemukan.')}</p></header>
     <section className={styles.browser} aria-labelledby="agenda-index-title">
       <div className={styles.toolbar}><div><span>AGENDA KOTA</span><h2 id="agenda-index-title">{t('Semua agenda')}</h2></div><label><span aria-hidden="true">⌕</span><input value={query} onChange={(event)=>setQuery(event.target.value)} placeholder={t('Cari agenda...')}/><b>{visibleItems.length}</b></label></div>
       <div className={styles.filters}>{categories.map((item)=><button className={category===item?styles.active:''} onClick={()=>setCategory(item)} type="button" key={item}>{t(item)}</button>)}</div>

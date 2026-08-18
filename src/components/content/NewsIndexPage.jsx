@@ -7,6 +7,7 @@ import MainNavbar from '@/components/navigation/MainNavbar'
 import SiteFooter from '@/components/layout/SiteFooter'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './NewsIndexPage.module.css'
+import canvas from './DefaultContentCanvas.module.css'
 
 const fallbackImage = '/assets/redesign/hero/kota-lama-surabaya-2d-full.webp'
 
@@ -39,9 +40,9 @@ export default function NewsIndexPage({ navigation, organization, items }) {
   }, [category, items, language, query])
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${canvas.page}`}>
       <MainNavbar navigation={navigation} />
-      <header className={styles.hero}>
+      <header className={`${styles.hero} ${canvas.hero}`}>
         <Link className="content-index-back" href="/#kabar"><span aria-hidden="true">←</span> {t('Kembali ke beranda')}</Link>
         <div><span>BERITA RESMI / SURABAYA</span><h1>{t('Kabar kota,')}<br /><em>{t('langsung dari sumbernya.')}</em></h1></div>
         <p>{t('Kebijakan, pembangunan, pelayanan publik, dan aktivitas warga dalam satu ruang yang mudah dijelajahi.')}</p>

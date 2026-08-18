@@ -45,7 +45,7 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
         attributionControl: false,
       })
     } catch (error) {
-      console.error('Gagal membuka MapLibre:', error)
+      console.warn('Gagal membuka MapLibre:', error)
       onError?.()
       return undefined
     }
@@ -57,7 +57,11 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
     }), 'top-right')
     map.addControl(new maplibregl.FullscreenControl(), 'top-right')
     map.on('error', (event) => {
-      console.error('MapLibre:', event.error?.message || event.error)
+      const message = event.error?.message || String(event.error || '')
+      // MapLibre emits this event for individual network tiles as well. Those
+      // failures are recoverable and must not trigger Next.js' error overlay.
+      if (/failed to fetch|ajaxerror|abort/i.test(message)) return
+      console.warn('MapLibre:', message)
     })
 
     let hoveredId = null
@@ -129,7 +133,7 @@ export default function SurabayaMapCanvas({ districts, onSelectDistrict, onReady
       })
       map.easeTo({ center: CENTER, zoom: 12.35, pitch: 48, bearing: -12, duration: 900 })
       } catch (error) {
-        console.error('Gagal menyiapkan layer peta Surabaya:', error)
+        console.warn('Gagal menyiapkan layer peta Surabaya:', error)
         onError?.()
       }
     })
