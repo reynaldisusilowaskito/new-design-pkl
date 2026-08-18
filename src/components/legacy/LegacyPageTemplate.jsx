@@ -26,10 +26,9 @@ export default function LegacyPageTemplate({ navigation, organization, page, pat
       <article className={styles.article}>
         <aside className={styles.articleMeta}>
           <span>INFORMASI RESMI</span>
-          <Link href="/#beranda">{t('Kembali ke beranda')} <b aria-hidden="true">↗</b></Link>
+          <Link href="/#beranda"><b aria-hidden="true">←</b> {t('Kembali ke beranda')}</Link>
         </aside>
         <div className={styles.content}>
-          <h2>{page.title}</h2>
           <div className={styles.body} dangerouslySetInnerHTML={{ __html: page.content }} />
         </div>
       </article>

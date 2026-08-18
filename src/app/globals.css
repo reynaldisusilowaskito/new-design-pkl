@@ -36,6 +36,11 @@ button, input, textarea, select { font: inherit; }
 img, video, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 
+.skip-link { position:fixed; z-index:20000; top:10px; left:10px; padding:11px 16px; border-radius:999px; color:#fff; background:#182438; box-shadow:0 12px 30px rgba(24,36,56,.24); font-size:13px; font-weight:750; text-decoration:none; transform:translateY(-160%); transition:transform .2s ease; }
+.skip-link:focus { transform:translateY(0); }
+:where(a,button,input,textarea,select,[tabindex]):focus-visible { outline:3px solid #d86e82; outline-offset:3px; }
+:where(#beranda,#tentang,#peta-surabaya,#kabar,#layanan,#video,#agenda-kota) { scroll-margin-top:24px; }
+
 :root[data-theme='dark'] #beranda,
 :root[data-theme='dark'] #tentang,
 :root[data-theme='dark'] #peta-surabaya,
@@ -84,6 +89,11 @@ a { color: inherit; }
 :root[data-theme='dark'] [class*='megaMenu'] [class*='cityLinks'] small { color:rgba(248,242,239,.68); }
 :root[data-theme='dark'] input { color:#f8f2ef; }
 :root[data-theme='dark'] input::placeholder { color:rgba(248,242,239,.52); }
+
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
+}
 
 :root[data-theme='dark'] #peta-surabaya { background:radial-gradient(circle at 82% 18%,rgba(111,91,132,.2),transparent 29%),linear-gradient(180deg,#101827,#151f33) !important; }
 :root[data-theme='dark'] #kabar { background:#101827 !important; }

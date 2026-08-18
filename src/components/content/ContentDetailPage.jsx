@@ -28,9 +28,12 @@ export default function ContentDetailPage({ navigation, organization, page }) {
       <MainNavbar navigation={navigation} />
 
       <article className={styles.article}>
-        <Link className={styles.cornerBack} href={listHref} aria-label={t(agenda ? 'Kembali ke semua agenda' : 'Kembali ke semua berita')}>
-          <span aria-hidden="true">←</span> {t(agenda ? 'Semua agenda' : 'Semua berita')}
-        </Link>
+        <nav className={styles.cornerNavigation} aria-label={t('Navigasi halaman')}>
+          <Link className={styles.cornerBack} href={listHref} aria-label={t(agenda ? 'Kembali ke semua agenda' : 'Kembali ke semua berita')}>
+            <span aria-hidden="true">←</span> {t(agenda ? 'Semua agenda' : 'Semua berita')}
+          </Link>
+          <Link className={styles.homeBack} href={homeSectionHref}>{t('Beranda')} <span aria-hidden="true">↗</span></Link>
+        </nav>
         <header className={styles.header}>
           <p className={styles.label}>{agenda ? 'AGENDA KOTA' : 'KABAR KOTA'}</p>
           <h1>{page.title}</h1>

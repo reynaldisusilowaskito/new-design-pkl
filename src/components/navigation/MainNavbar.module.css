@@ -17,6 +17,7 @@
   opacity: 0;
   animation: navbarReveal .55s 2.5s cubic-bezier(.16,1,.3,1) forwards;
 }
+.navbar.immediate { opacity:1; animation:none; }
 .brand {
   display: inline-flex;
   align-items: center;
@@ -116,7 +117,10 @@
   display: grid;
   grid-template-columns: 255px minmax(0,1fr);
   width: min(1180px, calc(100vw - 48px));
+  max-height: calc(100dvh - 126px);
   min-height: 430px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 14px;
   border: 1px solid rgba(197,179,210,.45);
   border-radius: 26px;
@@ -129,7 +133,12 @@
   transform:translate(-50%,-14px) scale(.985);
   transform-origin:top center;
   transition:opacity .25s ease,transform .35s cubic-bezier(.16,1,.3,1);
+  scrollbar-color: #c5b3d2 transparent;
+  scrollbar-width: thin;
 }
+.megaMenu::-webkit-scrollbar { width:8px; }
+.megaMenu::-webkit-scrollbar-track { margin:18px 0; background:transparent; }
+.megaMenu::-webkit-scrollbar-thumb { border:2px solid transparent; border-radius:999px; background:#c5b3d2; background-clip:padding-box; }
 .megaMenuOpen { opacity:1; pointer-events:auto; transform:translate(-50%,0) scale(1); }
 .categoryRail { display:flex; flex-direction:column; gap:2px; padding:18px 10px; border-right:1px solid rgba(24,36,56,.08); }
 .categoryRail > p { margin:0 13px 14px; color:#9888a1; font-size:8px; font-weight:750; letter-spacing:.14em; text-transform:uppercase; }

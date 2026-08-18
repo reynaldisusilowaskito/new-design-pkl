@@ -37,8 +37,14 @@ function InteractiveLabel({ children }) {
   )
 }
 
+function NavigationLink({ href, children, ...props }) {
+  const internal = href.startsWith('/') || href.startsWith('#')
+  if (internal) return <Link href={href} {...props}>{children}</Link>
+  return <a href={href} target="_blank" rel="noreferrer" {...props}>{children}</a>
+}
+
 /** @param {{ navigation?: import('@/lib/surabaya-api').NavigationItem[] }} props */
-export default function MainNavbar({ navigation = [] }) {
+export default function MainNavbar({ navigation = [], immediate = false }) {
   const { language, setLanguage, theme, toggleTheme, t } = useExperience()
   const menu = useMemo(() => sortMenu(navigation), [navigation])
   const [isOpen, setIsOpen] = useState(false)
@@ -69,7 +75,7 @@ export default function MainNavbar({ navigation = [] }) {
   }
 
   return (
-    <header className={styles.navbar}>
+    <header className={`${styles.navbar} ${immediate ? styles.immediate : ''}`}>
       <Link className={styles.brand} href="/#beranda" aria-label={t('Surabaya, kembali ke beranda')}>
         <Image className={styles.brandMarks} src={mandatoryMarks} alt={t('Identitas resmi Kota Surabaya')} width={134} height={51} sizes="(max-width: 900px) 62px, 88px" />
         <i aria-hidden="true" />
@@ -82,7 +88,7 @@ export default function MainNavbar({ navigation = [] }) {
             onClick={() => isOpen && activeTopIndex === index ? setIsOpen(false) : openGroup(index)}>
             <InteractiveLabel>{t(item.title)}</InteractiveLabel>
           </button>
-        ) : <a href={safeHref(item)} key={item.title}><InteractiveLabel>{t(item.title)}</InteractiveLabel></a>)}
+        ) : <NavigationLink href={safeHref(item)} key={item.title}><InteractiveLabel>{t(item.title)}</InteractiveLabel></NavigationLink>)}
       </nav>
       <div className={styles.preferences}>
         <div className={`${styles.languageSwitch} ${language === 'en' ? styles.languageEnglish : ''}`} role="group" aria-label="Pilih bahasa / Choose language">
@@ -101,7 +107,7 @@ export default function MainNavbar({ navigation = [] }) {
         <div className={styles.mobileLinks}>
           {menu.map((item, index) => item.child?.length
             ? <button type="button" onClick={() => openGroup(index)} key={item.title}>{t(item.title)}</button>
-            : <a href={safeHref(item)} onClick={() => setIsOpen(false)} key={item.title}>{t(item.title)}</a>)}
+            : <NavigationLink href={safeHref(item)} onClick={() => setIsOpen(false)} key={item.title}>{t(item.title)}</NavigationLink>)}
         </div>
         <div className={styles.categoryRail} aria-label={`Kategori ${activeTop?.title || ''}`}>
           <p>{t(activeTop?.title || 'Jelajahi kota')}</p>
@@ -118,9 +124,9 @@ export default function MainNavbar({ navigation = [] }) {
           <p>{t('Pilih informasi atau layanan yang ingin dibuka.')}</p>
           <span className={styles.linkHint}>{t('TAUTAN TERSEDIA')}</span>
           <div className={`${styles.cityLinks} ${panelLinks.length > 9 ? styles.denseLinks : ''}`}>
-            {panelLinks.map((link) => <a href={safeHref(link)} onClick={() => setIsOpen(false)} key={link.title}>
+            {panelLinks.map((link) => <NavigationLink href={safeHref(link)} onClick={() => setIsOpen(false)} key={link.title}>
               <small>{activeTop?.title}</small><strong>{link.title}</strong><i aria-hidden="true">Buka&nbsp; ↗</i>
-            </a>)}
+            </NavigationLink>)}
           </div>
         </div>
       </section>

@@ -171,11 +171,27 @@ const transformMenu = (item: RawMenu): NavigationItem => ({
   child: Array.isArray(item.subMenus) ? item.subMenus.map(transformMenu) : [],
 })
 
-const completeNavigation = (items: NavigationItem[]) => {
-  const key = (title: string) => title.toLocaleLowerCase('id-ID').replace(/[^a-z0-9]/g, '')
-  const normalized = new Set(items.map((item) => key(item.title)))
-  return [...items, ...fallbackNavigation.filter((item) => !normalized.has(key(item.title)))]
+const navigationKey = (title: string) => title.toLocaleLowerCase('id-ID').replace(/[^a-z0-9]/g, '')
+
+/**
+ * Preserve every live API item while recursively filling only missing menu
+ * branches from the local snapshot. A partially available backend therefore
+ * cannot make whole navbar groups disappear.
+ */
+const mergeNavigation = (live: NavigationItem[], fallback: NavigationItem[]): NavigationItem[] => {
+  const fallbackByTitle = new Map(fallback.map((item) => [navigationKey(item.title), item]))
+  const merged = live.map((item) => {
+    const matchingFallback = fallbackByTitle.get(navigationKey(item.title))
+    fallbackByTitle.delete(navigationKey(item.title))
+    return {
+      ...item,
+      child: mergeNavigation(item.child || [], matchingFallback?.child || []),
+    }
+  })
+  return [...merged, ...fallbackByTitle.values()]
 }
+
+const completeNavigation = (items: NavigationItem[]) => mergeNavigation(items, fallbackNavigation)
 
 const webdisplayFetch = async <T>(path: string, revalidate = 300): Promise<T | null> => {
   if (!webdisplayBase) return null
@@ -447,11 +463,17 @@ export const getNews = async (category = 'berita', limit = 6): Promise<NewsItem[
 }
 
 const fallbackServices: ServiceItem[] = [
+  ['Ketenagakerjaan','Informasi lowongan, pelatihan, dan pelayanan tenaga kerja.','https://disnaker.surabaya.go.id','KR','Warga',false],
   ['Administrasi Kependudukan','Urus dokumen kependudukan melalui KLAMPID New Generation.','https://klampid-dispendukcapil.surabaya.go.id','NIK','Warga',true],
+  ['BLC','Pelatihan komputer dan literasi digital gratis untuk warga.','https://blc.surabaya.go.id','BLC','Pendidikan',false],
   ['E-Health','Daftar antrean Puskesmas dan rumah sakit secara daring.','https://ehealth.surabaya.go.id','EH','Warga',true],
   ['SSW Alfa','Ajukan dan pantau pelayanan perizinan secara terpadu.','https://sswalfa.surabaya.go.id','SSW','Usaha',true],
   ['Pengaduan Masyarakat','Sampaikan pengaduan dan aspirasi melalui WargaKu.','https://wargaku.surabaya.go.id','W','Warga',true],
+  ['RUP','Akses informasi rencana pengadaan pemerintah secara terbuka.','https://sirup.lkpp.go.id','RUP','Informasi',false],
+  ['LPSE','Layanan pengadaan barang dan jasa pemerintah secara elektronik.','https://lpse.surabaya.go.id','LP','Usaha',false],
   ['Pelayanan Informasi PPID','Akses dan ajukan permohonan informasi publik.','https://ppid.surabaya.go.id','PI','Informasi',true],
+  ['Pemberdayaan Ekonomi','Temukan program pengembangan usaha dan ekonomi warga.','https://peken.surabaya.go.id','UM','Usaha',false],
+  ['Pelayanan Dinas Sosial','Informasi layanan sosial dan program kesejahteraan masyarakat.','https://dinassosial.surabaya.go.id','DS','Warga',false],
   ['JDIH','Dokumentasi dan informasi hukum Pemerintah Kota Surabaya.','https://jdih.surabaya.go.id','JH','Informasi',false],
   ['Satu Data','Jelajahi data terbuka dan statistik resmi Kota Surabaya.','https://opendata.surabaya.go.id','1D','Informasi',false],
   ['Pelayanan DISPENDIK','Pusat informasi dan layanan pendidikan Kota Surabaya.','https://dispendik.surabaya.go.id','PD','Pendidikan',false],

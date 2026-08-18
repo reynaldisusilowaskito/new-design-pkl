@@ -305,6 +305,12 @@
   pointer-events: none;
 }
 
+.introComplete .cityIdentity,
+.introComplete .content h1,
+.introComplete .slogan {
+  animation: none;
+}
+
 .lowerLandscape img {
   position: absolute;
   right: auto;

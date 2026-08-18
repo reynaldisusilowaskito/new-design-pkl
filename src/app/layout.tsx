@@ -14,8 +14,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="id" suppressHydrationWarning>
       <body>
+        <a className="skip-link" href="#site-content">Lewati ke konten utama</a>
         <ExperienceProvider>
-          <div id="site-content">{children}</div>
+          <div id="site-content" tabIndex={-1}>{children}</div>
           <AccessibilityTools />
         </ExperienceProvider>
       </body>

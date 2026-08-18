@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { heroParticles, heroServices, heroWords } from '@/data/heroContent'
 import MainNavbar from '@/components/navigation/MainNavbar'
@@ -15,11 +15,38 @@ const monument = '/assets/redesign/hero/tugu-pahlawan-3d.webp'
 const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.webp'
 const splashWordmark = '/assets/redesign/hero/surabaya-wordmark-black-transparent.webp'
 
+// Survives App Router navigation and resets on an actual document reload.
+let splashPlayedForCurrentDocument = false
+
+function isLandingPageDocument() {
+  const navigationEntry = performance.getEntriesByType('navigation')[0]
+
+  try {
+    const initialPath = navigationEntry?.name
+      ? new URL(navigationEntry.name).pathname
+      : window.location.pathname
+    return initialPath === '/' && window.location.pathname === '/'
+  } catch {
+    return window.location.pathname === '/'
+  }
+}
+
 function HeroSection({ navigation }) {
   const { t } = useExperience()
   const heroRef = useRef(null)
+  const splashDecisionMade = useRef(false)
   const [activeWord, setActiveWord] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
+  const [playSplash, setPlaySplash] = useState(true)
+
+  useLayoutEffect(() => {
+    if (splashDecisionMade.current) return
+    splashDecisionMade.current = true
+
+    const shouldPlay = !splashPlayedForCurrentDocument && isLandingPageDocument()
+    if (shouldPlay) splashPlayedForCurrentDocument = true
+    setPlaySplash(shouldPlay)
+  }, [])
 
   const matchingServices = heroServices.filter((service) => {
     const searchableText = `${service.label} ${service.detail}`.toLowerCase()
@@ -120,8 +147,8 @@ function HeroSection({ navigation }) {
   }, [])
 
   return (
-    <section className={styles.hero} id="beranda" ref={heroRef}>
-      <div className={styles.introSplash} aria-hidden="true">
+    <section className={`${styles.hero} ${!playSplash ? styles.introComplete : ''}`} id="beranda" ref={heroRef}>
+      {playSplash && <div className={styles.introSplash} aria-hidden="true">
         <div className={styles.introIdentity}>
           <div className={styles.introMarksWrap}>
             <Image className={styles.introMarks} src={mandatoryMarks} alt="" width={134} height={51} preload />
@@ -133,10 +160,10 @@ function HeroSection({ navigation }) {
         </div>
         <span className={styles.introCaption}>PEMERINTAH KOTA SURABAYA</span>
         <span className={styles.introIndex}>01 / SURABAYA</span>
-      </div>
+      </div>}
 
       <div className={styles.stickyScene}>
-        <MainNavbar navigation={navigation} />
+        <MainNavbar navigation={navigation} immediate={!playSplash} />
 
         <div className={styles.pixelField} aria-hidden="true">
           {heroParticles.map((particle, index) => (
@@ -168,7 +195,7 @@ function HeroSection({ navigation }) {
         <div className={styles.cityIdentity} aria-label="Identitas Kota Surabaya">
           <div className={styles.cityCharacters} aria-hidden="true">
             <div />
-            <Image src={characters} alt="" width={1538} height={1022} sizes="(max-width: 600px) 66vw, 36vw" fetchPriority="high" />
+            <Image src={characters} alt="" width={1538} height={1022} sizes="(max-width: 600px) 66vw, 36vw" />
           </div>
         </div>
 

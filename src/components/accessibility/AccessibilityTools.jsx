@@ -25,6 +25,7 @@ export default function AccessibilityTools() {
   const [settings, setSettings] = useState(defaults)
   const [ready, setReady] = useState(false)
   const panelRef = useRef(null)
+  const triggerRef = useRef(null)
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -72,11 +73,20 @@ export default function AccessibilityTools() {
 
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape' && open) {
+        setOpen(false)
+        triggerRef.current?.focus()
+      }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return undefined
+    const frame = window.requestAnimationFrame(() => panelRef.current?.querySelector('section button')?.focus())
+    return () => window.cancelAnimationFrame(frame)
+  }, [open])
 
   const update = (key, value) => setSettings((current) => ({ ...current, [key]: value }))
   const toggle = (key) => setSettings((current) => ({ ...current, [key]: !current[key] }))
@@ -108,7 +118,7 @@ export default function AccessibilityTools() {
 
   return (
     <div className={styles.widget} ref={panelRef} data-accessibility-widget>
-      <section className={`${styles.panel} ${open ? styles.panelOpen : ''}`} aria-hidden={!open} aria-label="Alat aksesibilitas">
+      <section id="accessibility-tools-panel" className={`${styles.panel} ${open ? styles.panelOpen : ''}`} aria-hidden={!open} aria-label="Alat aksesibilitas">
         <div className={styles.panelHead}>
           <span>AKSESIBILITAS</span>
           <strong>Sesuaikan tampilan</strong>
@@ -125,7 +135,7 @@ export default function AccessibilityTools() {
         <p>Aktifkan pembaca klik, lalu tekan teks mana pun yang ingin didengar.</p>
       </section>
 
-      <button className={styles.trigger} type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? 'Tutup alat aksesibilitas' : 'Buka alat aksesibilitas'}>
+      <button ref={triggerRef} className={styles.trigger} type="button" onClick={() => setOpen((value) => !value)} aria-controls="accessibility-tools-panel" aria-expanded={open} aria-label={open ? 'Tutup alat aksesibilitas' : 'Buka alat aksesibilitas'}>
         <span aria-hidden="true" className={styles.person}><i /><b /><em /></span>
         <small>{open ? 'Tutup' : 'Akses'}</small>
       </button>
