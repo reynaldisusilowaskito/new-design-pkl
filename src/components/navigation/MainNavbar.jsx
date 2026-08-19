@@ -109,12 +109,12 @@ export default function MainNavbar({ navigation = [], immediate = false }) {
             ? <button type="button" onClick={() => openGroup(index)} key={item.title}>{t(item.title)}</button>
             : <NavigationLink href={safeHref(item)} onClick={() => setIsOpen(false)} key={item.title}>{t(item.title)}</NavigationLink>)}
         </div>
-        <div className={styles.categoryRail} aria-label={`Kategori ${activeTop?.title || ''}`}>
+        <div className={styles.categoryRail} aria-label={`${t('Kategori')} ${t(activeTop?.title || '')}`}>
           <p>{t(activeTop?.title || 'Jelajahi kota')}</p>
           {groups.map((group, index) => (
             <button className={index === activeGroupIndex ? styles.activeCategory : ''} type="button"
               onClick={() => setActiveGroupIndex(index)} key={group.title}>
-              <span aria-hidden="true" />{group.title}<b aria-hidden="true">↗</b>
+              <span aria-hidden="true" />{t(group.title)}<b aria-hidden="true">↗</b>
             </button>
           ))}
         </div>
@@ -124,9 +124,15 @@ export default function MainNavbar({ navigation = [], immediate = false }) {
           <p>{t('Pilih informasi atau layanan yang ingin dibuka.')}</p>
           <span className={styles.linkHint}>{t('TAUTAN TERSEDIA')}</span>
           <div className={`${styles.cityLinks} ${panelLinks.length > 9 ? styles.denseLinks : ''}`}>
+<<<<<<< HEAD
             {panelLinks.map((link) => <NavigationLink href={safeHref(link)} onClick={() => setIsOpen(false)} key={link.title}>
               <small>{activeTop?.title}</small><strong>{link.title}</strong><i aria-hidden="true">Buka&nbsp; ↗</i>
             </NavigationLink>)}
+=======
+            {panelLinks.map((link) => <a href={safeHref(link)} onClick={() => setIsOpen(false)} key={link.title}>
+              <small>{t(activeTop?.title)}</small><strong>{t(link.title)}</strong><i aria-hidden="true">{t('Buka')}&nbsp; ↗</i>
+            </a>)}
+>>>>>>> 59502f1 (menambahkan wisata)
           </div>
         </div>
       </section>

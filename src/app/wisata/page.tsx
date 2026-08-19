@@ -6,5 +6,5 @@ export const revalidate = 900
 
 export default async function TourismPage() {
   const [organization, tourism] = await Promise.all([getOrganization(), getTourismContent()])
-  return <TourismPageShell navigation={organization.menu} tourism={tourism} />
+  return <TourismPageShell navigation={organization.menu} tourism={tourism} organization={organization} />
 }

@@ -1,23 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './TourismLanding.module.css'
-import guide from './TourismGuide.module.css'
 
 /** @param {{ destinations?: import('@/lib/tourism-api').TourismItem[], culinaries?: import('@/lib/tourism-api').TourismItem[], hotels?: import('@/lib/tourism-api').TourismItem[] }} props */
 export default function TourismLanding({ destinations = [], culinaries = [], hotels = [] }) {
   const { language, t } = useExperience()
   const heroRef = useRef(null)
+  const [activeGroup, setActiveGroup] = useState(0)
   const groups = [
-    ['Destinasi', '/wisata/destinations', destinations, 'Ruang, sejarah, dan cerita kota yang selalu bergerak.'],
-    ['Wisata Kuliner', '/wisata/culinaries', culinaries, 'Rasa khas yang membawa kita lebih dekat dengan Surabaya.'],
-    ['Hotel Terdekat', '/wisata/hotels', hotels, 'Tempat singgah untuk melanjutkan perjalananmu.'],
+    { label:'Destinasi', short:'Seni & Budaya', href:'/wisata/destinations', items:destinations },
+    { label:'Wisata Kuliner', short:'Kuliner', href:'/wisata/culinaries', items:culinaries },
+    { label:'Hotel Terdekat', short:'Menginap', href:'/wisata/hotels', items:hotels },
   ]
-  const name = (item) => language === 'en' ? item.nameEn : item.nameId
-  const handlePointerMove = (event) => {
+  const current = groups[activeGroup]
+  const name = item => language === 'en' ? item.nameEn : item.nameId
+  const imageStyle = (item, fallback) => ({ backgroundImage:item?.image ? `url("${item.image}"), url("${fallback}")` : `url("${fallback}")` })
+  const handlePointerMove = event => {
     const hero = heroRef.current
     if (!hero) return
     const bounds = hero.getBoundingClientRect()
@@ -30,7 +31,7 @@ export default function TourismLanding({ destinations = [], culinaries = [], hot
   }
 
   return (
-    <section className={styles.wrap}>
+    <div className={styles.hiddenTrack}>
       <header className={styles.intro} ref={heroRef} onPointerMove={handlePointerMove} onPointerLeave={resetPointer}>
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.introMeta}><span>08 / JELAJAHI KOTA</span><span>WISATA SURABAYA</span></div>
@@ -38,39 +39,42 @@ export default function TourismLanding({ destinations = [], culinaries = [], hot
           <p>EXPLORE SURABAYA</p>
           <h1>{t('Surabaya,')}<br />{t('satu pengalaman')}<br /><em>{t('sekaligus.')}</em></h1>
           <span>{t('Pilihan destinasi, kuliner, dan hotel untuk memulai perjalananmu.')}</span>
-          <div className={styles.heroActions}><Link href="/wisata/destinations">{t('Mulai jelajahi')}</Link><Link href="#destinasi">{t('Lihat pilihan')}</Link></div>
+          <div className={styles.heroActions}><Link href="#koleksi">{t('Mulai jelajahi')}</Link><Link href="#koleksi">{t('Lihat pilihan')}</Link></div>
         </div>
         <div className={styles.heroVisual} aria-hidden="true">
           <span className={`${styles.decoration} ${styles.decorationOne}`}>✦</span><span className={`${styles.decoration} ${styles.decorationTwo}`}>✿</span><span className={`${styles.decoration} ${styles.decorationThree}`}>✦</span>
           <span className={styles.glassOrb} /><span className={styles.glassRing} /><span className={styles.glassBlock} />
         </div>
-        <div className={styles.heroBottom}><span>{t('MENJELAJAHI CERITA, RASA, DAN RUANG DI SURABAYA.')}</span><Link href="#destinasi">{t('Explore more')}</Link></div>
+        <div className={styles.heroBottom}><span>{t('MENJELAJAHI CERITA, RASA, DAN RUANG DI SURABAYA.')}</span><Link href="#koleksi">{t('Explore more')}</Link></div>
       </header>
 
-      <section className={guide.guideHero}>
-        <div className={guide.guideCopy}><span>YOUR SURABAYA GUIDE</span><h2>{t('Pilih pengalamanmu.')}</h2><p>{t('Satu kota dengan banyak cerita untuk dijelajahi.')}</p><Link href="/wisata/destinations">{t('Mulai menjelajah')} →</Link></div>
-        <div className={guide.guideVisual}>
-          {groups.map(([title, href, items], index) => {
-            const item = items[0]
-            return <Link href={href} className={`${guide.orbitCard} ${guide[`orbit${index + 1}`]}`} key={href}><i style={item?.image ? { backgroundImage: `url("${item.image}")` } : undefined} /><span>{t(title)}</span></Link>
-          })}
-          <Image src="/assets/redesign/tourism/tourism-guide-3d.webp" alt="" fill sizes="(max-width: 900px) 100vw, 58vw" />
-        </div>
-      </section>
+      <section className={styles.collection} id="koleksi">
+        <header className={styles.collectionHead}>
+          <div><span>CURATED CITY GUIDE</span><h2>{t('Pilih jalurmu.')}</h2></div>
+          <p>{t('Rekomendasi pilihan untuk menikmati Surabaya sesuai caramu.')}</p>
+        </header>
 
-      {groups.map(([title, href, items, description], groupIndex) => (
-        <section className={styles.group} id={groupIndex === 0 ? 'destinasi' : groupIndex === 1 ? 'kuliner' : 'hotel'} key={href}>
-          <div className={styles.groupHead}><span>0{groupIndex + 1} / CURATED IN SURABAYA</span><h2>{t(title)}</h2><p>{t(description)}</p><Link href={href}>{t('Lihat lebih banyak')} <b aria-hidden="true">→</b></Link></div>
-          <div className={styles.cards}>
-            {items.slice(0, 3).map((item, index) => (
-              <Link href={href} className={styles.card} key={item.id}>
-                <i style={item.image ? { backgroundImage: `url("${item.image}")` } : undefined} />
-                <small>0{index + 1}</small><span>{name(item)}</span><em>{item.category}</em><strong>{item.address}</strong>
+        <div className={styles.categoryTabs} role="tablist" aria-label={t('Kategori wisata')}>
+          {groups.map((group, index) => (
+            <button key={group.href} type="button" role="tab" aria-selected={activeGroup === index} className={activeGroup === index ? styles.activeTab : ''} onClick={() => setActiveGroup(index)}>
+              <span>0{index + 1}</span>{t(group.short)}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.collectionGrid} role="tabpanel">
+          {current.items.slice(0, 6).map((item, index) => (
+            <article className={styles.placeCard} key={item.id}>
+              <Link href={current.href} className={styles.placeImage} style={imageStyle(item, '/assets/redesign/hero/alun-alun-surabaya.jpg')} aria-label={`${t('Lihat detail')} ${name(item)}`}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
               </Link>
-            ))}
-          </div>
-        </section>
-      ))}
-    </section>
+              <div><em>{t(item.category || current.label)}</em><h3>{name(item)}</h3><p>{item.address}</p><Link href={current.href} aria-label={`${t('Buka')} ${name(item)}`}>↗</Link></div>
+            </article>
+          ))}
+        </div>
+
+        <Link className={styles.seeAll} href={current.href}>{t('Lihat semua')} {t(current.label)} <span aria-hidden="true">→</span></Link>
+      </section>
+    </div>
   )
 }
