@@ -124,15 +124,9 @@ export default function MainNavbar({ navigation = [], immediate = false }) {
           <p>{t('Pilih informasi atau layanan yang ingin dibuka.')}</p>
           <span className={styles.linkHint}>{t('TAUTAN TERSEDIA')}</span>
           <div className={`${styles.cityLinks} ${panelLinks.length > 9 ? styles.denseLinks : ''}`}>
-<<<<<<< HEAD
             {panelLinks.map((link) => <NavigationLink href={safeHref(link)} onClick={() => setIsOpen(false)} key={link.title}>
-              <small>{activeTop?.title}</small><strong>{link.title}</strong><i aria-hidden="true">Buka&nbsp; ↗</i>
-            </NavigationLink>)}
-=======
-            {panelLinks.map((link) => <a href={safeHref(link)} onClick={() => setIsOpen(false)} key={link.title}>
               <small>{t(activeTop?.title)}</small><strong>{t(link.title)}</strong><i aria-hidden="true">{t('Buka')}&nbsp; ↗</i>
-            </a>)}
->>>>>>> 59502f1 (menambahkan wisata)
+            </NavigationLink>)}
           </div>
         </div>
       </section>

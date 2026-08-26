@@ -11,6 +11,7 @@ Project utama baru untuk redesign portal Pemerintah Kota Surabaya.
 - Client Components hanya untuk interaksi Navbar, animasi Hero/About, dan WebGL MapLibre
 - MapLibre GL untuk peta 3D interaktif
 - Manrope variable font yang disimpan sebagai dependency lokal
+- Animate UI primitive berbasis Motion yang disimpan lokal dan dipasang selektif
 
 Folder `frontend/` tidak menjadi dependency source code. Project tersebut hanya menjadi referensi kontrak API dan data awal saat proses migrasi.
 
@@ -85,3 +86,35 @@ Backend Next.js dipisahkan per resource di `src/app/api/` agar kontrak, batas qu
 Data demografi peta disiapkan Server Component. Rendering WebGL, geolocation, zoom, rotasi, dan klik wilayah tetap dijalankan browser karena API tersebut tidak tersedia di server.
 
 Penjelasan kontrak props, state, dan alur API tersedia di [`docs/DATA_FLOW.md`](docs/DATA_FLOW.md).
+Checklist penyambungan backend resmi tersedia di [`docs/BACKEND_INTEGRATION.md`](docs/BACKEND_INTEGRATION.md).
+
+Sebelum membuat pull request, jalankan:
+
+```powershell
+yarn verify
+yarn build
+```
+
+CI menjalankan pemeriksaan yang sama dan menolak source yang masih memiliki marker merge conflict.
+
+## Animate UI
+
+Project memakai primitive Animate UI secara selektif tanpa Tailwind agar CSS Modules dan tampilan existing tidak berubah. Primitive yang tersedia:
+
+```tsx
+import { RollingText } from '@/components/animate-ui/primitives/texts/RollingText'
+
+<RollingText text="KOTA YANG BERGERAK" />
+```
+
+Komponen menghormati preferensi `prefers-reduced-motion`. Tambahkan primitive lain hanya jika benar-benar digunakan agar bundle client tetap ringan.
+
+## Google Analytics
+
+Isi GA4 Measurement ID di `.env.local` atau environment production:
+
+```env
+NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+```
+
+Analytics otomatis nonaktif jika variabel tidak tersedia atau formatnya tidak valid. Page view dikirim setelah konten utama dimuat dan setiap kali route App Router berubah.

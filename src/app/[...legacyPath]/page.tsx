@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import LegacyPageTemplate from '@/components/legacy/LegacyPageTemplate'
 import ContentDetailPage from '@/components/content/ContentDetailPage'
 import NewsIndexPage from '@/components/content/NewsIndexPage'
@@ -7,6 +8,44 @@ import { getCityAgenda, getLegacyRoutePage, getNews, getOrganization } from '@/l
 export const revalidate = 300
 
 type LegacyRouteProps = { params: Promise<{ legacyPath: string[] }> }
+
+const descriptionFromHtml = (html: string) => html
+  .replace(/<[^>]*>/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .slice(0, 160)
+
+export async function generateMetadata({ params }: LegacyRouteProps): Promise<Metadata> {
+  const { legacyPath } = await params
+  const route = legacyPath.join('/')
+  if (route === 'id/berita' || route === 'berita') {
+    return {
+      title: 'Berita',
+      description: 'Kabar terbaru dan informasi resmi Pemerintah Kota Surabaya.',
+      alternates: { canonical: '/id/berita' },
+    }
+  }
+  if (route === 'id/agenda' || route === 'agenda') {
+    return {
+      title: 'Agenda Kota',
+      description: 'Agenda dan pengumuman resmi Kota Surabaya.',
+      alternates: { canonical: '/id/agenda' },
+    }
+  }
+
+  const page = await getLegacyRoutePage(legacyPath)
+  return {
+    title: page.title,
+    description: descriptionFromHtml(page.content) || 'Informasi resmi Pemerintah Kota Surabaya.',
+    alternates: { canonical: `/${route}` },
+    openGraph: {
+      type: page.kind === 'news' ? 'article' : 'website',
+      title: page.title,
+      description: descriptionFromHtml(page.content),
+      images: page.image ? [page.image] : undefined,
+    },
+  }
+}
 
 export default async function LegacyCmsPage({ params }: LegacyRouteProps) {
   const { legacyPath } = await params

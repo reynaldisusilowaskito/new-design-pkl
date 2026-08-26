@@ -1,5 +1,6 @@
 import 'server-only'
 import fallbackMenu from '@/data/menu.fallback.json'
+import { sanitizeOfficialHtml } from '@/lib/sanitize-official-html'
 
 export type NavigationItem = {
   title: string
@@ -135,14 +136,30 @@ const normalizePostDate = (post: RawPost) => typeof post.publishDate === 'string
   ? post.publishDate
   : post.publishDate?.Valid ? post.publishDate.Time || '' : ''
 
-const normalizeOfficialHtml = (value = '') => value
+const normalizeOfficialHtml = (value = '') => sanitizeOfficialHtml(value
   .replaceAll('src="../../', 'src="https://surabaya.go.id/')
-  .replaceAll('href="../../', 'href="https://surabaya.go.id/')
+  .replaceAll('href="../../', 'href="https://surabaya.go.id/'))
 
 const fallbackNavigation = fallbackMenu as NavigationItem[]
 const apiBase = process.env.BASE_API_URL?.replace(/\/$/, '')
 const slug = process.env.SURABAYA_SLUG
 const webdisplayBase = process.env.API_URL_WEBDISPLAY?.replace(/\/$/, '')
+const reportedFailures = new Set<string>()
+
+export const getBackendReadiness = () => ({
+  configured: Boolean(apiBase && slug),
+  primaryApi: Boolean(apiBase),
+  webdisplayApi: Boolean(webdisplayBase),
+  siteSlug: Boolean(slug),
+  signature: Boolean(process.env.SIGNATURE),
+})
+
+const reportFetchFailure = (source: string, path: string, detail: string) => {
+  const key = `${source}:${path}:${detail}`
+  if (reportedFailures.has(key)) return
+  reportedFailures.add(key)
+  console.warn(JSON.stringify({ scope: 'surabaya-api', source, path, detail }))
+}
 
 const apiFetch = async <T>(path: string, revalidate = 300): Promise<T | null> => {
   if (!apiBase) return null
@@ -155,9 +172,13 @@ const apiFetch = async <T>(path: string, revalidate = 300): Promise<T | null> =>
       },
       signal: AbortSignal.timeout(3000),
     })
-    if (!response.ok) return null
+    if (!response.ok) {
+      reportFetchFailure('primary', path, `HTTP ${response.status}`)
+      return null
+    }
     return response.json() as Promise<T>
-  } catch {
+  } catch (error) {
+    reportFetchFailure('primary', path, error instanceof Error ? error.message : 'Unknown fetch error')
     return null
   }
 }
@@ -199,8 +220,15 @@ const webdisplayFetch = async <T>(path: string, revalidate = 300): Promise<T | n
     const response = await fetch(`${webdisplayBase}/${path.replace(/^\//, '')}`, {
       next: { revalidate }, signal: AbortSignal.timeout(5000),
     })
-    return response.ok ? response.json() as Promise<T> : null
-  } catch { return null }
+    if (!response.ok) {
+      reportFetchFailure('webdisplay', path, `HTTP ${response.status}`)
+      return null
+    }
+    return response.json() as Promise<T>
+  } catch (error) {
+    reportFetchFailure('webdisplay', path, error instanceof Error ? error.message : 'Unknown fetch error')
+    return null
+  }
 }
 
 export const getOrganization = async (): Promise<Organization> => {
@@ -291,7 +319,7 @@ export const getLegacyPage = async (id: string, slugValue: string): Promise<Lega
     id: String(resolved?.id || id),
     slug: resolved?.slug || slugValue,
     title: resolved?.title || fallback.title,
-    content: pageContent(resolved) || fallback.content,
+    content: normalizeOfficialHtml(pageContent(resolved) || fallback.content),
     updatedAt: resolved?.updatedAt || resolved?.updated_at,
   }
 }
