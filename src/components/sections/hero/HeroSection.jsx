@@ -7,11 +7,11 @@ import MainNavbar from '@/components/navigation/MainNavbar'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './HeroSection.module.css'
 
-const dayBackground = '/assets/redesign/hero/kota-lama-day.webp'
-const nightBackground = '/assets/redesign/hero/kota-lama-night-windows.webp'
+const dayForeground = '/assets/redesign/hero/kota-lama-foreground-day-final.webp'
+const nightForeground = '/assets/redesign/hero/kota-lama-foreground-night.webp'
 const blueWave = '/assets/redesign/hero/background ombak.webp'
 const suraBaya = '/assets/redesign/hero/sura-dan-baya-biru.webp'
-const cityLine = '/assets/redesign/hero/animasi-bawah-herosection.webp'
+const cityLine = '/assets/redesign/hero/skyline-gold-lines.webp'
 const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.webp'
 const splashWordmark = '/assets/redesign/hero/surabaya-wordmark-black-transparent.webp'
 
@@ -93,8 +93,21 @@ function HeroSection({ navigation }) {
         <MainNavbar navigation={navigation} immediate={!playSplash} />
 
         <div className={styles.cityBackground} aria-hidden="true">
-          <Image className={styles.dayBackground} src={dayBackground} alt="" fill priority sizes="100vw" />
-          <Image className={styles.nightBackground} src={nightBackground} alt="" fill priority sizes="100vw" />
+          <div className={styles.skyLayer} />
+          <div className={styles.starField} />
+          <div className={styles.moonField}>
+            <i className={styles.moonCraterOne} />
+            <i className={styles.moonCraterTwo} />
+            <i className={styles.moonCraterThree} />
+          </div>
+          <div className={styles.cloudField}>
+            <i className={styles.cloudOne} />
+            <i className={styles.cloudTwo} />
+            <i className={styles.cloudThree} />
+            <i className={styles.cloudFour} />
+          </div>
+          <Image className={styles.dayForeground} src={dayForeground} alt="" fill priority sizes="100vw" />
+          <Image className={styles.nightForeground} src={nightForeground} alt="" fill priority sizes="100vw" />
         </div>
         <div className={styles.backgroundWash} aria-hidden="true" />
 

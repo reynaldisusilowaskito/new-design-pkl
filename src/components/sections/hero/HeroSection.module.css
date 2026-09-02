@@ -26,20 +26,131 @@
   border-radius: 0 0 34px 34px;
 }
 
-.cityBackground img {
+.dayForeground,
+.nightForeground {
+  z-index: 3;
   object-fit: cover;
   object-position: center bottom;
-  transition: opacity .7s ease, filter .7s ease;
+  transform: scale(.96);
+  transform-origin: center bottom;
+  transition: opacity .7s ease, filter .7s ease, transform .7s ease;
 }
 
-.dayBackground { opacity: 1; }
-.nightBackground { opacity: 0; }
+.dayForeground { opacity: 1; }
+.nightForeground { opacity: 0; }
+
+.skyLayer,
+.starField,
+.moonField,
+.cloudField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.skyLayer {
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 72% 68% at 82% 34%, rgba(255, 239, 218, .88), transparent 68%),
+    linear-gradient(116deg, #7814a1 0%, #7654b4 16%, #79b9e2 43%, #c8e4ef 68%, #f5ddd5 100%);
+  transition: background .7s ease;
+}
+
+.skyLayer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 238, 218, .18) 68%, rgba(251, 220, 208, .28));
+}
+
+.starField {
+  z-index: 1;
+  opacity: 0;
+  background-image:
+    radial-gradient(circle at 8% 18%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+    radial-gradient(circle at 21% 9%, rgba(216,229,255,.8) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 38% 25%, rgba(255,255,255,.85) 0 1px, transparent 2px),
+    radial-gradient(circle at 54% 12%, rgba(246,220,238,.75) 0 1px, transparent 2px),
+    radial-gradient(circle at 67% 31%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 83% 16%, rgba(216,229,255,.85) 0 1px, transparent 2px),
+    radial-gradient(circle at 94% 38%, rgba(255,255,255,.8) 0 1.5px, transparent 2.5px);
+  transition: opacity .7s ease;
+}
+
+.moonField {
+  z-index: 2;
+  top: clamp(140px, 17vh, 190px);
+  right: auto;
+  bottom: auto;
+  left: 58%;
+  width: clamp(76px, 7.5vw, 126px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 247, 218, .62);
+  border-radius: 50%;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 35% 28%, #fffbe4 0 9%, transparent 10%),
+    radial-gradient(circle at 38% 34%, #fff7cf 0%, #f3df9d 54%, #d5bd75 100%);
+  box-shadow: 0 0 30px rgba(255, 237, 173, .32), 0 0 76px rgba(205, 220, 255, .22);
+  transition: opacity .7s ease, transform .7s ease;
+  transform: translate(-50%, -8px);
+}
+
+.moonField i {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(156, 133, 84, .17);
+  box-shadow: inset 2px 2px 4px rgba(116, 96, 54, .1);
+}
+.moonCraterOne { top: 23%; left: 55%; width: 16%; aspect-ratio: 1; }
+.moonCraterTwo { top: 57%; left: 24%; width: 21%; aspect-ratio: 1; }
+.moonCraterThree { right: 17%; bottom: 18%; width: 10%; aspect-ratio: 1; }
+
+.cloudField {
+  z-index: 2;
+  overflow: hidden;
+  opacity: .88;
+  transition: opacity .6s ease;
+}
+
+.cloudField i {
+  --cloud-scale: 1;
+  position: absolute;
+  left: -18%;
+  width: 150px;
+  height: 42px;
+  border-radius: 999px;
+  opacity: var(--cloud-opacity, .7);
+  background: rgba(255, 255, 255, .78);
+  box-shadow: 0 12px 28px rgba(55, 105, 147, .1);
+  filter: blur(.2px);
+  transform: scale(var(--cloud-scale));
+  animation: cloudTravel var(--cloud-duration, 42s) linear infinite;
+}
+
+.cloudField i::before,
+.cloudField i::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloudField i::before { left: 28px; width: 58px; height: 58px; }
+.cloudField i::after { right: 24px; width: 76px; height: 76px; }
+.cloudOne { top: 12%; --cloud-duration: 48s; --cloud-scale: 1.1; --cloud-opacity: .72; }
+.cloudTwo { top: 31%; --cloud-duration: 58s; --cloud-scale: .72; --cloud-opacity: .58; animation-delay: -29s !important; }
+.cloudThree { top: 7%; --cloud-duration: 64s; --cloud-scale: .52; --cloud-opacity: .5; animation-delay: -43s !important; }
+.cloudFour { top: 43%; --cloud-duration: 70s; --cloud-scale: .58; --cloud-opacity: .38; animation-delay: -16s !important; }
 
 .backgroundWash {
   position: absolute;
   z-index: 1;
   inset: 0;
-  background: linear-gradient(90deg, rgba(5, 27, 61, .18) 0%, rgba(9, 34, 71, .03) 58%, rgba(255, 243, 234, .12) 100%);
+  background:
+    radial-gradient(ellipse 66% 48% at 4% 0%, rgba(40, 105, 169, .16), transparent 74%),
+    linear-gradient(90deg, rgba(5, 35, 76, .1) 0%, transparent 56%, rgba(255, 243, 234, .08) 100%);
   pointer-events: none;
 }
 
@@ -89,10 +200,10 @@
 }
 
 .cityTitle {
-  margin: -.03em 0 0;
+  margin: -.03em 0 0 clamp(5px, .8vw, 13px);
   color: #f9be23;
   font-family: 'Qwigley', cursive;
-  font-size: clamp(78px, 8vw, 130px);
+  font-size: clamp(76px, 7.7vw, 125px);
   font-weight: 400;
   line-height: .82;
   letter-spacing: .005em;
@@ -130,6 +241,8 @@
 }
 
 .cityLineArt {
+  --skyline-fill: #fffdfb;
+  --skyline-width: 100%;
   position: absolute;
   z-index: 7;
   right: 0;
@@ -140,29 +253,53 @@
   pointer-events: none;
 }
 
+.cityLineArt::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: 50%;
+  width: var(--skyline-width);
+  height: 100%;
+  background: var(--skyline-fill);
+  -webkit-mask: url('/assets/redesign/hero/skyline-fill-mask-stable.webp') center bottom / 100% auto no-repeat;
+  mask: url('/assets/redesign/hero/skyline-fill-mask-stable.webp') center bottom / 100% auto no-repeat;
+  transform: translate(-50%, 10%);
+  transition: background-color .7s ease;
+}
+
 .cityLineArt img {
   position: absolute;
-  right: 0;
+  z-index: 1;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  width: var(--skyline-width);
   height: auto;
   max-width: none;
   object-fit: contain;
   object-position: center bottom;
-  transform: translateY(10%);
+  transform: translate(-50%, 10%);
 }
 
 :global(:root[data-theme='dark']) .hero,
 :global(:root[data-theme='dark']) .scene { background: #071424; }
-:global(:root[data-theme='dark']) .dayBackground { opacity: 0; }
-:global(:root[data-theme='dark']) .nightBackground { opacity: 1; filter: brightness(.72) saturate(.92); }
+:global(:root[data-theme='dark']) .dayForeground { opacity: 0; }
+:global(:root[data-theme='dark']) .nightForeground { opacity: 1; }
+:global(:root[data-theme='dark']) .skyLayer {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(137, 151, 193, .22), transparent 18%),
+    linear-gradient(145deg, #07162d 0%, #0b2140 48%, #171d36 100%);
+}
+:global(:root[data-theme='dark']) .skyLayer::after { background: linear-gradient(180deg, rgba(2,8,20,.08), rgba(2,8,20,.34)); }
+:global(:root[data-theme='dark']) .starField { opacity: .88; animation: starPulse 4s ease-in-out infinite alternate; }
+:global(:root[data-theme='dark']) .moonField { opacity: 1; transform: translate(-50%, 0); }
+:global(:root[data-theme='dark']) .cloudField { opacity: 0; visibility: hidden; }
 :global(:root[data-theme='dark']) .backgroundWash {
   background: linear-gradient(90deg, rgba(0, 14, 43, .48), rgba(5, 17, 40, .2) 58%, rgba(8, 16, 34, .32));
 }
 :global(:root[data-theme='dark']) .waveArt { filter: brightness(.72) saturate(.88); }
 :global(:root[data-theme='dark']) .characterArt img { filter: brightness(.82) saturate(.9) drop-shadow(0 28px 38px rgba(0, 0, 0, .38)); }
-:global(:root[data-theme='dark']) .cityLineArt { filter: brightness(.8) saturate(.82); }
+:global(:root[data-theme='dark']) .cityLineArt { --skyline-fill: #05070c; }
 
 .introSplash {
   position: fixed;
@@ -224,6 +361,8 @@
 @keyframes introCaptionReveal { to { opacity:1; transform:translate(-50%,0); } }
 @keyframes introCaptionExit { to { opacity:0; transform:translate(-50%,-5px); } }
 @keyframes introShine { to { transform:translateX(100%); } }
+@keyframes cloudTravel { from { translate: -12vw 0; } to { translate: 132vw 0; } }
+@keyframes starPulse { from { filter: brightness(.78); } to { filter: brightness(1.28); } }
 
 @media (min-width: 1600px) {
   .heroCopy { top: 24%; }
@@ -235,6 +374,7 @@
   .heroCopy { top: 24%; left: 4%; width: 57vw; }
   .heroCopy h1 { font-size: clamp(68px, 8.5vw, 100px); }
   .cityTitle { font-size: clamp(72px, 8.6vw, 104px); }
+  .moonField { left: 61%; }
   .slogan { max-width: 580px; font-size: clamp(16px, 1.8vw, 22px); }
   .characterArt { right: -1%; width: 52vw; height: 84%; }
   .waveArt { width: 78vw; }
@@ -242,8 +382,17 @@
 
 @media (max-width: 760px) {
   .hero { height: 100svh; min-height: 720px; }
-  .cityBackground img { object-position: 43% bottom; }
-  .backgroundWash { background: linear-gradient(180deg, rgba(3,25,59,.08), rgba(4,25,61,.24)); }
+  .dayForeground,
+  .nightForeground { object-position: 43% bottom; transform: scale(.985); }
+  .moonField { top: clamp(126px, 16vh, 152px); left: 72%; }
+  .cloudField i { width: 112px; height: 32px; }
+  .cloudField i::before { left: 21px; width: 44px; height: 44px; }
+  .cloudField i::after { right: 18px; width: 56px; height: 56px; }
+  .backgroundWash {
+    background:
+      radial-gradient(ellipse 95% 48% at 10% 0%, rgba(40, 105, 169, .14), transparent 76%),
+      linear-gradient(180deg, transparent 34%, rgba(4, 25, 61, .16));
+  }
   .waveArt { width: 112vw; height: 96%; opacity: .96; }
   .heroCopy { top: 19%; left: 6%; width: 88%; text-align: left; }
   .eyebrow { font-size: clamp(14px, 4vw, 19px); }
@@ -252,12 +401,7 @@
   .slogan { max-width: 86%; margin-top: 14px; font-size: clamp(14px, 3.6vw, 18px); line-height: 1.48; }
   .characterArt { right: -10%; bottom: 8%; width: 72vw; height: 57%; opacity: .92; }
   .cityLineArt { height: clamp(150px, 31vw, 225px); }
-  .cityLineArt img {
-    right: auto;
-    left: 50%;
-    width: 128%;
-    transform: translate(-50%, 10%);
-  }
+  .cityLineArt { --skyline-width: 128%; }
 }
 
 @media (max-width: 440px) {
@@ -268,7 +412,7 @@
   .slogan { max-width: 92%; font-size: 13px; }
   .characterArt { right: -16%; bottom: 7%; width: 82vw; height: 54%; }
   .cityLineArt { height: 150px; }
-  .cityLineArt img { width: 148%; }
+  .cityLineArt { --skyline-width: 148%; }
   .introIdentity { gap: 13px; width: 88vw; }
   .introMarksWrap { flex-basis: 105px; }
   .introDivider { height: 43px; }
@@ -276,5 +420,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .introSplash { display: none; }
+  .cloudField i,
+  .starField { animation: none; }
   .characterArt img { transform: none; transition: none; }
 }
