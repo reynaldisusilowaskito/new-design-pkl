@@ -1,0 +1,12 @@
+.map { width:100%; height:100%; min-height:350px; background:#101b2b; }
+.map :global(.maplibregl-ctrl-group) { overflow:hidden; border:1px solid rgba(255,255,255,.24); border-radius:13px; background:rgba(247,240,237,.92); box-shadow:0 12px 28px rgba(8,15,28,.22); backdrop-filter:blur(12px); }
+.map :global(.maplibregl-ctrl-group button) { width:34px; height:34px; }
+.map :global(.maplibregl-ctrl-attrib) { color:rgba(24,36,56,.7); background:rgba(255,247,246,.8); font-size:8px; backdrop-filter:blur(10px); }
+.map :global(.maplibregl-popup-content) { display:grid; gap:4px; max-width:210px; padding:11px 13px; border-radius:11px; color:#182438; font:inherit; }
+.map :global(.maplibregl-popup-content strong) { font-size:10px; }.map :global(.maplibregl-popup-content span) { color:rgba(24,36,56,.58); font-size:8px; }
+.userMarker { position:relative; display:grid; width:76px; height:76px; place-items:center; border:10px solid #e58e80; border-radius:50% 50% 50% 0; color:#586254; background:#fff; box-shadow:0 15px 28px rgba(24,36,56,.3); font-size:9px; font-weight:900; line-height:.82; text-align:center; transform:rotate(-45deg); }
+.userMarker::after { content:''; position:absolute; inset:5px; border:1px solid rgba(229,142,128,.35); border-radius:inherit; }.userMarker span { transform:rotate(45deg); }
+.placeMarker { display:grid; width:29px; height:29px; padding:0; place-items:center; border:3px solid #fff; border-radius:50%; color:#fff; background:#182438; box-shadow:0 7px 16px rgba(24,36,56,.28); font:800 8px/1 inherit; cursor:pointer; }
+.placeMarker:hover { background:#a06d7b; transform:scale(1.08); }
+@media(max-width:900px){.map{min-height:290px}}
+@media(prefers-reduced-motion:reduce){.placeMarker{transition:none}}
