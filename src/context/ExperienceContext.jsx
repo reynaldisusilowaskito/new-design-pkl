@@ -337,7 +337,7 @@ export function ExperienceProvider({ children }) {
 
   return (
     <ExperienceContext.Provider value={value}>
-      <div key={language} style={{ display: 'contents' }}>{children}</div>
+      <div style={{ display: 'contents' }}>{children}</div>
     </ExperienceContext.Provider>
   )
 }

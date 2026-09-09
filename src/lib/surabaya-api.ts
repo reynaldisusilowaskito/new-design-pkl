@@ -304,6 +304,24 @@ const unwrapLegacyPage = (value: RawLegacyPage | { data?: RawLegacyPage } | null
  * is temporarily unavailable.
  */
 export const getLegacyPage = async (id: string, slugValue: string): Promise<LegacyPage> => {
+  const legacyPost = slug
+    ? await apiFetch<{ data?: RawPost }>(`public/${slug}/post/halaman/${encodeURIComponent(slugValue)}`, 300)
+    : null
+  const post = legacyPost?.data
+  if (post) {
+    const postId = String(post.id || id)
+    return {
+      id: postId,
+      slug: post.slug || slugValue,
+      title: post.title || displayTitle(slugValue),
+      content: normalizeOfficialHtml(post.postDetails?.map((detail) => detail.content || '').join('') || post.description || post.excerpt || ''),
+      image: normalizePostImage(post, postId),
+      publishedAt: normalizePostDate(post),
+      viewCount: post.viewsCount,
+      kind: 'page',
+    }
+  }
+
   const fromId = await apiFetch<RawLegacyPage | { data?: RawLegacyPage }>(`page-detail?id=${encodeURIComponent(id)}`, 300)
   const first = unwrapLegacyPage(fromId)
   const fromSlug = !pageContent(first)
