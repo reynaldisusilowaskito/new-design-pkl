@@ -76,6 +76,16 @@ export type NewsItem = {
   url: string
 }
 
+export type PaginatedResult<T> = {
+  items: T[]
+  page: number
+  limit: number
+  total: number
+  lastPage: number
+  search: string
+  fallback: boolean
+}
+
 type RawService = {
   id?: number | string
   title?: string
@@ -183,10 +193,9 @@ const apiFetch = async <T>(path: string, revalidate = 300): Promise<T | null> =>
   }
 }
 
-const tourismUrl = (title?: string, url?: string) => /^wisata$/i.test(title?.trim() || '') ? '/wisata' : url
 const transformMenu = (item: RawMenu): NavigationItem => ({
   title: item.value || 'Menu',
-  url: tourismUrl(item.value, item.linkUrl),
+  url: item.linkUrl,
   icon: item.logoUrl,
   order: item.order,
   child: Array.isArray(item.subMenus) ? item.subMenus.map(transformMenu) : [],
@@ -436,6 +445,74 @@ const normalizePost = (post: RawPost): NewsItem => {
     excerpt: post.excerpt || post.description || '',
     url: `/id/berita/${id}/${slug}`,
   }
+}
+
+const normalizeAgendaPost = (post: RawPost, index: number): CityAgendaItem => {
+  const normalized = normalizePost(post)
+  return {
+    id: normalized.id,
+    title: normalized.title,
+    publishedAt: normalized.publishedAt,
+    image: normalized.image,
+    url: `/id/agenda/${normalized.id}/${normalized.slug}`,
+    category: normalized.category === 'Berita' ? 'Agenda Kota' : normalized.category,
+    location: 'Kota Surabaya',
+    status: index < 2 ? 'Informasi terbaru' : 'Agenda berikutnya',
+  }
+}
+
+const cleanSearch = (value = '') => value.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 100)
+
+const countValue = (payload: unknown) => {
+  const value = payload && typeof payload === 'object' && 'data' in payload
+    ? (payload as { data?: unknown }).data
+    : payload
+  if (typeof value === 'number') return value
+  if (typeof value === 'string') return Number(value) || 0
+  if (value && typeof value === 'object' && 'count' in value) return Number((value as { count?: unknown }).count) || 0
+  return 0
+}
+
+const getPaginatedPosts = async (category: 'berita' | 'info' | 'infografis', page: number, limit: number, search: string) => {
+  const safePage = Math.max(1, Math.trunc(page) || 1)
+  const safeLimit = Math.min(30, Math.max(1, Math.trunc(limit) || 15))
+  const safeSearch = cleanSearch(search)
+  if (!slug) return { posts:null, total:0, page:safePage, limit:safeLimit, search:safeSearch }
+  const params = new URLSearchParams({ limit:String(safeLimit), page:String(safePage), search:safeSearch, orderColumn:'publish_date', orderBy:'desc' })
+  const countParams = new URLSearchParams({ search:safeSearch })
+  const [response, countResponse] = await Promise.all([
+    apiFetch<{ data?: RawPost[] }>(`public/${slug}/post/${category}?${params}`, 60),
+    apiFetch<{ data?: unknown }>(`public/${slug}/post/${category}/count?${countParams}`, 60),
+  ])
+  return {
+    posts: response === null ? null : Array.isArray(response.data) ? response.data : [],
+    total: countValue(countResponse),
+    page:safePage,
+    limit:safeLimit,
+    search:safeSearch,
+  }
+}
+
+export const getPaginatedNews = async (page = 1, limit = 15, search = ''): Promise<PaginatedResult<NewsItem>> => {
+  const result = await getPaginatedPosts('berita', page, limit, search)
+  const useFallback = result.posts === null && result.page === 1 && !result.search
+  const items = useFallback ? fallbackNews.slice(0, result.limit) : (result.posts || []).map(normalizePost)
+  const total = useFallback ? items.length : result.total
+  return { items, page:result.page, limit:result.limit, total, lastPage:Math.max(1, Math.ceil(total / result.limit)), search:result.search, fallback:useFallback }
+}
+
+export const getPaginatedAgenda = async (page = 1, limit = 15, search = ''): Promise<PaginatedResult<CityAgendaItem>> => {
+  const result = await getPaginatedPosts('info', page, limit, search)
+  const useFallback = result.posts === null && result.page === 1 && !result.search
+  const items = useFallback ? fallbackAgenda.slice(0, result.limit) : (result.posts || []).map(normalizeAgendaPost)
+  const total = useFallback ? items.length : result.total
+  return { items, page:result.page, limit:result.limit, total, lastPage:Math.max(1, Math.ceil(total / result.limit)), search:result.search, fallback:useFallback }
+}
+
+export const getPaginatedInfographics = async (page = 1, limit = 15, search = ''): Promise<PaginatedResult<NewsItem>> => {
+  const result = await getPaginatedPosts('infografis', page, limit, search)
+  const items = (result.posts || []).map(normalizePost)
+  return { items, page:result.page, limit:result.limit, total:result.total, lastPage:Math.max(1, Math.ceil(result.total / result.limit)), search:result.search, fallback:false }
 }
 
 const fallbackAgenda: CityAgendaItem[] = [

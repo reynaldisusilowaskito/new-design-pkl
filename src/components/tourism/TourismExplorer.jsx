@@ -108,7 +108,7 @@ export default function TourismExplorer({ destinations=[],culinaries=[],hotels=[
 }
 
 function TourismCard({item,index,view,language,local,t}) {
-  const detailHref=`/wisata/${view==='hotel'?'hotels':view==='culinary'?'culinaries':'destinations'}/${encodeURIComponent(item.id)}`
+  const detailHref=`/wisata/${view==='hotel'?'hotel':view==='culinary'?'culinary':'destination'}/${encodeURIComponent(item.id)}`
   return <article className={styles.card}>
     <Link href={detailHref} className={styles.cardLink} aria-label={`${t('Lihat detail')} ${local(item,'name')}`} />
     <div className={styles.visual} style={item.image?{backgroundImage:`linear-gradient(180deg,transparent,rgba(10,18,31,.68)),url("${item.image}")`}:undefined}><span>{String(index+1).padStart(2,'0')}</span><b>{view==='hotel'?`${item.stars||'–'} ★`:t(item.category)}</b></div>

@@ -1,4 +1,5 @@
 import 'server-only'
+import { EVENT_CATEGORIES } from './tourism-event'
 
 type TourismFile = { id?:string; name?:string; path?:string; size?:string; ext?:string; link?: string; fileTypeName?: string; fileType?: string }
 type RawDestination = { id?: string; address?: string; latitude?: string; longitude?: string; nameIndonesia?: string; nameInggris?: string | null; descriptionIndonesia?: string; desctiptionInggris?: string | null; tourismCategory?: Array<{ name?: string }>; touristDestinationFiles?: TourismFile[] }
@@ -14,6 +15,7 @@ type RawCulinary = {
   culinaryFiles?: TourismFile[]
 }
 type RawHotel = { id?:string; name?:string; address?:string; latitude?:string; longitude?:string; websiteLink?:string; phoneNumber?:string; description?:string; hotelFiles?:TourismFile[]; hotelThumbnail?:TourismFile; hotelCategory?:{ starNumber?:number; starNumberName?:string } }
+type RawEvent = { id?:string; organizer?:string; address?:string; latitude?:string; longitude?:string; startDate?:string; endDate?:string; nameIndonesia?:string; nameInggris?:string | null; descriptionIndonesia?:string; desctiptionInggris?:string | null; eventThumbnail?:string; idKategoriEvent?:string; linkDetailEvent?:string }
 type TourismResponse<T> = { data?: { data?: T[]; lastPage?: number } }
 
 export type TourismItem = {
@@ -35,6 +37,24 @@ export type TourismItem = {
   website: string
   phone: string
   priceLabel: string
+}
+
+export type TourismEvent = {
+  id: string
+  organizer: string
+  address: string
+  latitude: number | null
+  longitude: number | null
+  startDate: string
+  endDate: string
+  nameId: string
+  nameEn: string
+  descriptionId: string
+  descriptionEn: string
+  image: string
+  categoryIds: string[]
+  detailUrl: string
+  mapsUrl: string
 }
 
 const thumbnail = (files: TourismFile[] = []) => files.find((file) => file.fileType === 'thumbnail')?.link || files.find((file) => /image|gambar|thumbnail/i.test(`${file.fileTypeName} ${file.fileType}`))?.link || files[0]?.link || ''
@@ -65,6 +85,16 @@ const inSurabaya = (latitude?:string, longitude?:string, address='') => {
   return (lat !== null && lng !== null && lat >= -7.38 && lat <= -7.16 && lng >= 112.58 && lng <= 112.86) || /surabaya/i.test(address)
 }
 
+const eventCategoryIds = (value = '') => {
+  try {
+    const parsed = JSON.parse(value)
+    const values = Array.isArray(parsed) ? parsed : [parsed]
+    return values.map(String).filter((id) => id in EVENT_CATEGORIES)
+  } catch {
+    return value.split(',').map((id) => id.trim()).filter((id) => id in EVENT_CATEGORIES)
+  }
+}
+
 const tourismFetch = async <T>(path: string): Promise<T[]> => {
   try {
     const response = await fetch(`https://tourism.surabaya.go.id/api/kominfo/${path}${path.includes('?') ? '' : '?page=1'}`, { next:{ revalidate:900 }, signal:AbortSignal.timeout(5000) })
@@ -92,6 +122,8 @@ const hotelFallback: TourismItem[] = [
   { id:'grand-dafam',nameId:'Grand Dafam Signature Surabaya',nameEn:'Grand Dafam Signature Surabaya',descriptionId:'Hotel pusat kota dekat kawasan bisnis dan wisata.',descriptionEn:'A city-center hotel near business and tourism areas.',address:'Jl. Kayoon No. 4-10, Surabaya',image:'',category:'Hotel',mapsUrl:mapsUrl('-7.2717','112.7488'),latitude:-7.2717,longitude:112.7488,stars:4,website:'',phone:'',priceLabel:'Hubungi hotel'},
 ]
 
+export const getFallbackHotel = (id: string) => hotelFallback.find((hotel) => hotel.id === id) || null
+
 export async function getTourismContent() {
   const [destinations, culinaries, hotels] = await Promise.all([allPages<RawDestination>('destination'), allPages<RawCulinary>('culinary'), allPages<RawHotel>('hotel')])
   const mappedHotels=hotels.filter((item)=>inSurabaya(item.latitude,item.longitude,item.address)).map((item,index):TourismItem => ({
@@ -115,3 +147,27 @@ const mapCulinaries = (culinaries: RawCulinary[]) => culinaries.map((item,index)
     address:item.address || 'Surabaya', image:thumbnail(item.culinaryFiles), images:item.culinaryFiles?.filter(file=>file.fileType==='gallery').map(file=>file.link).filter((link):link is string=>Boolean(link)) || [], category:'Wisata Kuliner', mapsUrl:mapsUrl(item.latitude,item.longitude,item.name),latitude:coordinate(item.latitude),longitude:coordinate(item.longitude),stars:0,website:'',phone:'',priceLabel:'',
   }
 })
+
+export async function getTourismEvents(): Promise<TourismEvent[]> {
+  const events = await allPages<RawEvent>('event')
+  return events.map((item, index) => {
+    const id = item.id || `event-${index}`
+    return {
+      id,
+      organizer: plainText(item.organizer) || 'Pemerintah Kota Surabaya',
+      address: plainText(item.address) || 'Surabaya',
+      latitude: coordinate(item.latitude),
+      longitude: coordinate(item.longitude),
+      startDate: item.startDate || '',
+      endDate: item.endDate || item.startDate || '',
+      nameId: plainText(item.nameIndonesia) || 'Event Kota Surabaya',
+      nameEn: plainText(item.nameInggris) || plainText(item.nameIndonesia) || 'Surabaya Event',
+      descriptionId: plainText(item.descriptionIndonesia),
+      descriptionEn: plainText(item.desctiptionInggris) || plainText(item.descriptionIndonesia),
+      image: item.eventThumbnail || '',
+      categoryIds: eventCategoryIds(item.idKategoriEvent),
+      detailUrl: `/wisata/event/${encodeURIComponent(id)}`,
+      mapsUrl: mapsUrl(item.latitude, item.longitude, item.nameIndonesia),
+    }
+  })
+}

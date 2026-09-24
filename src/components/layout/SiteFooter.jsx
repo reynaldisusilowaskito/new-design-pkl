@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useExperience } from '@/context/ExperienceContext'
 import styles from './SiteFooter.module.css'
 
@@ -8,8 +9,8 @@ const mandatoryMarks = '/assets/redesign/hero/surabaya-mandatory-marks.webp'
 const footerWordmark = '/assets/redesign/hero/surabaya-wordmark-white-transparent.webp'
 const characters = '/assets/redesign/hero/suro-boyo-3d.webp'
 const navigation = [
-  ['Tentang Surabaya', '#tentang'], ['Layanan warga', '#layanan'], ['Kabar kota', '#kabar'],
-  ['Video kota', '#video'], ['Kalender Surabaya', '#agenda-kota'],
+  ['Tentang Surabaya', '/#tentang'], ['Layanan warga', '/#layanan'], ['Kabar kota', '/#kabar'],
+  ['Video kota', '/#video'], ['Kalender Surabaya', '/#agenda-kota'],
 ]
 const validUrl = (value, fallback) => value?.startsWith('http') ? value : fallback
 
@@ -37,7 +38,7 @@ export default function SiteFooter({ organization }) {
             <h2 id="footer-title">{t('Masih mencari layanan atau informasi kota?')}</h2>
             <p>{t('Kami bantu menghubungkan kebutuhanmu dengan kanal resmi Pemerintah Kota Surabaya.')}</p>
             <div className={styles.actions}>
-              <a className={styles.primaryAction} href="#layanan">{t('Jelajahi layanan')} <span>→</span></a>
+              <Link className={styles.primaryAction} href="/#layanan">{t('Jelajahi layanan')} <span>→</span></Link>
               <a className={styles.secondaryAction} href="https://wargaku.surabaya.go.id/" target="_blank" rel="noreferrer">{t('Sampaikan pengaduan')} <span>↗</span></a>
             </div>
           </div>
@@ -48,7 +49,7 @@ export default function SiteFooter({ organization }) {
         </section>
         <div className={styles.infoBar}>
           <nav className={styles.navigation} aria-label={t('Jelajahi')}>
-            {navigation.map(([label, href]) => <a href={href} key={label}>{t(label)}</a>)}
+            {navigation.map(([label, href]) => <Link href={href} key={label}>{t(label)}</Link>)}
           </nav>
           <address className={styles.contact}>
             <span>{t('PEMERINTAH KOTA')}</span>
@@ -62,7 +63,7 @@ export default function SiteFooter({ organization }) {
         <div className={styles.bottomBar}>
           <p>© 2026 {t('Pemerintah Kota Surabaya')}</p>
           <a href="https://surabaya.go.id/" target="_blank" rel="noreferrer">surabaya.go.id ↗</a>
-          <a href="#beranda" aria-label={t('Kembali ke bagian atas')}>{t('Kembali ke atas')} ↑</a>
+          <Link href="/#beranda" aria-label={t('Kembali ke bagian atas')}>{t('Kembali ke atas')} ↑</Link>
         </div>
       </div>
     </footer>
