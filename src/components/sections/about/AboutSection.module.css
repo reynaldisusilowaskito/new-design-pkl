@@ -78,7 +78,7 @@
 .cardKicker { display: flex; gap: 19px; margin: 0 0 27px; font-size: 9px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; opacity: .68; }
 .cardKicker span { opacity: .66; }
 .cityCard h3 { max-width: 620px; margin: 0; font-size: clamp(36px, 5.2vw, 78px); font-weight: 650; line-height: .95; letter-spacing: -.065em; }
-.cardText { max-width: 520px; margin: 33px 0 0; font-size: 12px; line-height: 1.75; opacity: 0; transform: translateY(18px); transition: opacity .35s .18s, transform .55s .15s cubic-bezier(.16, 1, .3, 1); }
+.cardText { max-width: 540px; margin: 33px 0 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.7; opacity: 0; transform: translateY(18px); transition: opacity .35s .18s, transform .55s .15s cubic-bezier(.16, 1, .3, 1); }
 .cardFact {
   display: inline-flex;
   align-items: center;
@@ -233,9 +233,10 @@
 
 .summary > p {
   margin: 0 0 27px;
-  color: rgba(255, 255, 255, .64);
-  font-size: 12px;
-  line-height: 1.85;
+  color: rgba(255, 255, 255, .78);
+  font-size: clamp(16px, 1.35vw, 20px);
+  font-weight: 450;
+  line-height: 1.65;
 }
 
 .summary a {
@@ -397,7 +398,7 @@
   .cardCopy { width: 100%; }
   .cardKicker { margin-bottom: 18px; }
   .cityCard h3 { max-width: 75%; font-size: clamp(34px, 10vw, 48px); }
-  .cardText { max-width: 68%; margin-top: 22px; font-size: 10px; line-height: 1.55; }
+  .cardText { max-width: 72%; margin-top: 22px; font-size: 13px; line-height: 1.58; }
   .cardFact { gap: 14px; margin-top: 16px; padding: 10px 11px 10px 15px; font-size: 11px; }
   .cardFact span { width: 25px; height: 25px; font-size: 12px; }
   .cardObject { right: -55px; bottom: -25px; width: 230px; opacity: .9; }
