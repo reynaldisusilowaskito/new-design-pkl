@@ -5,6 +5,7 @@ import styles from './AccessibilityTools.module.css'
 
 const STORAGE_KEY = 'surabaya-accessibility'
 const defaults = { fontScale: 0, grayscale: false, negative: false, underline: false, speech: false }
+const TEXT_SELECTOR = 'h1,h2,h3,h4,h5,h6,p,a,button,label,input,textarea,select,option,li,dt,dd,blockquote,figcaption,caption,th,td,time,small,strong,em,b,span'
 
 const icons = {
   increase: <><path d="M11 5a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z"/><path d="M11 8v6M8 11h6M16 16l4 4"/></>,
@@ -64,11 +65,47 @@ export default function AccessibilityTools() {
   useEffect(() => {
     if (!ready) return
     const root = document.documentElement
-    root.style.fontSize = `${100 + settings.fontScale * 10}%`
+    const scale = 1 + settings.fontScale * .1
+    const restoreText = (element) => {
+      if (!element.dataset.a11yBaseFontSize) return
+      const original = element.dataset.a11yOriginalFontSize || ''
+      const priority = element.dataset.a11yOriginalFontPriority || ''
+      if (original) element.style.setProperty('font-size', original, priority)
+      else element.style.removeProperty('font-size')
+      delete element.dataset.a11yBaseFontSize
+      delete element.dataset.a11yOriginalFontSize
+      delete element.dataset.a11yOriginalFontPriority
+    }
+    const scaleText = (element) => {
+      if (!(element instanceof HTMLElement) || element.closest('[data-accessibility-widget],.maplibregl-map,[aria-hidden="true"]')) return
+      const hasText = [...element.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && node.nodeValue?.trim())
+      if (!hasText && !element.matches('input,textarea,select,option')) return
+      if (!element.dataset.a11yBaseFontSize) {
+        element.dataset.a11yOriginalFontSize = element.style.getPropertyValue('font-size')
+        element.dataset.a11yOriginalFontPriority = element.style.getPropertyPriority('font-size')
+        element.dataset.a11yBaseFontSize = String(parseFloat(window.getComputedStyle(element).fontSize) || 16)
+      }
+      element.style.setProperty('font-size', `${Number(element.dataset.a11yBaseFontSize) * scale}px`, 'important')
+    }
+    const applyTextScale = (scope = document.body) => {
+      if (!scope) return
+      const elements = scope.matches?.(TEXT_SELECTOR) ? [scope,...scope.querySelectorAll(TEXT_SELECTOR)] : [...scope.querySelectorAll(TEXT_SELECTOR)]
+      if (settings.fontScale === 0) elements.forEach(restoreText)
+      else elements.forEach(scaleText)
+    }
+
+    applyTextScale()
     root.dataset.a11yGrayscale = String(settings.grayscale)
     root.dataset.a11yNegative = String(settings.negative)
     root.dataset.a11yUnderline = String(settings.underline)
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...settings, speech: false }))
+
+    if (settings.fontScale === 0) return undefined
+    const observer = new MutationObserver((mutations) => mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
+      if (node.nodeType === Node.ELEMENT_NODE) applyTextScale(node)
+    })))
+    observer.observe(document.body, { childList:true, subtree:true })
+    return () => observer.disconnect()
   }, [ready, settings])
 
   useEffect(() => {
