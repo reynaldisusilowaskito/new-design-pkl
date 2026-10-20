@@ -193,6 +193,33 @@ const apiFetch = async <T>(path: string, revalidate = 300): Promise<T | null> =>
   }
 }
 
+const navigationKey = (title: string) => title
+  .toLocaleLowerCase('id-ID')
+  .replace(/\s+dan\s+/g, ' & ')
+  .replace(/[^a-z0-9]/g, '')
+
+const navigationUrlOverrides: Record<string, string> = {
+  tentangsurabaya: '/page/0/76094/sekilas-kota-surabaya',
+  sekilastentangsurabaya: '/page/0/76094/sekilas-kota-surabaya',
+  sekilaskotasurabaya: '/page/0/76094/sekilas-kota-surabaya',
+  visimisi: '/id/page/0/60539/visi-misi-kota-surabaya',
+  kedudukandanalamatpemerintahkotasurabaya: '/id/page/0/37811/kedudukan-dan-alamat-pemerintah-kota-surabaya',
+  alamatpemerintahkotasurabaya: '/id/page/0/37811/kedudukan-dan-alamat-pemerintah-kota-surabaya',
+  bisnisinvestasi: 'https://dpm-ptsp.surabaya.go.id/petapotensiinvestasi/html/interaktif/kecamatan.php',
+  cekstatuspenonaktifannik: '/id/page/0/25002/cek-status-penonaktifan-nik',
+  childfriendlycityinitiative: '/id/page/0/22707/news-about-child-friendly-initiative',
+  peringatanterhadappergeserantiangdankabeljaringanutilitastanpaidentitasdilokasijltenggumungwetansurabaya: '/id/page/0/23492/peringatan-terhadap-pergeseran-tiang-dan-kabel-jaringan-utilitas-tanpa-identitas-di-lokasi-jl-tenggumung-wetan-surabaya',
+  profilpimpinankotasurabaya: '/page/0/67139/profil-pimpinan-kota-surabaya',
+  profilwalikotasurabaya: '/id/page/0/25238/profil-walikota-surabaya',
+  profilwakilwalikotasurabaya: '/id/page/0/67244/profil-wakil-walikota-surabaya',
+  profilpejabateselonii: '/id/page/0/24062/profil-pejabat-eselon-ii',
+  profilpejabateseloniii: '/id/page/0/24063/profil-pejabat-eselon-iii',
+  profilpejabateseloniv: '/id/page/0/25271/profil-pejabat-eselon-iv',
+  dinasdinas: '/id/page/0/8093/dinas---dinas',
+  badandaerah: '/id/page/0/8093/dinas---dinas',
+  penghargaan: '/page/0/49215/penghargaan',
+}
+
 const transformMenu = (item: RawMenu): NavigationItem => ({
   title: item.value || 'Menu',
   url: item.linkUrl,
@@ -201,8 +228,6 @@ const transformMenu = (item: RawMenu): NavigationItem => ({
   child: Array.isArray(item.subMenus) ? item.subMenus.map(transformMenu) : [],
 })
 
-const navigationKey = (title: string) => title.toLocaleLowerCase('id-ID').replace(/[^a-z0-9]/g, '')
-
 /**
  * Preserve every live API item while recursively filling only missing menu
  * branches from the local snapshot. A partially available backend therefore
@@ -210,15 +235,35 @@ const navigationKey = (title: string) => title.toLocaleLowerCase('id-ID').replac
  */
 const mergeNavigation = (live: NavigationItem[], fallback: NavigationItem[]): NavigationItem[] => {
   const fallbackByTitle = new Map(fallback.map((item) => [navigationKey(item.title), item]))
-  const merged = live.map((item) => {
-    const matchingFallback = fallbackByTitle.get(navigationKey(item.title))
-    fallbackByTitle.delete(navigationKey(item.title))
-    return {
-      ...item,
-      child: mergeNavigation(item.child || [], matchingFallback?.child || []),
+  const mergedByTitle = new Map<string, NavigationItem>()
+
+  for (const item of live) {
+    const key = navigationKey(item.title)
+    const matchingFallback = fallbackByTitle.get(key)
+    fallbackByTitle.delete(key)
+    const overrideUrl = navigationUrlOverrides[key]
+    const fallbackUrl = matchingFallback?.url
+    const url = overrideUrl || (item.url?.trim() && item.url.trim() !== '#'
+      ? item.url
+      : fallbackUrl && fallbackUrl !== '#' ? fallbackUrl : item.url)
+    const children = mergeNavigation(item.child || [], matchingFallback?.child || [])
+    const existing = mergedByTitle.get(key)
+
+    if (!existing) {
+      mergedByTitle.set(key, { ...item, url, child: children })
+      continue
     }
-  })
-  return [...merged, ...fallbackByTitle.values()]
+
+    const existingHasDestination = Boolean(existing.url?.trim() && existing.url.trim() !== '#')
+    const itemHasDestination = Boolean(url?.trim() && url.trim() !== '#')
+    mergedByTitle.set(key, {
+      ...existing,
+      url: overrideUrl || (existingHasDestination ? existing.url : itemHasDestination ? url : existing.url),
+      child: mergeNavigation([...(existing.child || []), ...children], matchingFallback?.child || []),
+    })
+  }
+
+  return [...mergedByTitle.values(), ...fallbackByTitle.values()]
 }
 
 const completeNavigation = (items: NavigationItem[]) => mergeNavigation(items, fallbackNavigation)
@@ -262,6 +307,9 @@ type RawLegacyPage = {
   slug?: string
   content?: string
   details?: Array<{ content?: string }>
+  postDetails?: RawPost['postDetails']
+  description?: string
+  excerpt?: string
   updatedAt?: string
   updated_at?: string
 }
@@ -297,9 +345,21 @@ const legacyPageFallbacks: Record<string, Pick<LegacyPage, 'title' | 'content'>>
   },
 }
 
-const pageContent = (page?: RawLegacyPage | null) => page?.content
-  || page?.details?.map((detail) => detail.content || '').join('')
-  || ''
+const pageContent = (page?: RawLegacyPage | RawPost | null) => {
+  if (!page) return ''
+  const content = 'content' in page ? page.content : ''
+  const details = 'details' in page ? page.details : undefined
+  const postDetails = 'postDetails' in page ? page.postDetails : undefined
+  const description = 'description' in page ? page.description : undefined
+  const excerpt = 'excerpt' in page ? page.excerpt : undefined
+
+  return content
+    || details?.map((detail) => detail.content || '').join('')
+    || postDetails?.map((detail) => detail.content || '').join('')
+    || description
+    || excerpt
+    || ''
+}
 
 const unwrapLegacyPage = (value: RawLegacyPage | { data?: RawLegacyPage } | null): RawLegacyPage | null => {
   if (!value) return null
@@ -317,13 +377,13 @@ export const getLegacyPage = async (id: string, slugValue: string): Promise<Lega
     ? await apiFetch<{ data?: RawPost }>(`public/${slug}/post/halaman/${encodeURIComponent(slugValue)}`, 300)
     : null
   const post = legacyPost?.data
-  if (post) {
+  if (post && pageContent(post).trim()) {
     const postId = String(post.id || id)
     return {
       id: postId,
       slug: post.slug || slugValue,
       title: post.title || displayTitle(slugValue),
-      content: normalizeOfficialHtml(post.postDetails?.map((detail) => detail.content || '').join('') || post.description || post.excerpt || ''),
+      content: normalizeOfficialHtml(pageContent(post)),
       image: normalizePostImage(post, postId),
       publishedAt: normalizePostDate(post),
       viewCount: post.viewsCount,
@@ -336,7 +396,8 @@ export const getLegacyPage = async (id: string, slugValue: string): Promise<Lega
   const fromSlug = !pageContent(first)
     ? await apiFetch<RawLegacyPage | { data?: RawLegacyPage }>(`page-detail?id=${encodeURIComponent(slugValue)}`, 300)
     : null
-  const resolved = unwrapLegacyPage(fromSlug) || first
+  const slugPage = unwrapLegacyPage(fromSlug)
+  const resolved = pageContent(slugPage) ? slugPage : pageContent(first) ? first : slugPage || first
   const fallback = legacyPageFallbacks[slugValue] || {
     title: displayTitle(slugValue) || 'Informasi Kota Surabaya',
     content: '<p>Konten halaman ini sedang disiapkan. Silakan gunakan menu navigasi untuk menjelajahi informasi Kota Surabaya lainnya.</p>',

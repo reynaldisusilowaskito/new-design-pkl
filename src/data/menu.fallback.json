@@ -6,7 +6,7 @@
         "child": [
             {
                 "title": "Tentang Surabaya",
-                "url": "/page/0/1/sekilas-tentang-surabaya",
+                "url": "/page/0/76094/sekilas-kota-surabaya",
                 "child": []
             },
             {
@@ -15,7 +15,7 @@
                 "child": [
                     {
                         "title": "Visi & Misi",
-                        "url": "/page/0/11/visi-misi-kota-surabaya",
+                        "url": "/id/page/0/60539/visi-misi-kota-surabaya",
                         "child": []
                     },
                     {
@@ -26,16 +26,58 @@
                     {
                         "title": "Perangkat Daerah",
                         "url": "#",
-                        "child": []
+                        "child": [
+                            {
+                                "title": "Dinas - Dinas",
+                                "url": "/id/page/0/8093/dinas---dinas",
+                                "child": []
+                            },
+                            {
+                                "title": "Badan Daerah",
+                                "url": "/id/page/0/8093/dinas---dinas",
+                                "child": []
+                            }
+                        ]
                     },
                     {
-                        "title": "Profil Walikota Surabaya",
-                        "url": "#",
-                        "child": []
+                        "title": "Profil Pimpinan Kota Surabaya",
+                        "url": "/page/0/67139/profil-pimpinan-kota-surabaya",
+                        "child": [
+                            {
+                                "title": "Profil Walikota Surabaya",
+                                "url": "/id/page/0/25238/profil-walikota-surabaya",
+                                "child": []
+                            },
+                            {
+                                "title": "Profil Wakil Walikota Surabaya",
+                                "url": "/id/page/0/67244/profil-wakil-walikota-surabaya",
+                                "child": []
+                            },
+                            {
+                                "title": "Profil Pejabat Eselon II",
+                                "url": "/id/page/0/24062/profil-pejabat-eselon-ii",
+                                "child": []
+                            },
+                            {
+                                "title": "Profil Pejabat Eselon III",
+                                "url": "/id/page/0/24063/profil-pejabat-eselon-iii",
+                                "child": []
+                            },
+                            {
+                                "title": "Profil Pejabat Eselon IV",
+                                "url": "/id/page/0/25271/profil-pejabat-eselon-iv",
+                                "child": []
+                            }
+                        ]
                     },
                     {
                         "title": "Alamat Pemerintah Kota Surabaya",
-                        "url": "#",
+                        "url": "/id/page/0/37811/kedudukan-dan-alamat-pemerintah-kota-surabaya",
+                        "child": []
+                    },
+                    {
+                        "title": "Penghargaan",
+                        "url": "/page/0/49215/penghargaan",
                         "child": []
                     }
                 ]
@@ -51,7 +93,22 @@
                     },
                     {
                         "title": "Bisnis & Investasi",
-                        "url": "#",
+                        "url": "https://dpm-ptsp.surabaya.go.id/petapotensiinvestasi/html/interaktif/kecamatan.php",
+                        "child": []
+                    },
+                    {
+                        "title": "Child Friendly City Initiative",
+                        "url": "/id/page/0/22707/news-about-child-friendly-initiative",
+                        "child": []
+                    },
+                    {
+                        "title": "Cek Status Penonaktifan NIK",
+                        "url": "/id/page/0/25002/cek-status-penonaktifan-nik",
+                        "child": []
+                    },
+                    {
+                        "title": "Peringatan terhadap pergeseran tiang dan kabel jaringan utilitas tanpa identitas di lokasi Jl. Tenggumung Wetan Surabaya",
+                        "url": "/id/page/0/23492/peringatan-terhadap-pergeseran-tiang-dan-kabel-jaringan-utilitas-tanpa-identitas-di-lokasi-jl-tenggumung-wetan-surabaya",
                         "child": []
                     },
                     {
